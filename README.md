@@ -21,6 +21,7 @@ It is implemented in C# and uses Entity Framework Core.
 It supports the following database types:
 
 | Type | Purpose |
+| --- | --- |
 | In Memory | In-memory database for transient storage and targetted at unit testing |
 | SQLite | Permanent storage in a SQLite database |
 
