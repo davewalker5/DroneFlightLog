@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <PackageId>DroneFlightLog.Data</PackageId>
+    <PackageVersion>1.0.0.0</PackageVersion>
+    <PackOnBuild>true</PackOnBuild>
+    <Authors>Dave Walker</Authors>
+    <Copyright>Copyright (c) 2020 Dave Walker</Copyright>
+    <Owners>Dave Walker</Owners>
+    <PackageReleaseNotes>First release</PackageReleaseNotes>
+    <Summary>Drone Flight Logging Database Layer</Summary>
+    <PackageTags>Drone UAV Log Flight Logbook</PackageTags>
+    <Title>Drone Flight Logging Database Layer</Title>
+    <Description>Drone Flight Logging Database Layer</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\" />
+    <Folder Include="Entities\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Logic\" />
+    <Folder Include="Exceptions\" />
+    <Folder Include="Factory\" />
+    <Folder Include="Extensions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Content\DroneLog.Data.License.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\DroneFlightLog.Data.License.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>
