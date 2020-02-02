@@ -12,31 +12,9 @@
 
 DroneFlightLogDb is a C# and Entity Framework Core implementation of a database layer for a drone flight logging tool.
 
-## Pre-requisites
-
-You will need .NET Core 3.1.101 and the .NET CLI installed to build the library. Instructions for downloading and installing are on the .NET website:
-
-[https://dotnet.microsoft.com/download](https://dotnet.microsoft.com/download)
-
-## Building and Testing the Library
-
-* Clone or download the repository
-* Open a terminal window and CD to the folder containing the DroneFlightLogDb.sln solution file
-* Enter the following command to build the application:
-
-```
-dotnet build
-```
-
-* To run the unit tests, enter the following command:
-
-```
-dotnet test
-```
-
 ## Getting Started
 
-Work In Progress
+* Work In Progress
 
 ## Wiki
 
