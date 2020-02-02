@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DroneFlightLog.Data.InMemor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DroneFlightLog.Data.Sqlite", "DroneFlightLog.Data.Sqlite\DroneFlightLog.Data.Sqlite.csproj", "{3CC17699-2B58-4FAA-8A97-3DA91982DFBD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DroneFlightLog.Data.Migrations", "DroneFlightLog.Data.Migrations\DroneFlightLog.Data.Migrations.csproj", "{D08E58F6-E94A-4FD8-AECB-E5FE58792DDE}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DroneFlightLog.Data.Tests", "DroneFlightLog.Data.Tests\DroneFlightLog.Data.Tests.csproj", "{A8953DA2-FB16-4011-BD84-AFE02582AD5C}"
 EndProject
 Global
