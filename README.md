@@ -10,7 +10,19 @@
 
 ## About
 
-DroneFlightLogDb is a C# and Entity Framework Core implementation of a database layer for a drone flight logging tool.
+DroneFlightLogDb implements the entities and business logic for an SQL-based drone flight logbook, providing facilities for recording and querying the following data:
+
+* Operator details
+* Drones, models and manufacturers
+* Flights, flight locations and flight properties
+
+It is implemented in C# and uses Entity Framework Core.
+
+It supports the following database types:
+
+| Type | Purpose |
+| In Memory | In-memory database for transient storage and targetted at unit testing |
+| SQLite | Permanent storage in a SQLite database |
 
 ## Getting Started
 
