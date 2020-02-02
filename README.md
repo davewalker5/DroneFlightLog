@@ -29,10 +29,6 @@ It supports the following database types:
 
 Please see the [Wiki](https://github.com/davewalker5/DroneFlightLogDb/wiki) for details on how to reference and use the Drone Flight Log business logic and how to get started with a database to hold the data.
 
-## Wiki
-
-More complete information on the capabilities and use of the database are provided in the [Wiki](https://github.com/davewalker5/DroneFlightLogDb/wiki)
-
 ## Authors
 
 - **Dave Walker** - *Initial work* - [LinkedIn](https://www.linkedin.com/in/davewalker5/)
