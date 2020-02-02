@@ -13,6 +13,7 @@
     <PackageTags>Drone UAV Log Flight Logbook</PackageTags>
     <Title>Drone Flight Logging In Memory Database Layer</Title>
     <Description>Drone Flight Logging In Memory Database Layer</Description>
+    <PackageProjectUrl>https://github.com/davewalker5/DroneFlightLogDb</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>

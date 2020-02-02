@@ -13,6 +13,7 @@
     <PackageTags>Drone UAV Log Flight Logbook</PackageTags>
     <Title>Drone Flight Logging SQLite Database Layer</Title>
     <Description>Drone Flight Logging SQLite Database Layer</Description>
+    <PackageProjectUrl>https://github.com/davewalker5/DroneFlightLogDb</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
