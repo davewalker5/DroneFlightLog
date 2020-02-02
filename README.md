@@ -1,5 +1,5 @@
 # DroneFlightLogDb
-
+ 
 [![Build Status](https://github.com/davewalker5/DroneFlightLogDb/workflows/.NET%20Core%20CI%20Build/badge.svg)](https://github.com/davewalker5/DroneFlightLogDb/actions)
 [![GitHub issues](https://img.shields.io/github/issues/davewalker5/DroneFlightLogDb)](https://github.com/davewalker5/DroneFlightLogDb/issues)
 [![Coverage Status](https://coveralls.io/repos/github/davewalker5/DroneFlightLogDb/badge.svg?branch=master)](https://coveralls.io/github/davewalker5/DroneFlightLogDb?branch=master)
