@@ -4,6 +4,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/davewalker5/DroneFlightLogDb)](https://github.com/davewalker5/DroneFlightLogDb/issues)
 [![Coverage Status](https://coveralls.io/repos/github/davewalker5/DroneFlightLogDb/badge.svg?branch=master)](https://coveralls.io/github/davewalker5/DroneFlightLogDb?branch=master)
 [![Releases](https://img.shields.io/github/v/release/davewalker5/DroneFlightLogDb.svg?include_prereleases)](https://github.com/davewalker5/DroneFlightLogDb/releases)
+[![NuGet](https://img.shields.io/nuget/v/DroneFlightLog.Data)](https://www.nuget.org/packages?q=droneflightlog.data)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/davewalker5/DroneFlightLogDb/blob/master/LICENSE)
 [![Language](https://img.shields.io/badge/language-c%23-blue.svg)](https://github.com/davewalker5/DroneFlightLogDb/)
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/davewalker5/DroneFlightLogDb)](https://github.com/davewalker5/DroneFlightLogDb/)
