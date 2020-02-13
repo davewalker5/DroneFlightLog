@@ -1,6 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading.Tasks;
 using DroneFlightLog.Data.Entities;
 using DroneFlightLog.Data.Exceptions;
 using DroneFlightLog.Data.Extensions;
@@ -26,23 +27,34 @@ namespace DroneFlightLog.Data.Logic
         public Manufacturer GetManufacturer(int manufacturerId)
         {
             Manufacturer manufacturer = _context.Manufacturers.FirstOrDefault(m => m.Id == manufacturerId);
+            ThrowIfManufacturerNotFound(manufacturer, manufacturerId);
+            return manufacturer;
+        }
 
-            if (manufacturer == null)
-            {
-                string message = $"Manufacturer with ID {manufacturerId} not found";
-                throw new ManufacturerNotFoundException(message);
-            }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="manufacturerId"></param>
+        /// <returns></returns>
+        public async Task<Manufacturer> GetManufacturerAsync(int manufacturerId)
+        {
+            Manufacturer manufacturer = await _context.Manufacturers.FirstOrDefaultAsync(m => m.Id == manufacturerId);
+            ThrowIfManufacturerNotFound(manufacturer, manufacturerId);
             return manufacturer;
         }
 
         /// <summary>
         /// Get all the current manufacturer details
         /// </summary>
-        public IEnumerable<Manufacturer> GetManufacturers()
-        {
-            return _context.Manufacturers;
-        }
+        public IEnumerable<Manufacturer> GetManufacturers() =>
+            _context.Manufacturers;
+
+        /// <summary>
+        /// Get all the current manufacturer details 
+        /// </summary>
+        /// <returns></returns>
+        public IAsyncEnumerable<Manufacturer> GetManufacturersAsync() =>
+            _context.Manufacturers.AsAsyncEnumerable();
 
         /// <summary>
         /// Add a new manufacturer, given their details
@@ -51,14 +63,24 @@ namespace DroneFlightLog.Data.Logic
         /// <returns></returns>
         public Manufacturer AddManufacturer(string name)
         {
-            if (FindManufacturer(name) != null)
-            {
-                string message = $"Manufacturer {name} already exists";
-                throw new ManufacturerExistsException(message);
-            }
-
-            Manufacturer manufacturer = new Manufacturer { Name = name.CleanString() };
+            Manufacturer manufacturer = FindManufacturer(name);
+            ThrowIfManufacturerFound(manufacturer, name);
+            manufacturer = new Manufacturer { Name = name.CleanString() };
             _context.Manufacturers.Add(manufacturer);
+            return manufacturer;
+        }
+
+        /// <summary>
+        /// Add a new manufacturer, given their details
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public async Task<Manufacturer> AddManufacturerAsync(string name)
+        {
+            Manufacturer manufacturer = await FindManufacturerAsync(name);
+            ThrowIfManufacturerFound(manufacturer, name);
+            manufacturer = new Manufacturer { Name = name.CleanString() };
+            await _context.Manufacturers.AddAsync(manufacturer);
             return manufacturer;
         }
 
@@ -70,7 +92,48 @@ namespace DroneFlightLog.Data.Logic
         public Manufacturer FindManufacturer(string name)
         {
             name = name.CleanString();
-            return _context.Manufacturers.FirstOrDefault(m => m.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
+            return _context.Manufacturers.FirstOrDefault(m => m.Name == name);
+        }
+
+        /// <summary>
+        /// Find a manufacturer given their name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public async Task<Manufacturer> FindManufacturerAsync(string name)
+        {
+            name = name.CleanString();
+            return await _context.Manufacturers.FirstOrDefaultAsync(m => m.Name == name);
+        }
+
+        /// <summary>
+        /// Throw an error if a manufacturer does not exist
+        /// </summary>
+        /// <param name="manufacturer"></param>
+        /// <param name="manufacturerId"></param>
+        [ExcludeFromCodeCoverage]
+        private void ThrowIfManufacturerNotFound(Manufacturer manufacturer, int manufacturerId)
+        {
+            if (manufacturer == null)
+            {
+                string message = $"Manufacturer with ID {manufacturerId} not found";
+                throw new ManufacturerNotFoundException(message);
+            }
+        }
+
+        /// <summary>
+        /// Throw an error if a manufacturer already exists
+        /// </summary>
+        /// <param name="manufacturer"></param>
+        /// <param name="name"></param>
+        [ExcludeFromCodeCoverage]
+        private void ThrowIfManufacturerFound(Manufacturer manufacturer, string name)
+        {
+            if (manufacturer != null)
+            {
+                string message = $"Manufacturer {name} already exists";
+                throw new ManufacturerExistsException(message);
+            }
         }
     }
 }

@@ -14,6 +14,5 @@ namespace DroneFlightLog.Data.Entities
         public string SerialNumber { get; set; }
 
         public Model Model { get; set; }
-        public IList<Flight> Flights { get; set; }
     }
 }

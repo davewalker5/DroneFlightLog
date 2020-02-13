@@ -42,6 +42,9 @@ namespace DroneFlightLog.Data.Tests
         private const string StringPropertyName = "Some String Property";
         private const string StringPropertyValue = "Some Value";
 
+        private const string AsyncPropertyName = "Some Async Property";
+        private const decimal AsyncPropertyValue = 6.45M;
+
         private IDroneFlightLogFactory<DroneFlightLogDbContext> _factory;
         private int _flightId;
         private int _propertyId;
@@ -78,7 +81,7 @@ namespace DroneFlightLog.Data.Tests
             _factory.Context.SaveChanges();
             _propertyId = property.Id;
 
-            FlightPropertyValue value = _factory.Properties.AddPropertyValue(_flightId, _propertyId, PropertyValue);
+            _factory.Properties.AddPropertyValue(_flightId, _propertyId, PropertyValue);
             _factory.Context.SaveChanges();
         }
 
@@ -91,6 +94,17 @@ namespace DroneFlightLog.Data.Tests
             Assert.AreEqual(PropertyName, _factory.Context.FlightProperties.First().Name);
             Assert.AreEqual(PropertyType, _factory.Context.FlightProperties.First().DataType);
             Assert.IsTrue(_factory.Context.FlightProperties.First().IsSingleInstance);
+        }
+
+        [TestMethod]
+        public async void AddPropertyAsyncTest()
+        {
+            FlightProperty property = await _factory.Properties.AddPropertyAsync(AsyncPropertyName, PropertyType, true);
+            await _factory.Context.SaveChangesAsync();
+            Assert.AreEqual(2, _factory.Context.FlightProperties.Count());
+            Assert.AreEqual(AsyncPropertyName, property.Name);
+            Assert.AreEqual(PropertyType, property.DataType);
+            Assert.IsTrue(property.IsSingleInstance);
         }
 
         [TestMethod, ExpectedException(typeof(PropertyExistsException))]
@@ -110,6 +124,16 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
+        public async void GetPropertiesAsyncTest()
+        {
+            List<FlightProperty> properties = await _factory.Properties.GetPropertiesAsync().ToListAsync();
+            Assert.AreEqual(1, properties.Count());
+            Assert.AreEqual(PropertyName, properties.First().Name);
+            Assert.AreEqual(PropertyType, properties.First().DataType);
+            Assert.IsTrue(properties.First().IsSingleInstance);
+        }
+
+        [TestMethod]
         public void AddPropertyValueTest()
         {
             // The property has been added during test initialisation. All that needs
@@ -118,6 +142,17 @@ namespace DroneFlightLog.Data.Tests
             Assert.AreEqual(_flightId, _factory.Context.FlightPropertyValues.First().FlightId);
             Assert.AreEqual(_propertyId, _factory.Context.FlightPropertyValues.First().PropertyId);
             Assert.AreEqual(PropertyValue, _factory.Context.FlightPropertyValues.First().NumberValue);
+        }
+
+        [TestMethod]
+        public async void AddPropertyValueAsyncTest()
+        {
+            FlightPropertyValue value = await _factory.Properties.AddPropertyValueAsync(_flightId, _propertyId, AsyncPropertyValue);
+            await _factory.Context.SaveChangesAsync();
+            Assert.AreEqual(2, _factory.Context.FlightPropertyValues.Count());
+            Assert.AreEqual(_flightId, value.FlightId);
+            Assert.AreEqual(_propertyId, value.PropertyId);
+            Assert.AreEqual(AsyncPropertyValue, value.NumberValue);
         }
 
         [TestMethod, ExpectedException(typeof(ValueExistsException))]
@@ -130,6 +165,16 @@ namespace DroneFlightLog.Data.Tests
         public void GetPropertyValuesTest()
         {
             IEnumerable<FlightPropertyValue> values = _factory.Properties.GetPropertyValues(_flightId);
+            Assert.AreEqual(1, values.Count());
+            Assert.AreEqual(_flightId, values.First().FlightId);
+            Assert.AreEqual(_propertyId, values.First().PropertyId);
+            Assert.AreEqual(PropertyValue, values.First().NumberValue);
+        }
+
+        [TestMethod]
+        public async void GetPropertyValuesAsyncTest()
+        {
+            List<FlightPropertyValue> values = await _factory.Properties.GetPropertyValuesAsync(_flightId).ToListAsync();
             Assert.AreEqual(1, values.Count());
             Assert.AreEqual(_flightId, values.First().FlightId);
             Assert.AreEqual(_propertyId, values.First().PropertyId);

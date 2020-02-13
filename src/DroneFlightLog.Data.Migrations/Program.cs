@@ -1,4 +1,5 @@
-﻿using DroneFlightLog.Data.Sqlite;
+﻿using System;
+using DroneFlightLog.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
 namespace DroneFlightLog.Data.Migrations

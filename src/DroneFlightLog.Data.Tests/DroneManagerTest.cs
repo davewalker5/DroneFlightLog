@@ -16,6 +16,7 @@ namespace DroneFlightLog.Data.Tests
         private const string ModelName = "Some Model";
         private const string DroneName = "Some Drone";
         private const string DroneSerialNumber = "1234567890";
+        private const string SecondDroneSerialNumber = "0987654321";
 
         private IDroneFlightLogFactory<DroneFlightLogDbContext> _factory;
         private int _modelId;
@@ -50,6 +51,18 @@ namespace DroneFlightLog.Data.Tests
             Assert.AreEqual(_modelId, _factory.Context.Drones.First().ModelId);
         }
 
+        [TestMethod]
+        public async void AddDroneAsyncTest()
+        {
+            Drone drone = await _factory.Drones.AddDroneAsync(DroneName, SecondDroneSerialNumber, _modelId);
+            await _factory.Context.SaveChangesAsync();
+            Assert.AreEqual(2, _factory.Context.Drones.Count());
+            Assert.AreNotEqual(_droneId, drone.Id);
+            Assert.AreEqual(DroneName, drone.Name);
+            Assert.AreEqual(SecondDroneSerialNumber, drone.SerialNumber);
+            Assert.AreEqual(_modelId, drone.ModelId);
+        }
+
         [TestMethod, ExpectedException(typeof(DroneExistsException))]
         public void AddExistingDroneTest()
         {
@@ -69,6 +82,13 @@ namespace DroneFlightLog.Data.Tests
             ValidateDrone(drone);
         }
 
+        [TestMethod]
+        public async  void GetDroneByIdAsyncTest()
+        {
+            Drone drone = await _factory.Drones.GetDroneAsync(_droneId);
+            ValidateDrone(drone);
+        }
+
         [TestMethod, ExpectedException(typeof(DroneNotFoundException))]
         public void GetMissingDroneByIdTest()
         {
@@ -84,9 +104,25 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
+        public async void GetAllDronesAsyncTest()
+        {
+            List<Drone> drones = await _factory.Drones.GetDronesAsync(null).ToListAsync();
+            Assert.AreEqual(1, drones.Count());
+            ValidateDrone(drones.First());
+        }
+
+        [TestMethod]
         public void GetDronesByModelTest()
         {
             IEnumerable<Drone> drones = _factory.Drones.GetDrones(_modelId);
+            Assert.AreEqual(1, drones.Count());
+            ValidateDrone(drones.First());
+        }
+
+        [TestMethod]
+        public async void GetDronesByModelAsyncTest()
+        {
+            List<Drone> drones = await _factory.Drones.GetDronesAsync(_modelId).ToListAsync();
             Assert.AreEqual(1, drones.Count());
             ValidateDrone(drones.First());
         }
@@ -102,6 +138,13 @@ namespace DroneFlightLog.Data.Tests
         public void FindDroneTest()
         {
             Drone drone = _factory.Drones.FindDrone(DroneSerialNumber, _modelId);
+            ValidateDrone(drone);
+        }
+
+        [TestMethod]
+        public async void FindDroneAsyncTest()
+        {
+            Drone drone = await _factory.Drones.FindDroneAsync(DroneSerialNumber, _modelId);
             ValidateDrone(drone);
         }
 

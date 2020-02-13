@@ -86,9 +86,28 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
+        public async void AddFlightAsyncTest()
+        {
+            Flight flight = await _factory.Flights.AddFlightAsync(_operatorId, _droneId, _locationId, StartDate, EndDate);
+            await _factory.Context.SaveChangesAsync();
+            Assert.AreEqual(2, _factory.Context.Flights.Count());
+            Assert.AreEqual(_droneId, flight.DroneId);
+            Assert.AreEqual(_locationId, flight.LocationId);
+            Assert.AreEqual(_operatorId, flight.OperatorId);
+        }
+
+        [TestMethod]
         public void FindFlightByOperatorIdTest()
         {
             IEnumerable<Flight> flights = _factory.Flights.FindFlights(_operatorId, null, null, null, null, 1, 2);
+            Assert.AreEqual(1, flights.Count());
+            ValidateFlight(flights.First());
+        }
+
+        [TestMethod]
+        public async void FindFlightByOperatorIdAsyncTest()
+        {
+            List<Flight> flights = await _factory.Flights.FindFlightsAsync(_operatorId, null, null, null, null, 1, 2).ToListAsync();
             Assert.AreEqual(1, flights.Count());
             ValidateFlight(flights.First());
         }

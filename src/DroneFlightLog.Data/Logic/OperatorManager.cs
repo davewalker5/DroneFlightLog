@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading.Tasks;
 using DroneFlightLog.Data.Entities;
 using DroneFlightLog.Data.Exceptions;
 using DroneFlightLog.Data.Extensions;
@@ -26,13 +28,19 @@ namespace DroneFlightLog.Data.Logic
         public Operator GetOperator(int operatorId)
         {
             Operator op = _factory.Context.Operators.Include(o => o.Address).FirstOrDefault(o => o.Id == operatorId);
+            ThrowIfOperatorNotFound(op, operatorId);
+            return op;
+        }
 
-            if (op == null)
-            {
-                string message = $"Operator with ID {operatorId} not found";
-                throw new OperatorNotFoundException(message);
-            }
-
+        /// <summary>
+        /// Return the operator with the specified Id
+        /// </summary>
+        /// <param name="operatorId"></param>
+        /// <returns></returns>
+        public async Task<Operator> GetOperatorAsync(int operatorId)
+        {
+            Operator op = await _factory.Context.Operators.Include(o => o.Address).FirstOrDefaultAsync(o => o.Id == operatorId);
+            ThrowIfOperatorNotFound(op, operatorId);
             return op;
         }
 
@@ -42,7 +50,35 @@ namespace DroneFlightLog.Data.Logic
         /// <param name="addressId"></param>
         public IEnumerable<Operator> GetOperators(int? addressId)
         {
-            IEnumerable<Operator> operators = (addressId == null) ? _factory.Context.Operators.Include(o => o.Address) : _factory.Context.Operators.Include(o => o.Address).Where(o => o.AddressId == addressId);
+            IEnumerable<Operator> operators = (addressId == null) ? _factory.Context.Operators.Include(o => o.Address) :
+                                                                    _factory.Context.Operators.Include(o => o.Address)
+                                                                                              .Where(o => o.AddressId == addressId);
+            return operators;
+        }
+
+        /// <summary>
+        /// Get all the current operator details, optionally filtering by address
+        /// </summary>
+        /// <param name="addressId"></param>
+        public IAsyncEnumerable<Operator> GetOperatorsAsync(int? addressId)
+        {
+            IAsyncEnumerable<Operator> operators;
+
+            if (addressId == null)
+            {
+                operators = _factory.Context.Operators
+                                            .Include(o => o.Address)
+                                            .AsAsyncEnumerable();
+            }
+            else
+            {
+                operators = _factory.Context.Operators
+                                            .Include(o => o.Address)
+                                            .Where(o => o.AddressId == addressId)
+                                            .AsAsyncEnumerable();
+
+            }
+
             return operators;
         }
 
@@ -58,13 +94,13 @@ namespace DroneFlightLog.Data.Logic
         /// <returns></returns>
         public Operator AddOperator(string firstnames, string surname, DateTime dob, string flyerNumber, string operatorNumber, int addressId)
         {
-            if (FindOperator(firstnames, surname, addressId) != null)
-            {
-                string message = $"Operator {firstnames} {surname} already exists at address {addressId}";
-                throw new OperatorExistsException(message);
-            }
+            // This will throw an exception if the address doesn't exist
+            _factory.Addresses.GetAddress(addressId);
 
-            Operator op = new Operator
+            Operator op = FindOperator(firstnames, surname, addressId);
+            ThrowIfOperatorFound(op, firstnames, surname, addressId);
+
+            op = new Operator
             {
                 AddressId = addressId,
                 DoB = dob,
@@ -79,22 +115,64 @@ namespace DroneFlightLog.Data.Logic
         }
 
         /// <summary>
+        /// Add an  operator
+        /// </summary>
+        /// <param name="firstnames"></param>
+        /// <param name="surname"></param>
+        /// <param name="dob"></param>
+        /// <param name="flyerNumber"></param>
+        /// <param name="operatorNumber"></param>
+        /// <param name="addressId"></param>
+        /// <returns></returns>
+        public async Task<Operator> AddOperatorAsync(string firstnames, string surname, DateTime dob, string flyerNumber, string operatorNumber, int addressId)
+        {
+            // This will throw an exception if the address doesn't exist
+            _factory.Addresses.GetAddress(addressId);
+
+            Operator op = await FindOperatorAsync(firstnames, surname, addressId);
+            ThrowIfOperatorFound(op, firstnames, surname, addressId);
+
+            op = new Operator
+            {
+                AddressId = addressId,
+                DoB = dob,
+                FirstNames = firstnames,
+                FlyerNumber = flyerNumber,
+                OperatorNumber = operatorNumber,
+                Surname = surname
+            };
+
+            await _factory.Context.Operators.AddAsync(op);
+            return op;
+        }
+
+        /// <summary>
         /// Update the address for the specified operator
         /// </summary>
         /// <param name="operatorId"></param>
         /// <param name="addressId"></param>
         public void SetOperatorAddress(int operatorId, int addressId)
         {
-            // This will throw an exception if the adress doesn't exist
+            // This will throw an exception if the address doesn't exist
             _factory.Addresses.GetAddress(addressId);
 
             Operator op = _factory.Context.Operators.FirstOrDefault(o => o.Id == operatorId);
-            if (op == null)
-            {
-                string message = $"Operator with ID {operatorId} not found";
-                throw new OperatorNotFoundException(message);
-            }
+            ThrowIfOperatorNotFound(op, operatorId);
+            op.AddressId = addressId;
+        }
 
+        /// <summary>
+        /// Update the address for the specified operator
+        /// </summary>
+        /// <param name="operatorId"></param>
+        /// <param name="addressId"></param>
+        public async Task SetOperatorAddressAsync(int operatorId, int addressId)
+        {
+            // This will throw an exception if the address doesn't exist
+            await _factory.Addresses.GetAddressAsync(addressId);
+
+            Operator op = await _factory.Context.Operators.FirstOrDefaultAsync(o => o.Id == operatorId);
+            ThrowIfOperatorNotFound(op, operatorId);
             op.AddressId = addressId;
         }
 
@@ -110,9 +188,60 @@ namespace DroneFlightLog.Data.Logic
             firstnames = firstnames.CleanString();
             surname = surname.CleanString();
 
-            return _factory.Context.Operators.Include(o => o.Address).FirstOrDefault(a => a.FirstNames.Equals(firstnames, StringComparison.OrdinalIgnoreCase) &&
-                                                                                            a.Surname.Equals(surname, StringComparison.OrdinalIgnoreCase) &&
-                                                                                            (a.AddressId == addressId));
+            return _factory.Context.Operators
+                                   .Include(o => o.Address)
+                                   .FirstOrDefault(a => (a.FirstNames == firstnames) &&
+                                                        (a.Surname == surname) &&
+                                                        (a.AddressId == addressId));
+        }
+
+        /// <summary>
+        /// Find an operator based on their name and address details
+        /// </summary>
+        /// <param name="firstnames"></param>
+        /// <param name="surname"></param>
+        /// <param name="addressId"></param>
+        /// <returns></returns>
+        public async Task<Operator> FindOperatorAsync(string firstnames, string surname, int addressId)
+        {
+            firstnames = firstnames.CleanString();
+            surname = surname.CleanString();
+
+            return await _factory.Context.Operators
+                                         .Include(o => o.Address)
+                                         .FirstOrDefaultAsync(a => (a.FirstNames == firstnames) &&
+                                                                   (a.Surname == surname) &&
+                                                                   (a.AddressId == addressId));
+        }
+
+        /// <summary>
+        /// Throw an exception if an operator is not found
+        /// </summary>
+        /// <param name="op"></param>
+        /// <param name="operatorId"></param>
+        [ExcludeFromCodeCoverage]
+        private void ThrowIfOperatorNotFound(Operator op, int operatorId)
+        {
+            if (op == null)
+            {
+                string message = $"Operator with ID {operatorId} not found";
+                throw new OperatorNotFoundException(message);
+            }
+        }
+
+        /// <summary>
+        /// Throw an exception if an operator already exists
+        /// </summary>
+        /// <param name="op"></param>
+        /// <param name="operatorId"></param>
+        [ExcludeFromCodeCoverage]
+        private void ThrowIfOperatorFound(Operator op, string firstnames, string surname, int addressId)
+        {
+            if (op != null)
+            {
+                string message = $"Operator {firstnames} {surname} already exists at address {addressId}";
+                throw new OperatorExistsException(message);
+            }
         }
     }
 }
