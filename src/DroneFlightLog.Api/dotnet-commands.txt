@@ -1,0 +1,5 @@
+dotnet aspnet-codegenerator controller -dc DroneFlightLogDbContext -m Drone -name Drone -api -sqlite
+
+
+DroneFlightLog.Data.Sqlite.
+DroneFlightLog.Data.Entities.
