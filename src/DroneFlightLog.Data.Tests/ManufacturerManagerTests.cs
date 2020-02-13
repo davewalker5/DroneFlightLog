@@ -13,6 +13,7 @@ namespace DroneFlightLog.Data.Tests
     public class ManufacturerManagerTests
     {
         private const string Name = "Some Drone Manufacturer";
+        private const string AsyncName = "Some Async Drone Manufacturer";
 
         private IDroneFlightLogFactory<DroneFlightLogDbContext> _factory;
         private int _manufacturerId;
@@ -37,6 +38,15 @@ namespace DroneFlightLog.Data.Tests
             Assert.AreEqual(Name, _factory.Context.Manufacturers.First().Name);
         }
 
+        [TestMethod]
+        public async void AddManufacturerAsyncTest()
+        {
+            Manufacturer manufacturer = await _factory.Manufacturers.AddManufacturerAsync(Name);
+            await _factory.Context.SaveChangesAsync();
+            Assert.AreEqual(2, _factory.Context.Manufacturers.Count());
+            Assert.AreEqual(Name, manufacturer.Name);
+        }
+
         [TestMethod, ExpectedException(typeof(ManufacturerExistsException))]
         public void AddExistingManufacturerTest()
         {
@@ -47,6 +57,14 @@ namespace DroneFlightLog.Data.Tests
         public void GetManufacturerByIdTest()
         {
             Manufacturer manufacturer = _factory.Manufacturers.GetManufacturer(_manufacturerId);
+            Assert.AreEqual(_manufacturerId, manufacturer.Id);
+            Assert.AreEqual(Name, manufacturer.Name);
+        }
+
+        [TestMethod]
+        public async void GetManufacturerByIdAsyncTest()
+        {
+            Manufacturer manufacturer = await _factory.Manufacturers.GetManufacturerAsync(_manufacturerId);
             Assert.AreEqual(_manufacturerId, manufacturer.Id);
             Assert.AreEqual(Name, manufacturer.Name);
         }
@@ -67,9 +85,25 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
+        public async void GetAllManufacturersAsyncTest()
+        {
+            List<Manufacturer> manufacturers = await _factory.Manufacturers.GetManufacturersAsync().ToListAsync();
+            Assert.AreEqual(1, manufacturers.Count());
+            Assert.AreEqual(_manufacturerId, manufacturers.First().Id);
+            Assert.AreEqual(Name, manufacturers.First().Name);
+        }
+
+        [TestMethod]
         public void FindManufacturerTest()
         {
             Manufacturer manufacturer = _factory.Manufacturers.FindManufacturer(Name);
+            Assert.AreEqual(manufacturer.Name, Name);
+        }
+
+        [TestMethod]
+        public async void FindManufacturerAsyncTest()
+        {
+            Manufacturer manufacturer = await _factory.Manufacturers.FindManufacturerAsync(Name);
             Assert.AreEqual(manufacturer.Name, Name);
         }
 

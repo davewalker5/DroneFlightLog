@@ -1,6 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading.Tasks;
 using DroneFlightLog.Data.Entities;
 using DroneFlightLog.Data.Exceptions;
 using DroneFlightLog.Data.Extensions;
@@ -26,23 +27,33 @@ namespace DroneFlightLog.Data.Logic
         public Location GetLocation(int locationId)
         {
             Location location = _context.Locations.FirstOrDefault(l => l.Id == locationId);
+            ThrowIfLocationNotFound(location, locationId);
+            return location;
+        }
 
-            if (location == null)
-            {
-                string message = $"Location with ID {locationId} not found";
-                throw new LocationNotFoundException(message);
-            }
-
+        /// <summary>
+        /// Return the drone with the specified Id
+        /// </summary>
+        /// <param name="locationId"></param>
+        /// <returns></returns>
+        public async Task<Location> GetLocationAsync(int locationId)
+        {
+            Location location = await _context.Locations.FirstOrDefaultAsync(l => l.Id == locationId);
+            ThrowIfLocationNotFound(location, locationId);
             return location;
         }
 
         /// <summary>
         /// Get all the current location details
         /// </summary>
-        public IEnumerable<Location> GetLocations()
-        {
-            return _context.Locations;
-        }
+        public IEnumerable<Location> GetLocations() =>
+            _context.Locations;
+
+        /// <summary>
+        /// Get all the current location details
+        /// </summary>
+        public IAsyncEnumerable<Location> GetLocationsAsync() =>
+            _context.Locations.AsAsyncEnumerable();
 
         /// <summary>
         /// Add a new location, given its details
@@ -51,14 +62,24 @@ namespace DroneFlightLog.Data.Logic
         /// <returns></returns>
         public Location AddLocation(string name)
         {
-            if (FindLocation(name) != null)
-            {
-                string message = $"Location {name} already exists";
-                throw new LocationExistsException(message);
-            }
-
-            Location location = new Location { Name = name.CleanString() };
+            Location location = FindLocation(name);
+            ThrowIfLocationFound(location, name);
+            location = new Location { Name = name.CleanString() };
             _context.Locations.Add(location);
+            return location;
+        }
+
+        /// <summary>
+        /// Add a new location, given its details
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public async Task<Location> AddLocationAsync(string name)
+        {
+            Location location = await FindLocationAsync(name);
+            ThrowIfLocationFound(location, name);
+            location = new Location { Name = name.CleanString() };
+            await _context.Locations.AddAsync(location);
             return location;
         }
 
@@ -70,7 +91,48 @@ namespace DroneFlightLog.Data.Logic
         public Location FindLocation(string name)
         {
             name = name.CleanString();
-            return _context.Locations.FirstOrDefault(m => m.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
+            return _context.Locations.FirstOrDefault(m => m.Name == name);
+        }
+
+        /// <summary>
+        /// Find a location given its name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public async Task<Location> FindLocationAsync(string name)
+        {
+            name = name.CleanString();
+            return await _context.Locations.FirstOrDefaultAsync(m => m.Name == name);
+        }
+
+        /// <summary>
+        /// Throw an exception if a location is not found
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="locationId"></param>
+        [ExcludeFromCodeCoverage]
+        private void ThrowIfLocationNotFound(Location location, int locationId)
+        {
+            if (location == null)
+            {
+                string message = $"Location with ID {locationId} not found";
+                throw new LocationNotFoundException(message);
+            }
+        }
+
+        /// <summary>
+        /// Throw an exception if a location exists
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="name"></param>
+        [ExcludeFromCodeCoverage]
+        private void ThrowIfLocationFound(Location location, string name)
+        {
+            if (location != null)
+            {
+                string message = $"Location {name} already exists";
+                throw new LocationExistsException(message);
+            }
         }
     }
 }

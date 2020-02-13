@@ -14,6 +14,7 @@ namespace DroneFlightLog.Data.Tests
     {
         private const string ManufacturerName = "Some Manufacturer";
         private const string ModelName = "Some Model";
+        private const string AsyncModelName = "Some Async Model";
 
         private IDroneFlightLogFactory<DroneFlightLogDbContext> _factory;
         private int _manufacturerId;
@@ -44,6 +45,16 @@ namespace DroneFlightLog.Data.Tests
             Assert.AreEqual(_manufacturerId, _factory.Context.Models.First().ManufacturerId);
         }
 
+        [TestMethod]
+        public async void AddModelAsyncTest()
+        {
+            Model model = await _factory.Models.AddModelAsync(AsyncModelName, _manufacturerId);
+            await _factory.Context.SaveChangesAsync();
+            Assert.AreEqual(2, _factory.Context.Models.Count());
+            Assert.AreEqual(AsyncModelName, model.Name);
+            Assert.AreEqual(_manufacturerId, model.ManufacturerId);
+        }
+
         [TestMethod, ExpectedException(typeof(ModelExistsException))]
         public void AddExistingModelTest()
         {
@@ -63,6 +74,13 @@ namespace DroneFlightLog.Data.Tests
             ValidateModel(model);
         }
 
+        [TestMethod]
+        public async void GetModelByIdAsyncTest()
+        {
+            Model model = await _factory.Models.GetModelAsync(_modelId);
+            ValidateModel(model);
+        }
+
         [TestMethod, ExpectedException(typeof(ModelNotFoundException))]
         public void GetMissingModelByIdTest()
         {
@@ -73,6 +91,14 @@ namespace DroneFlightLog.Data.Tests
         public void GetAllModelsTest()
         {
             IEnumerable<Model> models = _factory.Models.GetModels(null);
+            Assert.AreEqual(1, models.Count());
+            ValidateModel(models.First());
+        }
+
+        [TestMethod]
+        public async void GetAllModelsAsyncTest()
+        {
+            List<Model> models = await _factory.Models.GetModelsAsync(null).ToListAsync();
             Assert.AreEqual(1, models.Count());
             ValidateModel(models.First());
         }

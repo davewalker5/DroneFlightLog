@@ -21,6 +21,7 @@ namespace DroneFlightLog.Data.Tests
         private const string SecondPostcode = "EF12 3GH";
         private const string Country = "Some Country";
 
+        private const string AsyncFirstNames = "Async First Names";
         private const string FirstNames = "First Names";
         private const string Surname = "Surname";
         private readonly DateTime DoB = DateTime.Now;
@@ -63,6 +64,20 @@ namespace DroneFlightLog.Data.Tests
             Assert.AreEqual(_firstAddressId, _factory.Context.Operators.First().AddressId);
         }
 
+        [TestMethod]
+        public async void AddOperatorAsyncTest()
+        {
+            Operator op = await _factory.Operators.AddOperatorAsync(AsyncFirstNames, Surname, DoB, FlyerNumber, OperatorNumber, _firstAddressId);
+            await _factory.Context.SaveChangesAsync();
+            Assert.AreEqual(1, _factory.Context.Operators.Count());
+            Assert.AreEqual(FirstNames, _factory.Context.Operators.First().FirstNames);
+            Assert.AreEqual(Surname, _factory.Context.Operators.First().Surname);
+            Assert.AreEqual(DoB, _factory.Context.Operators.First().DoB);
+            Assert.AreEqual(FlyerNumber, _factory.Context.Operators.First().FlyerNumber);
+            Assert.AreEqual(OperatorNumber, _factory.Context.Operators.First().OperatorNumber);
+            Assert.AreEqual(_firstAddressId, _factory.Context.Operators.First().AddressId);
+        }
+
         [TestMethod, ExpectedException(typeof(OperatorExistsException))]
         public void AddExistingOperatorTest()
         {
@@ -76,6 +91,13 @@ namespace DroneFlightLog.Data.Tests
             ValidateOperator(op, _operatorId, _firstAddressId);
         }
 
+        [TestMethod]
+        public async void GetOperatorByIdAsyncTest()
+        {
+            Operator op = await _factory.Operators.GetOperatorAsync(_operatorId);
+            ValidateOperator(op, _operatorId, _firstAddressId);
+        }
+
         [TestMethod, ExpectedException(typeof(OperatorNotFoundException))]
         public void GetMissingOperatorByIdTest()
         {
@@ -86,6 +108,14 @@ namespace DroneFlightLog.Data.Tests
         public void GetAllOperatorsTest()
         {
             IEnumerable<Operator> operators = _factory.Operators.GetOperators(null);
+            Assert.AreEqual(1, operators.Count());
+            ValidateOperator(operators.First(), _operatorId, _firstAddressId);
+        }
+
+        [TestMethod]
+        public async void GetAllOperatorsAsyncTest()
+        {
+            List<Operator> operators = await _factory.Operators.GetOperatorsAsync(null).ToListAsync();
             Assert.AreEqual(1, operators.Count());
             ValidateOperator(operators.First(), _operatorId, _firstAddressId);
         }
@@ -113,6 +143,13 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
+        public async void FindOperatorAsyncTest()
+        {
+            Operator op = await _factory.Operators.FindOperatorAsync(FirstNames, Surname, _firstAddressId);
+            ValidateOperator(op, _operatorId, _firstAddressId);
+        }
+
+        [TestMethod]
         public void FindMissingOperatorTest()
         {
             Operator op = _factory.Operators.FindOperator("", "", 0);
@@ -129,6 +166,19 @@ namespace DroneFlightLog.Data.Tests
             Assert.IsNull(op);
 
             op = _factory.Operators.FindOperator(FirstNames, Surname, _secondAddressId);
+            ValidateOperator(op, _operatorId, _secondAddressId);
+        }
+
+        [TestMethod]
+        public async void SetOperatorAddressAsyncTest()
+        {
+            await _factory.Operators.SetOperatorAddressAsync(_operatorId, _secondAddressId);
+            await _factory.Context.SaveChangesAsync();
+
+            Operator op = await _factory.Operators.FindOperatorAsync(FirstNames, Surname, _firstAddressId);
+            Assert.IsNull(op);
+
+            op = await _factory.Operators.FindOperatorAsync(FirstNames, Surname, _secondAddressId);
             ValidateOperator(op, _operatorId, _secondAddressId);
         }
 

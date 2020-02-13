@@ -12,6 +12,7 @@ namespace DroneFlightLog.Data.Tests
     public class AddressManagerTests
     {
         private const string Number = "1";
+        private const string SecondNumber = "2";
         private const string Street = "Some Street";
         private const string Town = "Some Town";
         private const string County = "Some County";
@@ -46,6 +47,21 @@ namespace DroneFlightLog.Data.Tests
             Assert.AreEqual(Country, _factory.Context.Addresses.First().Country);
         }
 
+        [TestMethod]
+        public async void AddAddressAsyncTest()
+        {
+            Address address = await _factory.Addresses.AddAddressAsync(SecondNumber, Street, Town, County, Postcode, Country);
+            await _factory.Context.SaveChangesAsync();
+            Assert.AreEqual(2, _factory.Context.Addresses.Count());
+            Assert.AreNotEqual(_addressId, address.Id);
+            Assert.AreEqual(SecondNumber, address.Number);
+            Assert.AreEqual(Street, address.Street);
+            Assert.AreEqual(Town, address.Town);
+            Assert.AreEqual(County, address.County);
+            Assert.AreEqual(Postcode, address.Postcode);
+            Assert.AreEqual(Country, address.Country);
+        }
+
         [TestMethod, ExpectedException(typeof(AddressExistsException))]
         public void AddExistingAddressTest()
         {
@@ -65,6 +81,19 @@ namespace DroneFlightLog.Data.Tests
             Assert.AreEqual(Country, address.Country);
         }
 
+        [TestMethod]
+        public async void GetAddressByIdAsyncTest()
+        {
+            Address address = await _factory.Addresses.GetAddressAsync(_addressId);
+            Assert.AreEqual(_addressId, address.Id);
+            Assert.AreEqual(Number, address.Number);
+            Assert.AreEqual(Street, address.Street);
+            Assert.AreEqual(Town, address.Town);
+            Assert.AreEqual(County, address.County);
+            Assert.AreEqual(Postcode, address.Postcode);
+            Assert.AreEqual(Country, address.Country);
+        }
+
         [TestMethod, ExpectedException(typeof(AddressNotFoundException))]
         public void GetMissingAddressByIdTest()
         {
@@ -75,6 +104,19 @@ namespace DroneFlightLog.Data.Tests
         public void FindAddressTest()
         {
             Address address = _factory.Addresses.FindAddress(Number, Postcode, Country);
+            Assert.AreEqual(_addressId, address.Id);
+            Assert.AreEqual(Number, address.Number);
+            Assert.AreEqual(Street, address.Street);
+            Assert.AreEqual(Town, address.Town);
+            Assert.AreEqual(County, address.County);
+            Assert.AreEqual(Postcode, address.Postcode);
+            Assert.AreEqual(Country, address.Country);
+        }
+
+        [TestMethod]
+        public async void FindAddressAsyncTest()
+        {
+            Address address = await _factory.Addresses.FindAddressAsync(Number, Postcode, Country);
             Assert.AreEqual(_addressId, address.Id);
             Assert.AreEqual(Number, address.Number);
             Assert.AreEqual(Street, address.Street);
