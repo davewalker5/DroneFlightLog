@@ -4,14 +4,11 @@ using System.Diagnostics.CodeAnalysis;
 namespace DroneFlightLog.Data.Entities
 {
     [ExcludeFromCodeCoverage]
-    public class Drone
+    public class FlightLogUser
     {
         [Key]
         public int Id { get; set; }
-        public int ModelId { get; set; }
-        public string Name { get; set; }
-        public string SerialNumber { get; set; }
-
-        public Model Model { get; set; }
+        public string UserName { get; set; }
+        public string Password { get; set; }
     }
 }

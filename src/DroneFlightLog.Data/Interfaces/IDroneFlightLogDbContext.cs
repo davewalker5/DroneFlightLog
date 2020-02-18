@@ -16,5 +16,7 @@ namespace DroneFlightLog.Data.Interfaces
         DbSet<FlightProperty> FlightProperties { get; set; }
         DbSet<FlightPropertyValue> FlightPropertyValues { get; set; }
         DbSet<Location> Locations { get; set; }
+
+        DbSet<FlightLogUser> FlightLogUsers { get; set; }
     }
 }
