@@ -9,11 +9,11 @@
 
 ## About
 
-TO BE COMPLETED
+DroneFlightLog.Api is a C# .NET Core Web API for accessing a [Drone Flight Log Db](https://github.com/davewalker5/DroneFlightLogDb) instance. Further details of the database are provided in the [Drone Flight Log Wiki](https://github.com/davewalker5/DroneFlightLogDb/wiki).
 
 ## Getting Started
 
-TO BE COMPLETED
+The [Drone Flight Log Wiki](https://github.com/davewalker5/DroneFlightLogDb/wiki) contains further details on how to build and run the API.
 
 ## Authors
 
