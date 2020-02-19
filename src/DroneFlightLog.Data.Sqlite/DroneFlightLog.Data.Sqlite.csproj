@@ -3,12 +3,12 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <PackageId>DroneFlightLog.Data.Sqlite</PackageId>
-    <PackageVersion>1.0.0.1</PackageVersion>
+    <PackageVersion>1.0.0.3</PackageVersion>
     <PackOnBuild>true</PackOnBuild>
     <Authors>Dave Walker</Authors>
     <Copyright>Copyright (c) 2020 Dave Walker</Copyright>
     <Owners>Dave Walker</Owners>
-    <PackageReleaseNotes>Added EF Core Migrations</PackageReleaseNotes>
+    <PackageReleaseNotes>Added flight log user for security support</PackageReleaseNotes>
     <Summary>Drone Flight Logging SQLite Database Layer</Summary>
     <PackageTags>Drone UAV Log Flight Logbook</PackageTags>
     <Title>Drone Flight Logging SQLite Database Layer</Title>

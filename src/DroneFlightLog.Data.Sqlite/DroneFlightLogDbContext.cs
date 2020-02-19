@@ -20,6 +20,8 @@ namespace DroneFlightLog.Data.Sqlite
         public DbSet<FlightPropertyValue> FlightPropertyValues { get; set; }
         public DbSet<Location> Locations { get; set; }
 
+        public DbSet<FlightLogUser> FlightLogUsers { get; set; }
+
         public DroneFlightLogDbContext(DbContextOptions<DroneFlightLogDbContext> options) : base(options)
         {
         }
