@@ -7,10 +7,12 @@ using DroneFlightLog.Data.Entities;
 using DroneFlightLog.Data.Exceptions;
 using DroneFlightLog.Data.Interfaces;
 using DroneFlightLog.Data.Sqlite;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DroneFlightLog.Api.Controllers
 {
+    [Authorize]
     [ApiController]
     [ApiConventionType(typeof(DefaultApiConventions))]
     [Route("[controller]")]

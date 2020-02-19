@@ -19,6 +19,13 @@ TO BE COMPLETED
 
 - **Dave Walker** - *Initial work* - [LinkedIn](https://www.linkedin.com/in/davewalker5/)
 
+## Credits
+
+Implementation of authentication using JWT is based on the following tutorial:
+
+- https://github.com/cornflourblue/aspnet-core-3-jwt-authentication-api
+- https://jasonwatmore.com/post/2019/10/11/aspnet-core-3-jwt-authentication-tutorial-with-example-api#users-controller-cs
+
 ## Feedback
 
 To file issues or suggestions, please use the [Issues](https://github.com/davewalker5/DroneFlightLog.Api/issues) page for this project on GitHub.
