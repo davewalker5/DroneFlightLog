@@ -20,7 +20,7 @@
     "DroneFlightLog.Api": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "manufacturers",
+      "launchUrl": "index.html",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

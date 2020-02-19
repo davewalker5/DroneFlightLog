@@ -86,6 +86,7 @@ namespace DroneFlightLog.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            // Configure the Swagger UI
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
