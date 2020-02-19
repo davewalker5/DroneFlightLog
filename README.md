@@ -1,4 +1,4 @@
-# DroneFlightLogDb
+# DroneFlightLog.Api
 
 [![Build Status](https://github.com/davewalker5/DroneFlightLog.Api/workflows/.NET%20Core%20CI%20Build/badge.svg)](https://github.com/davewalker5/DroneFlightLog.Api/actions)
 [![GitHub issues](https://img.shields.io/github/issues/davewalker5/DroneFlightLog.Api)](https://github.com/davewalker5/DroneFlightLogDb/issues)
