@@ -9,6 +9,7 @@ using System.Web;
 using DroneFlightLog.Mvc.Configuration;
 using DroneFlightLog.Mvc.Controllers;
 using DroneFlightLog.Mvc.Entities;
+using DroneFlightLog.Mvc.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -17,11 +18,21 @@ namespace DroneFlightLog.Mvc.Api
 {
     public class DroneFlightLogClient
     {
-        private HttpClient _client;
-        private IOptions<AppSettings> _settings;
+        private const string CacheManufacturers = "Manufacturers";
+        private const string CacheModels = "Models";
+        private const string CacheDrones = "Drones";
+        private const string CacheLocations = "Locations";
+        private const string CacheOperators = "Operators";
+        private const string CacheFlightProperties = "FlightProperties";
 
-        public DroneFlightLogClient(HttpClient client, IOptions<AppSettings> settings, IHttpContextAccessor accessor)
+        private readonly HttpClient _client;
+        private readonly IOptions<AppSettings> _settings;
+        private readonly ICacheWrapper _cache;
+
+        public DroneFlightLogClient(HttpClient client, IOptions<AppSettings> settings, IHttpContextAccessor accessor, ICacheWrapper cache)
         {
+            _cache = cache;
+
             // Configure the Http client
             _settings = settings;
             _client = client;
@@ -71,8 +82,13 @@ namespace DroneFlightLog.Mvc.Api
         /// <returns></returns>
         public async Task<List<Manufacturer>> GetManufacturersAsync()
         {
-            string json = await GetIndirectAsync("Manufacturers");
-            List<Manufacturer> manufacturers = JsonConvert.DeserializeObject<List<Manufacturer>>(json);
+            List<Manufacturer> manufacturers = _cache.Get<List<Manufacturer>>(CacheManufacturers);
+            if (manufacturers == null)
+            {
+                string json = await GetIndirectAsync("Manufacturers");
+                manufacturers = JsonConvert.DeserializeObject<List<Manufacturer>>(json);
+                _cache.Set(CacheManufacturers, manufacturers, _settings.Value.CacheLifetimeSeconds);
+            }
             return manufacturers;
         }
 
@@ -83,6 +99,7 @@ namespace DroneFlightLog.Mvc.Api
         /// <returns></returns>
         public async Task<Manufacturer> AddManufacturerAsync(string name)
         {
+            _cache.Remove(CacheManufacturers);
             string data = $"\"{name}\"";
             string json = await PostIndirectAsync("Manufacturers", data);
             Manufacturer manufacturer = JsonConvert.DeserializeObject<Manufacturer>(json);
@@ -95,8 +112,13 @@ namespace DroneFlightLog.Mvc.Api
         /// <returns></returns>
         public async Task<List<Model>> GetModelsAsync()
         {
-            string json = await GetIndirectAsync("Models");
-            List<Model> models = JsonConvert.DeserializeObject<List<Model>>(json);
+            List<Model> models = _cache.Get<List<Model>>(CacheModels);
+            if (models == null)
+            {
+                string json = await GetIndirectAsync("Models");
+                models = JsonConvert.DeserializeObject<List<Model>>(json);
+                _cache.Set(CacheModels, models, _settings.Value.CacheLifetimeSeconds);
+            }
             return models;
         }
 
@@ -108,6 +130,8 @@ namespace DroneFlightLog.Mvc.Api
         /// <returns></returns>
         public async Task<Model> AddModelAsync(string name, int manufacturerId)
         {
+            _cache.Remove(CacheModels);
+
             dynamic template = new
             {
                 Name = name,
@@ -127,8 +151,13 @@ namespace DroneFlightLog.Mvc.Api
         /// <returns></returns>
         public async Task<List<Drone>> GetDronesAsync()
         {
-            string json = await GetIndirectAsync("Drones");
-            List<Drone> drones = JsonConvert.DeserializeObject<List<Drone>>(json);
+            List<Drone> drones = _cache.Get<List<Drone>>(CacheDrones);
+            if (drones == null)
+            {
+                string json = await GetIndirectAsync("Drones");
+                drones = JsonConvert.DeserializeObject<List<Drone>>(json);
+                _cache.Set(CacheDrones, drones, _settings.Value.CacheLifetimeSeconds);
+            }
             return drones;
         }
 
@@ -141,6 +170,8 @@ namespace DroneFlightLog.Mvc.Api
         /// <returns></returns>
         public async Task<Drone> AddDroneAsync(string name, string serialNumber, int modelId)
         {
+            _cache.Remove(CacheDrones);
+
             dynamic template = new
             {
                 Name = name,
@@ -161,8 +192,13 @@ namespace DroneFlightLog.Mvc.Api
         /// <returns></returns>
         public async Task<List<Location>> GetLocationsAsync()
         {
-            string json = await GetIndirectAsync("Locations");
-            List<Location> locations = JsonConvert.DeserializeObject<List<Location>>(json);
+            List<Location> locations = _cache.Get<List<Location>>(CacheLocations);
+            if (locations == null)
+            {
+                string json = await GetIndirectAsync("Locations");
+                locations = JsonConvert.DeserializeObject<List<Location>>(json);
+                _cache.Set(CacheLocations, locations, _settings.Value.CacheLifetimeSeconds);
+            }
             return locations;
         }
 
@@ -173,6 +209,7 @@ namespace DroneFlightLog.Mvc.Api
         /// <returns></returns>
         public async Task<Location> AddLocationAsync(string name)
         {
+            _cache.Remove(CacheLocations);
             string data = $"\"{name}\"";
             string json = await PostIndirectAsync("Locations", data);
             Location location = JsonConvert.DeserializeObject<Location>(json);
@@ -185,8 +222,13 @@ namespace DroneFlightLog.Mvc.Api
         /// <returns></returns>
         public async Task<List<Operator>> GetOperatorsAsync()
         {
-            string json = await GetIndirectAsync("Operators");
-            List<Operator> operators = JsonConvert.DeserializeObject<List<Operator>>(json);
+            List<Operator> operators = _cache.Get<List<Operator>>(CacheOperators);
+            if  (operators == null)
+            {
+                string json = await GetIndirectAsync("Operators");
+                operators = JsonConvert.DeserializeObject<List<Operator>>(json);
+                _cache.Set(CacheOperators, operators, _settings.Value.CacheLifetimeSeconds);
+            }
             return operators;
         }
 
@@ -202,6 +244,8 @@ namespace DroneFlightLog.Mvc.Api
         /// <returns></returns>
         public async Task<Operator> AddOperatorAsync(string firstNames, string surname, string operatorNumber, string flyerNumber, DateTime doB, int addressId)
         {
+            _cache.Remove(CacheOperators);
+
             dynamic template = new
             {
                 FirstNames = firstNames,
@@ -225,8 +269,13 @@ namespace DroneFlightLog.Mvc.Api
         /// <returns></returns>
         public async Task<List<FlightProperty>> GetFlightPropertiesAsync()
         {
-            string json = await GetIndirectAsync("FlightProperties");
-            List<FlightProperty> properties = JsonConvert.DeserializeObject<List<FlightProperty>>(json);
+            List<FlightProperty> properties = _cache.Get<List<FlightProperty>>(CacheFlightProperties);
+            if (properties == null)
+            {
+                string json = await GetIndirectAsync("FlightProperties");
+                properties = JsonConvert.DeserializeObject<List<FlightProperty>>(json);
+                _cache.Set(CacheFlightProperties, properties, _settings.Value.CacheLifetimeSeconds);
+            }
             return properties;
         }
 
@@ -239,6 +288,8 @@ namespace DroneFlightLog.Mvc.Api
         /// <returns></returns>
         public async Task<FlightProperty> AddFlightPropertyAsync(string name, int dataType, bool isSingleInstance)
         {
+            _cache.Remove(CacheFlightProperties);
+
             dynamic template = new
             {
                 Name = name,

@@ -4,10 +4,12 @@ using AutoMapper;
 using DroneFlightLog.Mvc.Api;
 using DroneFlightLog.Mvc.Configuration;
 using DroneFlightLog.Mvc.Controllers;
+using DroneFlightLog.Mvc.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -43,6 +45,8 @@ namespace DroneFlightLog.Mvc
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             // Interactions with the REST service are managed via a typed HttpClient
+            // with "lookup" caching for performance
+            services.AddSingleton<ICacheWrapper>(s => new CacheWrapper(new MemoryCacheOptions()));
             services.AddHttpClient<DroneFlightLogClient>();
 
             // Configure session state for token storage
