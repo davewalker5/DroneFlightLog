@@ -1,0 +1,59 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+
+
+  <ItemGroup>
+    <Folder Include="Configuration\" />
+    <Folder Include="Api\" />
+    <Folder Include="Views\Login\" />
+    <Folder Include="Entities\" />
+    <Folder Include="Views\Manufacturers\" />
+    <Folder Include="Views\Models\" />
+    <Folder Include="Views\Drones\" />
+    <Folder Include="Views\Locations\" />
+    <Folder Include="Views\FlightProperties\" />
+    <Folder Include="Views\Operators\" />
+    <Folder Include="Views\SearchFlightsByOperator\" />
+    <Folder Include="Views\AllFlights\" />
+    <Folder Include="Views\SearchFlightsByDrone\" />
+    <Folder Include="Views\SearchFlightsByLocation\" />
+    <Folder Include="Views\SearchFlightsByDate\" />
+    <Folder Include="Views\FlightDetails\" />
+    <Folder Include="Binders\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="3.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.6.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.2" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\lib\gijo\dist\modular\css\datetimepicker.min.css" />
+    <Content Remove="wwwroot\lib\gijo\dist\modular\css\slider.min.css" />
+    <Content Remove="wwwroot\lib\gijo\dist\modular\css\datepicker.min.css" />
+    <Content Remove="wwwroot\lib\gijo\dist\modular\css\editor.min.css" />
+    <Content Remove="wwwroot\lib\gijo\dist\modular\css\checkbox.min.css" />
+    <Content Remove="wwwroot\lib\gijo\dist\modular\css\timepicker.min.css" />
+    <Content Remove="wwwroot\lib\gijo\dist\modular\js\datetimepicker.min.js" />
+    <Content Remove="wwwroot\lib\gijo\dist\modular\js\core.min.js" />
+    <Content Remove="wwwroot\lib\gijo\dist\modular\js\tree.min.js" />
+    <Content Remove="wwwroot\lib\gijo\dist\modular\js\draggable.min.js" />
+    <Content Remove="wwwroot\lib\gijo\dist\modular\js\editor.min.js" />
+    <Content Remove="wwwroot\lib\gijo\dist\modular\js\droppable.min.js" />
+    <Content Remove="wwwroot\lib\gijo\dist\modular\js\dropdown.min.js" />
+    <Content Remove="wwwroot\lib\gijo\dist\combined\css\gijgo.min.css" />
+    <Content Remove="wwwroot\lib\gijo\dist\combined\js\messages\messages.bg-bg.min.js" />
+    <Content Remove="wwwroot\lib\gijo\dist\combined\js\messages\messages.pt-br.min.js" />
+    <Content Remove="wwwroot\lib\gijo\dist\combined\js\messages\messages.fr-fr.min.js" />
+    <Content Remove="wwwroot\lib\gijo\dist\combined\js\messages\messages.tr-tr.min.js" />
+    <Content Remove="wwwroot\lib\gijo\dist\combined\js\messages\messages.zh-cn.min.js" />
+    <Content Remove="wwwroot\lib\gijo\dist\combined\js\messages\messages.es-es.min.js" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,95 @@
+﻿@using DroneFlightLog.Mvc.Entities
+@model DroneFlightLog.Mvc.Models.FlightDetailsViewModel
+
+@{
+    ViewData["Title"] = "Flight Details";
+}
+
+    <div class="container-fluid">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.LocationId)
+            @Html.HiddenFor(m => m.OperatorId)
+            @Html.HiddenFor(m => m.DroneId)
+            @Html.Hidden("StartDate", Model.StartDateFormatted)
+            @Html.Hidden("StartTime", Model.StartTimeFormatted)
+            @Html.Hidden("EndDate", Model.EndDateFormatted)
+            @Html.Hidden("EndTime", Model.EndTimeFormatted)
+
+            <p class="text-center font-weight-bold">
+                <span style="font-size: 1.2rem">
+                    Flight Details
+                </span>
+                <br />
+                <small class="text-muted">
+                    <em>
+                        View and edit flight properties
+                    </em>
+                </small>
+            </p>
+
+            <table class="table">
+                <tr>
+                    <th>Start Time</th>
+                    <th>Start Date</th>
+                    <th>End Time</th>
+                    <th>End Date</th>
+                    <th>Duration (mins)</th>
+                    <th>Drone</th>
+                    <th>Location</th>
+                    <th>Operator</th>
+                </tr>
+                <tr>
+                    <td valign="center">@Model.StartTimeFormatted</td>
+                    <td valign="center" style="white-space: nowrap">@Model.StartDateFormatted</td>
+                    <td valign="center">@Model.EndTimeFormatted</td>
+                    <td valign="center" style="white-space: nowrap">@Model.EndDateFormatted</td>
+                    <td valign="center">@Model.Duration</td>
+                    <td valign="center">@Model.Drone.Name</td>
+                    <td valign="center">@Model.Location.Name</td>
+                    <td valign="center">@Model.GetOperatorName()</td>
+                </tr>
+            </table>
+            <hr />
+
+            <p class="text-center font-weight-bold">
+                <span style="font-size: 1.2rem">
+                    Flight Properties
+                </span>
+                <br />
+                <small class="text-muted">
+                    <em>
+                        View and edit environmental and equipment properties
+                    </em>
+                </small>
+            </p>
+            <hr />
+
+            @for (int i = 0; i < (Model.Properties.Count / Model.PropertiesPerRow) + 1; i++)
+            {
+                <div class="row">
+                    @for (int j = 0; j < Model.PropertiesPerRow; j++)
+                    {
+                        int index = i * Model.PropertiesPerRow + j;
+                        if (index < Model.Properties.Count)
+                        {
+                            @await Html.PartialAsync("../Shared/FlightPropertyValue", Model.Properties[index]);
+                        }
+                        else
+                        {
+                            <div class="col"></div>
+                        }
+                    }
+                </div>
+                <br />
+            }
+
+            <hr />
+            <p class="text-right">
+                <a class="btn btn-primary" href="/Home/Index" role="button">Log a New Flight</a>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </p>
+        }
+    </div>

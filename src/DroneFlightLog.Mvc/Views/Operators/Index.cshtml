@@ -1,0 +1,46 @@
+﻿@using System.Collections.Generic
+@using DroneFlightLog.Mvc.Entities
+@model List<Operator>
+
+@{
+    ViewData["Title"] = "Flight Properties";
+}
+
+<p class="text-center font-weight-bold">
+    <span style="font-size: 1.2rem">
+        Operator Details
+    </span>
+    <br />
+    <small class="text-muted">
+        <em>
+            Manage operator details
+        </em>
+    </small>
+</p>
+
+<table class="table">
+    <tr>
+        <th>First Names</th>
+        <th>Surname</th>
+        <th>Operator Number</th>
+        <th>Flyer Number</th>
+        <th>Date of Birth</th>
+        <th>Address</th>
+    </tr>
+    @foreach (var op in Model)
+    {
+        <tr>
+            <td valign="center">@op.FirstNames</td>
+            <td valign="center">@op.Surname</td>
+            <td valign="center">@op.OperatorNumber</td>
+            <td valign="center">@op.FlyerNumber</td>
+            <td valign="center">@op.DoBFormatted</td>
+            <td valign="center">@op.GetAddressSummary()</td>
+        </tr>
+    }
+</table>
+
+<hr />
+<p class="text-right">
+    <a class="btn btn-primary" href="/Operators/Add" role="button">Add</a>
+</p>

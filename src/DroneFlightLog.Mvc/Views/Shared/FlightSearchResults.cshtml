@@ -1,0 +1,50 @@
+﻿@using DroneFlightLog.Mvc.Entities
+@model DroneFlightLog.Mvc.Models.FlightSearchBaseViewModel
+
+@{
+    string previousDisabled = (Model.PreviousEnabled) ? "" : "disabled";
+    string nextDisabled = (Model.NextEnabled) ? "" : "disabled";
+}
+
+@Html.HiddenFor(m => m.PageNumber)
+
+@if (Model.Flights != null)
+{
+    <table class="table">
+        <tr>
+            <th>Start Time</th>
+            <th>Start Date</th>
+            <th>End Time</th>
+            <th>End Date</th>
+            <th>Duration (mins)</th>
+            <th>Drone</th>
+            <th>Location</th>
+            <th>Operator</th>
+            <th/>
+        </tr>
+        @foreach (var flight in Model.Flights)
+        {
+            <tr>
+                <td valign="center">@flight.StartTimeFormatted</td>
+                <td valign="center" style="white-space: nowrap">@flight.StartDateFormatted</td>
+                <td valign="center">@flight.EndTimeFormatted</td>
+                <td valign="center" style="white-space: nowrap">@flight.EndDateFormatted</td>
+                <td valign="center">@flight.Duration</td>
+                <td valign="center">@flight.Drone.Name</td>
+                <td valign="center">@flight.Location.Name</td>
+                <td valign="center">@flight.GetOperatorName()</td>
+                <td valign="center">
+                    <a class="btn btn-lg" asp-area="" asp-controller="FlightDetails" asp-action="Index" asp-route-id="@flight.Id">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+<hr />
+<p class="text-right">
+    <button type="submit" name="Action" value="@ControllerActions.ActionPreviousPage" class="btn btn-secondary" @previousDisabled>Previous</button>
+    <button type="submit" name="Action" value="@ControllerActions.ActionNextPage" class="btn btn-secondary" @nextDisabled>Next</button>
+</p>

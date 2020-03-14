@@ -1,0 +1,40 @@
+﻿@using System.Collections.Generic
+@using DroneFlightLog.Mvc.Entities
+@model List<FlightProperty>
+
+@{
+    ViewData["Title"] = "Flight Properties";
+}
+
+<p class="text-center font-weight-bold">
+    <span style="font-size: 1.2rem">
+        Flight Properties
+    </span>
+    <br />
+    <small class="text-muted">
+        <em>
+            Manage the environmental properties that can be recorded for a flight
+        </em>
+    </small>
+</p>
+
+<table class="table">
+    <tr>
+        <th>Name</th>
+        <th>DataType</th>
+        <th>Single Instance</th>
+    </tr>
+    @foreach (var property in Model)
+    {
+        <tr>
+            <td valign="center">@property.Name</td>
+            <td valign="center">@property.DataType.ToString()</td>
+            <td valign="center">@property.IsSingleInstanceYesNo</td>
+        </tr>
+    }
+</table>
+
+<hr />
+<p class="text-right">
+    <a class="btn btn-primary" href="/FlightProperties/Add" role="button">Add</a>
+</p>

@@ -1,0 +1,33 @@
+﻿@using DroneFlightLog.Mvc.Entities
+@model FlightPropertyValue
+
+@{
+    string controlReadonly = (Model.Id > 0) ? "readonly" : "";
+}
+
+<div class="col">
+    <strong>@Html.Label(Model.Property.Name)</strong>
+    <div class="input-group">
+        @switch (Model.Property.DataType)
+        {
+            case FlightPropertyDataType.Date:
+                <input name="@Model.ControlName" id="@Model.ControlName" value="@Model.DateValueFormatted" class="form-control" @controlReadonly/>
+                break;
+            case FlightPropertyDataType.Number:
+                <input name="@Model.ControlName" id="@Model.ControlName" value="@Model.NumberValue" class="form-control" @controlReadonly/>
+                break;
+            case FlightPropertyDataType.String:
+                <input name="@Model.ControlName" id="@Model.ControlName" value="@Model.StringValue" class="form-control" @controlReadonly/>
+                break;
+            default:
+                break;
+        }
+    </div>
+</div>
+
+@if (Model.Property.DataType == FlightPropertyDataType.Date)
+{
+    <script type="text/javascript">
+        new GijgoDatePicker(document.getElementById("@Model.ControlName"), { calendarWeeks: false, uiLibrary: "bootstrap4" });
+    </script>
+}

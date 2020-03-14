@@ -1,0 +1,46 @@
+﻿@using DroneFlightLog.Mvc.Entities
+@model DroneFlightLog.Mvc.Models.FlightSearchByLocationViewModel
+
+@{
+    ViewData["Title"] = "Flight Search By Location";
+    string previousDisabled = (Model.PreviousEnabled) ? "" : "disabled";
+    string nextDisabled = (Model.NextEnabled) ? "" : "disabled";
+}
+
+<p class="text-center font-weight-bold">
+    <span style="font-size: 1.2rem">
+        Flight Search
+    </span>
+    <br />
+    <small class="text-muted">
+        <em>
+            Search flights by location
+        </em>
+    </small>
+</p>
+
+<div class="container-fluid">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="row">
+            <div class="col">
+                <strong>@Html.LabelFor(m => m.LocationId)</strong>
+                <div class="input-group">
+                    @Html.DropDownListFor(m => m.LocationId, new List<SelectListItem>(Model.Locations), new { @class = "form-control" })
+                </div>
+                <span>@Html.ValidationMessageFor(m => m.LocationId, "", new { @class = "text-danger" })</span>
+            </div>
+            <div class="col">
+                <strong><label>&nbsp;</label></strong>
+                <div class="input-group">
+                    <button type="submit" name="Action" value="@ControllerActions.ActionSearch" class="btn btn-primary">Search</button>
+                </div>
+            </div>
+        </div>
+        <br />
+
+        @await Html.PartialAsync("../Shared/FlightSearchResults", Model)
+    }
+</div>
