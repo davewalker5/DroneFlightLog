@@ -122,7 +122,6 @@ namespace DroneFlightLog.Data.Logic
 
             model.Name = name.CleanString();
             model.ManufacturerId = manufacturerId;
-            _factory.Context.SaveChanges();
             return model;
         }
 
@@ -143,7 +142,6 @@ namespace DroneFlightLog.Data.Logic
 
             model.Name = name.CleanString();
             model.ManufacturerId = manufacturerId;
-            await _factory.Context.SaveChangesAsync();
             return model;
         }
 

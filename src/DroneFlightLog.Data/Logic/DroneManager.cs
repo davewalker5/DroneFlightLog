@@ -154,6 +154,50 @@ namespace DroneFlightLog.Data.Logic
         }
 
         /// <summary>
+        /// Update a drone
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <param name="serialNumber"></param>
+        /// <param name="modelId"></param>
+        /// <returns></returns>
+        public Drone UpdateDrone(int id, string name, string serialNumber, int modelId)
+        {
+            Drone existing = FindDrone(serialNumber, modelId);
+            ThrowIfDroneFound(existing, serialNumber, modelId);
+
+            Drone drone = _factory.Context.Drones.FirstOrDefault(d => d.Id == id);
+            ThrowIfDroneNotFound(drone, id);
+
+            drone.Name = name.CleanString();
+            drone.SerialNumber = serialNumber.CleanString();
+            drone.ModelId = modelId;
+            return drone;
+        }
+
+        /// <summary>
+        /// Update a drone
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <param name="serialNumber"></param>
+        /// <param name="modelId"></param>
+        /// <returns></returns>
+        public async Task<Drone> UpdateDroneAsync(int id, string name, string serialNumber, int modelId)
+        {
+            Drone existing = await FindDroneAsync(serialNumber, modelId);
+            ThrowIfDroneFound(existing, serialNumber, modelId);
+
+            Drone drone = await _factory.Context.Drones.FirstOrDefaultAsync(d => d.Id == id);
+            ThrowIfDroneNotFound(drone, id);
+
+            drone.Name = name.CleanString();
+            drone.SerialNumber = serialNumber.CleanString();
+            drone.ModelId = modelId;
+            return drone;
+        }
+
+        /// <summary>
         /// Find a model given its distinguishing details
         /// </summary>
         /// <param name="serialNumber"></param>

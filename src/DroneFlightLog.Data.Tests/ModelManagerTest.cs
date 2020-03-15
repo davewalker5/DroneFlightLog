@@ -93,23 +93,31 @@ namespace DroneFlightLog.Data.Tests
         [TestMethod]
         public void UpdateModelTest()
         {
-            // To make this work, we need a second manufacturer
-            int manufacturerId = _factory.Manufacturers.AddManufacturer(UpdatedManufacturerName).Id;
-            _factory.Models.UpdateModel(_modelId, UpdatedModelName, manufacturerId);
+            // To make this a complete test, we need a second manufacturer
+            Manufacturer manufacturer = _factory.Manufacturers.AddManufacturer(UpdatedManufacturerName);
+            _factory.Context.SaveChanges();
+
+            _factory.Models.UpdateModel(_modelId, UpdatedModelName, manufacturer.Id);
+            _factory.Context.SaveChanges();
+
             Model model = _factory.Models.GetModel(_modelId);
             Assert.AreEqual(UpdatedModelName, model.Name);
-            Assert.AreEqual(manufacturerId, model.ManufacturerId);
+            Assert.AreEqual(manufacturer.Id, model.ManufacturerId);
         }
 
         [TestMethod]
         public async Task UpdateModelAsyncTest()
         {
-            // To make this work, we need a second manufacturer
-            int manufacturerId = _factory.Manufacturers.AddManufacturer(UpdatedManufacturerName).Id;
-            await _factory.Models.UpdateModelAsync(_modelId, UpdatedModelName, manufacturerId);
+            // To make this a complete test, we need a second manufacturer
+            Manufacturer manufacturer = await _factory.Manufacturers.AddManufacturerAsync(UpdatedManufacturerName);
+            await _factory.Context.SaveChangesAsync();
+
+            await _factory.Models.UpdateModelAsync(_modelId, UpdatedModelName, manufacturer.Id);
+            await _factory.Context.SaveChangesAsync();
+
             Model model = await _factory.Models.GetModelAsync(_modelId);
             Assert.AreEqual(UpdatedModelName, model.Name);
-            Assert.AreEqual(manufacturerId, model.ManufacturerId);
+            Assert.AreEqual(manufacturer.Id, model.ManufacturerId);
         }
 
         [TestMethod]

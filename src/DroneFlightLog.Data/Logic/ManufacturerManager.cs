@@ -99,7 +99,6 @@ namespace DroneFlightLog.Data.Logic
             ThrowIfManufacturerNotFound(manufacturer, id);
 
             manufacturer.Name = name.CleanString();
-            _context.SaveChanges();
             return manufacturer;
         }
 
@@ -118,7 +117,6 @@ namespace DroneFlightLog.Data.Logic
             ThrowIfManufacturerNotFound(manufacturer, id);
 
             manufacturer.Name = name.CleanString();
-            await _context.SaveChangesAsync();
             return manufacturer;
         }
 

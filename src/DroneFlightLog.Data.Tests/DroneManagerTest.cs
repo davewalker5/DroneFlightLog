@@ -15,11 +15,15 @@ namespace DroneFlightLog.Data.Tests
     {
         private const string ManufacturerName = "Some Manufacturer";
         private const string ModelName = "Some Model";
+        private const string UpdatedModelName = "Some Other Model";
         private const string DroneName = "Some Drone";
+        private const string UpdatedDroneName = "Some Other Drone";
         private const string DroneSerialNumber = "1234567890";
+        private const string UpdatedDroneSerialNumber = "ABCDEFGHIJ";
         private const string SecondDroneSerialNumber = "0987654321";
 
         private IDroneFlightLogFactory<DroneFlightLogDbContext> _factory;
+        private int _manufacturerId;
         private int _modelId;
         private int _droneId;
 
@@ -31,6 +35,7 @@ namespace DroneFlightLog.Data.Tests
 
             Manufacturer manufacturer = _factory.Manufacturers.AddManufacturer(ManufacturerName);
             _factory.Context.SaveChanges();
+            _manufacturerId = manufacturer.Id;
 
             Model model = _factory.Models.AddModel(ModelName, manufacturer.Id);
             _factory.Context.SaveChanges();
@@ -133,6 +138,38 @@ namespace DroneFlightLog.Data.Tests
         {
             IEnumerable<Drone> drones = _factory.Drones.GetDrones(-1);
             Assert.IsFalse(drones.Any());
+        }
+
+        [TestMethod]
+        public void UpdateDroneTest()
+        {
+            // To make this a complete test, we need a second model
+            Model model  = _factory.Models.AddModel(UpdatedModelName, _manufacturerId);
+            _factory.Context.SaveChanges();
+
+            _factory.Drones.UpdateDrone(_droneId, UpdatedDroneName, UpdatedDroneSerialNumber, model.Id);
+            _factory.Context.SaveChanges();
+
+            Drone drone = _factory.Drones.GetDrone(_droneId);
+            Assert.AreEqual(UpdatedDroneName, drone.Name);
+            Assert.AreEqual(UpdatedDroneSerialNumber, drone.SerialNumber);
+            Assert.AreEqual(model.Id, drone.ModelId);
+        }
+
+        [TestMethod]
+        public async Task UpdateDroneTestAsync()
+        {
+            // To make this a complete test, we need a second model
+            Model model = await _factory.Models.AddModelAsync(UpdatedModelName, _manufacturerId);
+            await _factory.Context.SaveChangesAsync();
+
+            await _factory.Drones.UpdateDroneAsync(_droneId, UpdatedDroneName, UpdatedDroneSerialNumber, model.Id);
+            await _factory.Context.SaveChangesAsync();
+
+            Drone drone = await _factory.Drones.GetDroneAsync(_droneId);
+            Assert.AreEqual(UpdatedDroneName, drone.Name);
+            Assert.AreEqual(UpdatedDroneSerialNumber, drone.SerialNumber);
+            Assert.AreEqual(model.Id, drone.ModelId);
         }
 
         [TestMethod]

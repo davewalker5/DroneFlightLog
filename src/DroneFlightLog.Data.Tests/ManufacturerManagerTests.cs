@@ -81,6 +81,7 @@ namespace DroneFlightLog.Data.Tests
         public void UpdateManufacturerTest()
         {
             _factory.Manufacturers.UpdateManufacturer(_manufacturerId, UpdatedName);
+            _factory.Context.SaveChanges();
             Manufacturer manufacturer = _factory.Manufacturers.GetManufacturer(_manufacturerId);
             Assert.AreEqual(_manufacturerId, manufacturer.Id);
             Assert.AreEqual(UpdatedName, manufacturer.Name);
@@ -90,11 +91,11 @@ namespace DroneFlightLog.Data.Tests
         public async Task UpdateManufacturerAsyncTest()
         {
             await _factory.Manufacturers.UpdateManufacturerAsync(_manufacturerId, UpdatedName);
+            await _factory.Context.SaveChangesAsync();
             Manufacturer manufacturer = await _factory.Manufacturers.GetManufacturerAsync(_manufacturerId);
             Assert.AreEqual(_manufacturerId, manufacturer.Id);
             Assert.AreEqual(UpdatedName, manufacturer.Name);
         }
-
 
         [TestMethod]
         public void GetAllManufacturersTest()
