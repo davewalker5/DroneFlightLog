@@ -98,7 +98,7 @@ namespace DroneFlightLog.Data.Logic
             Manufacturer manufacturer = _context.Manufacturers.FirstOrDefault(m => m.Id == id);
             ThrowIfManufacturerNotFound(manufacturer, id);
 
-            manufacturer.Name = name;
+            manufacturer.Name = name.CleanString();
             _context.SaveChanges();
             return manufacturer;
         }
@@ -117,7 +117,7 @@ namespace DroneFlightLog.Data.Logic
             Manufacturer manufacturer = await _context.Manufacturers.FirstOrDefaultAsync(m => m.Id == id);
             ThrowIfManufacturerNotFound(manufacturer, id);
 
-            manufacturer.Name = name;
+            manufacturer.Name = name.CleanString();
             await _context.SaveChangesAsync();
             return manufacturer;
         }

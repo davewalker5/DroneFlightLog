@@ -106,6 +106,48 @@ namespace DroneFlightLog.Data.Logic
         }
 
         /// <summary>
+        /// Update a model
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <param name="manufacturerId"></param>
+        /// <returns></returns>
+        public Model UpdateModel(int id, string name, int manufacturerId)
+        {
+            Model existing = FindModel(name, manufacturerId);
+            ThrowIfModelFound(existing, name, manufacturerId);
+
+            Model model = _factory.Context.Models.FirstOrDefault(m => m.Id == id);
+            ThrowIfModelNotFound(model, id);
+
+            model.Name = name.CleanString();
+            model.ManufacturerId = manufacturerId;
+            _factory.Context.SaveChanges();
+            return model;
+        }
+
+        /// <summary>
+        /// Update a model
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <param name="manufacturerId"></param>
+        /// <returns></returns>
+        public async Task<Model> UpdateModelAsync(int id, string name, int manufacturerId)
+        {
+            Model existing = await FindModelAsync(name, manufacturerId);
+            ThrowIfModelFound(existing, name, manufacturerId);
+
+            Model model = await _factory.Context.Models.FirstOrDefaultAsync(m => m.Id == id);
+            ThrowIfModelNotFound(model, id);
+
+            model.Name = name.CleanString();
+            model.ManufacturerId = manufacturerId;
+            await _factory.Context.SaveChangesAsync();
+            return model;
+        }
+
+        /// <summary>
         /// Find a model given its details
         /// </summary>
         /// <param name="name"></param>

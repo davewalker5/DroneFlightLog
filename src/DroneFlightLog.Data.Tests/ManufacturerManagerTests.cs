@@ -80,13 +80,8 @@ namespace DroneFlightLog.Data.Tests
         [TestMethod]
         public void UpdateManufacturerTest()
         {
-            Manufacturer manufacturer = _factory.Manufacturers.GetManufacturer(_manufacturerId);
-            Assert.AreEqual(_manufacturerId, manufacturer.Id);
-            Assert.AreEqual(Name, manufacturer.Name);
-
             _factory.Manufacturers.UpdateManufacturer(_manufacturerId, UpdatedName);
-
-            manufacturer = _factory.Manufacturers.GetManufacturer(_manufacturerId);
+            Manufacturer manufacturer = _factory.Manufacturers.GetManufacturer(_manufacturerId);
             Assert.AreEqual(_manufacturerId, manufacturer.Id);
             Assert.AreEqual(UpdatedName, manufacturer.Name);
         }
@@ -94,13 +89,8 @@ namespace DroneFlightLog.Data.Tests
         [TestMethod]
         public async Task UpdateManufacturerAsyncTest()
         {
-            Manufacturer manufacturer = await _factory.Manufacturers.GetManufacturerAsync(_manufacturerId);
-            Assert.AreEqual(_manufacturerId, manufacturer.Id);
-            Assert.AreEqual(Name, manufacturer.Name);
-
             await _factory.Manufacturers.UpdateManufacturerAsync(_manufacturerId, UpdatedName);
-
-            manufacturer = await _factory.Manufacturers.GetManufacturerAsync(_manufacturerId);
+            Manufacturer manufacturer = await _factory.Manufacturers.GetManufacturerAsync(_manufacturerId);
             Assert.AreEqual(_manufacturerId, manufacturer.Id);
             Assert.AreEqual(UpdatedName, manufacturer.Name);
         }

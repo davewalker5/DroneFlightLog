@@ -14,7 +14,9 @@ namespace DroneFlightLog.Data.Tests
     public class ModelManagerTest
     {
         private const string ManufacturerName = "Some Manufacturer";
+        private const string UpdatedManufacturerName = "Some OtherManufacturer";
         private const string ModelName = "Some Model";
+        private const string UpdatedModelName = "Some Other Model";
         private const string AsyncModelName = "Some Async Model";
 
         private IDroneFlightLogFactory<DroneFlightLogDbContext> _factory;
@@ -86,6 +88,28 @@ namespace DroneFlightLog.Data.Tests
         public void GetMissingModelByIdTest()
         {
             _factory.Models.GetModel(-1);
+        }
+
+        [TestMethod]
+        public void UpdateModelTest()
+        {
+            // To make this work, we need a second manufacturer
+            int manufacturerId = _factory.Manufacturers.AddManufacturer(UpdatedManufacturerName).Id;
+            _factory.Models.UpdateModel(_modelId, UpdatedModelName, manufacturerId);
+            Model model = _factory.Models.GetModel(_modelId);
+            Assert.AreEqual(UpdatedModelName, model.Name);
+            Assert.AreEqual(manufacturerId, model.ManufacturerId);
+        }
+
+        [TestMethod]
+        public async Task UpdateModelAsyncTest()
+        {
+            // To make this work, we need a second manufacturer
+            int manufacturerId = _factory.Manufacturers.AddManufacturer(UpdatedManufacturerName).Id;
+            await _factory.Models.UpdateModelAsync(_modelId, UpdatedModelName, manufacturerId);
+            Model model = await _factory.Models.GetModelAsync(_modelId);
+            Assert.AreEqual(UpdatedModelName, model.Name);
+            Assert.AreEqual(manufacturerId, model.ManufacturerId);
         }
 
         [TestMethod]
