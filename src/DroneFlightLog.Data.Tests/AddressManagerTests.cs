@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using DroneFlightLog.Data.Entities;
 using DroneFlightLog.Data.Exceptions;
 using DroneFlightLog.Data.Factory;
@@ -48,7 +49,7 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
-        public async void AddAddressAsyncTest()
+        public async Task AddAddressAsyncTest()
         {
             Address address = await _factory.Addresses.AddAddressAsync(SecondNumber, Street, Town, County, Postcode, Country);
             await _factory.Context.SaveChangesAsync();
@@ -82,7 +83,7 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
-        public async void GetAddressByIdAsyncTest()
+        public async Task GetAddressByIdAsyncTest()
         {
             Address address = await _factory.Addresses.GetAddressAsync(_addressId);
             Assert.AreEqual(_addressId, address.Id);
@@ -114,7 +115,7 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
-        public async void FindAddressAsyncTest()
+        public async Task FindAddressAsyncTest()
         {
             Address address = await _factory.Addresses.FindAddressAsync(Number, Postcode, Country);
             Assert.AreEqual(_addressId, address.Id);

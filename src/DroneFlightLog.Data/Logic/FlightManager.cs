@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using DroneFlightLog.Data.Entities;
+using DroneFlightLog.Data.Exceptions;
 using DroneFlightLog.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -76,6 +78,30 @@ namespace DroneFlightLog.Data.Logic
         }
 
         /// <summary>
+        /// Return a single flight given its Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Flight GetFlight(int id)
+        {
+            Flight flight = _factory.Context.Flights.FirstOrDefault(f => f.Id == id);
+            ThrowIfFlightNotFound(flight, id);
+            return flight;
+        }
+
+        /// <summary>
+        /// Return a single flight given its Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<Flight> GetFlightAsync(int id)
+        {
+            Flight flight = await _factory.Context.Flights.FirstOrDefaultAsync(f => f.Id == id);
+            ThrowIfFlightNotFound(flight, id);
+            return flight;
+        }
+
+        /// <summary>
         /// Find flights matching the specified filtering criteria and return the specified
         /// page of results
         /// </summary>
@@ -138,6 +164,21 @@ namespace DroneFlightLog.Data.Logic
                                                                .AsAsyncEnumerable();
 
             return flights;
+        }
+
+        /// <summary>
+        /// Throw an error if a flight does not exist
+        /// </summary>
+        /// <param name="flight"></param>
+        /// <param name="flightId"></param>
+        [ExcludeFromCodeCoverage]
+        private void ThrowIfFlightNotFound(Flight flight, int flightId)
+        {
+            if (flight == null)
+            {
+                string message = $"Flight with ID {flightId} not found";
+                throw new FlightNotFoundException(message);
+            }
         }
     }
 }

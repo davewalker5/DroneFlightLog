@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using DroneFlightLog.Data.Entities;
 using DroneFlightLog.Data.Exceptions;
 using DroneFlightLog.Data.Factory;
@@ -97,7 +98,7 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
-        public async void AddPropertyAsyncTest()
+        public async Task AddPropertyAsyncTest()
         {
             FlightProperty property = await _factory.Properties.AddPropertyAsync(AsyncPropertyName, PropertyType, true);
             await _factory.Context.SaveChangesAsync();
@@ -124,7 +125,7 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
-        public async void GetPropertiesAsyncTest()
+        public async Task GetPropertiesAsyncTest()
         {
             List<FlightProperty> properties = await _factory.Properties.GetPropertiesAsync().ToListAsync();
             Assert.AreEqual(1, properties.Count());
@@ -145,8 +146,12 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
-        public async void AddPropertyValueAsyncTest()
+        public async Task AddPropertyValueAsyncTest()
         {
+            // To allow this to work, we need to make the existing property multi-value
+            _factory.Context.FlightProperties.First(p => p.Id == _propertyId).IsSingleInstance = false;
+            await _factory.Context.SaveChangesAsync();
+
             FlightPropertyValue value = await _factory.Properties.AddPropertyValueAsync(_flightId, _propertyId, AsyncPropertyValue);
             await _factory.Context.SaveChangesAsync();
             Assert.AreEqual(2, _factory.Context.FlightPropertyValues.Count());
@@ -172,7 +177,7 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
-        public async void GetPropertyValuesAsyncTest()
+        public async Task GetPropertyValuesAsyncTest()
         {
             List<FlightPropertyValue> values = await _factory.Properties.GetPropertyValuesAsync(_flightId).ToListAsync();
             Assert.AreEqual(1, values.Count());

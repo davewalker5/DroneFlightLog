@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using DroneFlightLog.Data.Entities;
 using DroneFlightLog.Data.Exceptions;
 using DroneFlightLog.Data.Factory;
@@ -52,7 +53,7 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
-        public async void AddDroneAsyncTest()
+        public async Task AddDroneAsyncTest()
         {
             Drone drone = await _factory.Drones.AddDroneAsync(DroneName, SecondDroneSerialNumber, _modelId);
             await _factory.Context.SaveChangesAsync();
@@ -83,7 +84,7 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
-        public async  void GetDroneByIdAsyncTest()
+        public async Task GetDroneByIdAsyncTest()
         {
             Drone drone = await _factory.Drones.GetDroneAsync(_droneId);
             ValidateDrone(drone);
@@ -104,7 +105,7 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
-        public async void GetAllDronesAsyncTest()
+        public async Task GetAllDronesAsyncTest()
         {
             List<Drone> drones = await _factory.Drones.GetDronesAsync(null).ToListAsync();
             Assert.AreEqual(1, drones.Count());
@@ -120,7 +121,7 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
-        public async void GetDronesByModelAsyncTest()
+        public async Task GetDronesByModelAsyncTest()
         {
             List<Drone> drones = await _factory.Drones.GetDronesAsync(_modelId).ToListAsync();
             Assert.AreEqual(1, drones.Count());
@@ -142,7 +143,7 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
-        public async void FindDroneAsyncTest()
+        public async Task FindDroneAsyncTest()
         {
             Drone drone = await _factory.Drones.FindDroneAsync(DroneSerialNumber, _modelId);
             ValidateDrone(drone);

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using DroneFlightLog.Data.Entities;
 using DroneFlightLog.Data.Exceptions;
 using DroneFlightLog.Data.Factory;
@@ -39,7 +40,7 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
-        public async void AddLocationAsyncTest()
+        public async Task AddLocationAsyncTest()
         {
             Location location = _factory.Locations.AddLocation(AsyncName);
             await _factory.Context.SaveChangesAsync();
@@ -62,7 +63,7 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
-        public async void GetLocationByIdAsyncTest()
+        public async Task GetLocationByIdAsyncTest()
         {
             Location location = await _factory.Locations.GetLocationAsync(_locationId);
             Assert.AreEqual(_locationId, location.Id);
@@ -86,7 +87,7 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
-        public async void GetAllLocationsAsyncTest()
+        public async Task GetAllLocationsAsyncTest()
         {
             List<Location> locations = await _factory.Locations.GetLocationsAsync().ToListAsync();
             Assert.AreEqual(1, locations.Count());
@@ -103,7 +104,7 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
-        public async void FindLocationAsyncTest()
+        public async Task FindLocationAsyncTest()
         {
             Location location = await _factory.Locations.FindLocationAsync(Name);
             Assert.AreEqual(location.Name, Name);

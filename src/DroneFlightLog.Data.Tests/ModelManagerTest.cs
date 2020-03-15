@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using DroneFlightLog.Data.Entities;
 using DroneFlightLog.Data.Exceptions;
 using DroneFlightLog.Data.Factory;
@@ -46,7 +47,7 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
-        public async void AddModelAsyncTest()
+        public async Task AddModelAsyncTest()
         {
             Model model = await _factory.Models.AddModelAsync(AsyncModelName, _manufacturerId);
             await _factory.Context.SaveChangesAsync();
@@ -75,7 +76,7 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
-        public async void GetModelByIdAsyncTest()
+        public async Task GetModelByIdAsyncTest()
         {
             Model model = await _factory.Models.GetModelAsync(_modelId);
             ValidateModel(model);
@@ -96,7 +97,7 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
-        public async void GetAllModelsAsyncTest()
+        public async Task GetAllModelsAsyncTest()
         {
             List<Model> models = await _factory.Models.GetModelsAsync(null).ToListAsync();
             Assert.AreEqual(1, models.Count());

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using DroneFlightLog.Data.Entities;
 using DroneFlightLog.Data.Factory;
 using DroneFlightLog.Data.InMemory;
@@ -74,6 +75,26 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
+        public void GetFlightTest()
+        {
+            Flight flight = _factory.Flights.GetFlight(_flightId);
+            Assert.AreEqual(_flightId, flight.Id);
+            Assert.AreEqual(_droneId, flight.DroneId);
+            Assert.AreEqual(_locationId, flight.LocationId);
+            Assert.AreEqual(_operatorId, flight.OperatorId);
+        }
+
+        [TestMethod]
+        public async Task GetFlightAsyncTest()
+        {
+            Flight flight = await _factory.Flights.GetFlightAsync(_flightId);
+            Assert.AreEqual(_flightId, flight.Id);
+            Assert.AreEqual(_droneId, flight.DroneId);
+            Assert.AreEqual(_locationId, flight.LocationId);
+            Assert.AreEqual(_operatorId, flight.OperatorId);
+        }
+
+        [TestMethod]
         public void AddFlightTest()
         {
             // The flight has been added during test initialisation. All that needs
@@ -86,7 +107,7 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
-        public async void AddFlightAsyncTest()
+        public async Task AddFlightAsyncTest()
         {
             Flight flight = await _factory.Flights.AddFlightAsync(_operatorId, _droneId, _locationId, StartDate, EndDate);
             await _factory.Context.SaveChangesAsync();
@@ -105,7 +126,7 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
-        public async void FindFlightByOperatorIdAsyncTest()
+        public async Task FindFlightByOperatorIdAsyncTest()
         {
             List<Flight> flights = await _factory.Flights.FindFlightsAsync(_operatorId, null, null, null, null, 1, 2).ToListAsync();
             Assert.AreEqual(1, flights.Count());
