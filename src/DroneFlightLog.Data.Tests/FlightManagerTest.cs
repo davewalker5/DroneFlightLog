@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DroneFlightLog.Data.Entities;
+using DroneFlightLog.Data.Exceptions;
 using DroneFlightLog.Data.Factory;
 using DroneFlightLog.Data.InMemory;
 using DroneFlightLog.Data.Interfaces;
@@ -92,6 +93,12 @@ namespace DroneFlightLog.Data.Tests
             Assert.AreEqual(_droneId, flight.DroneId);
             Assert.AreEqual(_locationId, flight.LocationId);
             Assert.AreEqual(_operatorId, flight.OperatorId);
+        }
+
+        [TestMethod, ExpectedException(typeof(FlightNotFoundException))]
+        public void GetMissingFlightByIdTest()
+        {
+            _factory.Flights.GetFlight(-1);
         }
 
         [TestMethod]

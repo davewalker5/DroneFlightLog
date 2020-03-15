@@ -14,6 +14,7 @@ namespace DroneFlightLog.Data.Tests
     public class ManufacturerManagerTests
     {
         private const string Name = "Some Drone Manufacturer";
+        private const string UpdatedName = "Some Other Drone Manufacturer";
         private const string AsyncName = "Some Async Drone Manufacturer";
 
         private IDroneFlightLogFactory<DroneFlightLogDbContext> _factory;
@@ -75,6 +76,35 @@ namespace DroneFlightLog.Data.Tests
         {
             _factory.Manufacturers.GetManufacturer(-1);
         }
+
+        [TestMethod]
+        public void UpdateManufacturerTest()
+        {
+            Manufacturer manufacturer = _factory.Manufacturers.GetManufacturer(_manufacturerId);
+            Assert.AreEqual(_manufacturerId, manufacturer.Id);
+            Assert.AreEqual(Name, manufacturer.Name);
+
+            _factory.Manufacturers.UpdateManufacturer(_manufacturerId, UpdatedName);
+
+            manufacturer = _factory.Manufacturers.GetManufacturer(_manufacturerId);
+            Assert.AreEqual(_manufacturerId, manufacturer.Id);
+            Assert.AreEqual(UpdatedName, manufacturer.Name);
+        }
+
+        [TestMethod]
+        public async Task UpdateManufacturerAsyncTest()
+        {
+            Manufacturer manufacturer = await _factory.Manufacturers.GetManufacturerAsync(_manufacturerId);
+            Assert.AreEqual(_manufacturerId, manufacturer.Id);
+            Assert.AreEqual(Name, manufacturer.Name);
+
+            await _factory.Manufacturers.UpdateManufacturerAsync(_manufacturerId, UpdatedName);
+
+            manufacturer = await _factory.Manufacturers.GetManufacturerAsync(_manufacturerId);
+            Assert.AreEqual(_manufacturerId, manufacturer.Id);
+            Assert.AreEqual(UpdatedName, manufacturer.Name);
+        }
+
 
         [TestMethod]
         public void GetAllManufacturersTest()
