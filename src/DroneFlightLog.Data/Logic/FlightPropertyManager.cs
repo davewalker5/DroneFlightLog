@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DroneFlightLog.Data.Entities;
 using DroneFlightLog.Data.Exceptions;
+using DroneFlightLog.Data.Extensions;
 using DroneFlightLog.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -61,6 +62,48 @@ namespace DroneFlightLog.Data.Logic
             };
 
             await _context.FlightProperties.AddAsync(property);
+            return property;
+        }
+
+        /// <summary>
+        /// Update an existing flight property definition
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public FlightProperty UpdateProperty(int id, string name)
+        {
+            name = name.CleanString();
+            FlightProperty existing = _context.FlightProperties.FirstOrDefault(m => m.Name == name);
+            ThrowIfPropertyFound(existing, name);
+
+            FlightProperty property = _context.FlightProperties.FirstOrDefault(m => m.Id == id);
+            ThrowIfPropertyNotFound(property, id);
+
+            // The only property that can be updated without running the risk of invalidating
+            // existing data is the name
+            property.Name = name;
+            return property;
+        }
+
+        /// <summary>
+        /// Update an existing flight property definition
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public async Task<FlightProperty> UpdatePropertyAsync(int id, string name)
+        {
+            name = name.CleanString();
+            FlightProperty existing = await _context.FlightProperties.FirstOrDefaultAsync(m => m.Name == name);
+            ThrowIfPropertyFound(existing, name);
+
+            FlightProperty property = await _context.FlightProperties.FirstOrDefaultAsync(m => m.Id == id);
+            ThrowIfPropertyNotFound(property, id);
+
+            // The only property that can be updated without running the risk of invalidating
+            // existing data is the name
+            property.Name = name;
             return property;
         }
 
@@ -196,6 +239,21 @@ namespace DroneFlightLog.Data.Logic
             {
                 string message = $"Property {name} already exists";
                 throw new PropertyExistsException(message);
+            }
+        }
+
+        /// <summary>
+        /// Throw an exception if a flight property does not exist
+        /// </summary>
+        /// <param name="property"></param>
+        /// <param name="id"></param>
+        [ExcludeFromCodeCoverage]
+        private void ThrowIfPropertyNotFound(FlightProperty property, int id)
+        {
+            if (property == null)
+            {
+                string message = $"Flight property with ID {id} not found";
+                throw new PropertyNotFoundException(message);
             }
         }
 

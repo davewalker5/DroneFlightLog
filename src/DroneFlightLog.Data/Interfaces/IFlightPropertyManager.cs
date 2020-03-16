@@ -14,5 +14,7 @@ namespace DroneFlightLog.Data.Interfaces
         IAsyncEnumerable<FlightProperty> GetPropertiesAsync();
         IEnumerable<FlightPropertyValue> GetPropertyValues(int flightId);
         IAsyncEnumerable<FlightPropertyValue> GetPropertyValuesAsync(int flightId);
+        FlightProperty UpdateProperty(int id, string name);
+        Task<FlightProperty> UpdatePropertyAsync(int id, string name);
     }
 }
