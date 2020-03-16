@@ -113,6 +113,11 @@ namespace DroneFlightLog.Data.Logic
         /// <returns></returns>
         public Flight UpdateFlight(int flightId, int operatorId, int droneId, int locationId, DateTime start, DateTime end)
         {
+            // These will throw exceptions if the corresponding entities do not exist
+            _factory.Operators.GetOperator(operatorId);
+            _factory.Drones.GetDrone(droneId);
+            _factory.Locations.GetLocation(locationId);
+
             Flight flight = GetFlight(flightId);
             flight.OperatorId = operatorId;
             flight.DroneId = droneId;
@@ -134,6 +139,11 @@ namespace DroneFlightLog.Data.Logic
         /// <returns></returns>
         public async Task<Flight> UpdateFlightAsync(int flightId, int operatorId, int droneId, int locationId, DateTime start, DateTime end)
         {
+            // These will throw exceptions if the corresponding entities do not exist
+            await _factory.Operators.GetOperatorAsync(operatorId);
+            await _factory.Drones.GetDroneAsync(droneId);
+            await _factory.Locations.GetLocationAsync(locationId);
+
             Flight flight = await GetFlightAsync(flightId);
             flight.OperatorId = operatorId;
             flight.DroneId = droneId;
