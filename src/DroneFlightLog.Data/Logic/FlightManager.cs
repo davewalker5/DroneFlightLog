@@ -102,6 +102,48 @@ namespace DroneFlightLog.Data.Logic
         }
 
         /// <summary>
+        /// Update an existing flight
+        /// </summary>
+        /// <param name="flightId"></param>
+        /// <param name="operatorId"></param>
+        /// <param name="droneId"></param>
+        /// <param name="locationId"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
+        public Flight UpdateFlight(int flightId, int operatorId, int droneId, int locationId, DateTime start, DateTime end)
+        {
+            Flight flight = GetFlight(flightId);
+            flight.OperatorId = operatorId;
+            flight.DroneId = droneId;
+            flight.LocationId = locationId;
+            flight.Start = start;
+            flight.End = end;
+            return flight;
+        }
+
+        /// <summary>
+        /// Update an existing flight
+        /// </summary>
+        /// <param name="flightId"></param>
+        /// <param name="operatorId"></param>
+        /// <param name="droneId"></param>
+        /// <param name="locationId"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
+        public async Task<Flight> UpdateFlightAsync(int flightId, int operatorId, int droneId, int locationId, DateTime start, DateTime end)
+        {
+            Flight flight = await GetFlightAsync(flightId);
+            flight.OperatorId = operatorId;
+            flight.DroneId = droneId;
+            flight.LocationId = locationId;
+            flight.Start = start;
+            flight.End = end;
+            return flight;
+        }
+
+        /// <summary>
         /// Find flights matching the specified filtering criteria and return the specified
         /// page of results
         /// </summary>

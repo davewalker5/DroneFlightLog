@@ -13,5 +13,7 @@ namespace DroneFlightLog.Data.Interfaces
         IAsyncEnumerable<Flight> FindFlightsAsync(int? operatorId, int? droneId, int? locationId, DateTime? start, DateTime? end, int pageNumber, int pageSize);
         Flight GetFlight(int id);
         Task<Flight> GetFlightAsync(int id);
+        Flight UpdateFlight(int flightId, int operatorId, int droneId, int locationId, DateTime start, DateTime end);
+        Task<Flight> UpdateFlightAsync(int flightId, int operatorId, int droneId, int locationId, DateTime start, DateTime end);
     }
 }
