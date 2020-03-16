@@ -74,10 +74,10 @@ namespace DroneFlightLog.Data.Logic
         public FlightProperty UpdateProperty(int id, string name)
         {
             name = name.CleanString();
-            FlightProperty existing = _context.FlightProperties.FirstOrDefault(m => m.Name == name);
+            FlightProperty existing = _context.FlightProperties.FirstOrDefault(p => p.Name == name);
             ThrowIfPropertyFound(existing, name);
 
-            FlightProperty property = _context.FlightProperties.FirstOrDefault(m => m.Id == id);
+            FlightProperty property = _context.FlightProperties.FirstOrDefault(p => p.Id == id);
             ThrowIfPropertyNotFound(property, id);
 
             // The only property that can be updated without running the risk of invalidating
@@ -95,10 +95,10 @@ namespace DroneFlightLog.Data.Logic
         public async Task<FlightProperty> UpdatePropertyAsync(int id, string name)
         {
             name = name.CleanString();
-            FlightProperty existing = await _context.FlightProperties.FirstOrDefaultAsync(m => m.Name == name);
+            FlightProperty existing = await _context.FlightProperties.FirstOrDefaultAsync(p => p.Name == name);
             ThrowIfPropertyFound(existing, name);
 
-            FlightProperty property = await _context.FlightProperties.FirstOrDefaultAsync(m => m.Id == id);
+            FlightProperty property = await _context.FlightProperties.FirstOrDefaultAsync(p => p.Id == id);
             ThrowIfPropertyNotFound(property, id);
 
             // The only property that can be updated without running the risk of invalidating
@@ -152,6 +152,38 @@ namespace DroneFlightLog.Data.Logic
         }
 
         /// <summary>
+        /// Update an existing flight property definition
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public FlightPropertyValue UpdatePropertyValue(int id, object value)
+        {
+            FlightPropertyValue propertyValue = _context.FlightPropertyValues.FirstOrDefault(p => p.Id == id);
+            ThrowIfPropertyValueNotFound(propertyValue, id);
+
+            FlightProperty definition = _context.FlightProperties.First(p => p.Id == propertyValue.PropertyId);
+            SetPropertyValue(definition, propertyValue, value);
+            return propertyValue;
+        }
+
+        /// <summary>
+        /// Update an existing flight property definition
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public async Task<FlightPropertyValue> UpdatePropertyValueAsync(int id, object value)
+        {
+            FlightPropertyValue propertyValue = await _context.FlightPropertyValues.FirstOrDefaultAsync(p => p.Id == id);
+            ThrowIfPropertyValueNotFound(propertyValue, id);
+
+            FlightProperty definition = await _context.FlightProperties.FirstAsync(p => p.Id == propertyValue.PropertyId);
+            SetPropertyValue(definition, propertyValue, value);
+            return propertyValue;
+        }
+
+        /// <summary>
         /// Get all the current property definitions
         /// </summary>
         public IEnumerable<FlightProperty> GetProperties() =>
@@ -200,31 +232,55 @@ namespace DroneFlightLog.Data.Logic
                     propertyValue = new FlightPropertyValue
                     {
                         FlightId = flightId,
-                        PropertyId = propertyId,
-                        DateValue = (DateTime)value
+                        PropertyId = propertyId
                     };
                     break;
                 case FlightPropertyDataType.Number:
                     propertyValue = new FlightPropertyValue
                     {
                         FlightId = flightId,
-                        PropertyId = propertyId,
-                        NumberValue = (decimal)value
+                        PropertyId = propertyId
                     };
                     break;
                 case FlightPropertyDataType.String:
                     propertyValue = new FlightPropertyValue
                     {
                         FlightId = flightId,
-                        PropertyId = propertyId,
-                        StringValue = (string)value
+                        PropertyId = propertyId
                     };
                     break;
                 default:
                     break;
             }
 
+            SetPropertyValue(definition, propertyValue, value);
             return propertyValue;
+        }
+
+        /// <summary>
+        /// Set the value field on an existing property value object
+        /// </summary>
+        /// <param name="definition"></param>
+        /// <param name="propertyValue"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        [ExcludeFromCodeCoverage]
+        private void SetPropertyValue(FlightProperty definition, FlightPropertyValue propertyValue, object value)
+        {
+            switch (definition.DataType)
+            {
+                case FlightPropertyDataType.Date:
+                    propertyValue.DateValue = (DateTime)value;
+                    break;
+                case FlightPropertyDataType.Number:
+                    propertyValue.NumberValue = (decimal)value;
+                    break;
+                case FlightPropertyDataType.String:
+                    propertyValue.StringValue = (string)value;
+                    break;
+                default:
+                    break;
+            }
         }
 
         /// <summary>
@@ -269,6 +325,21 @@ namespace DroneFlightLog.Data.Logic
             {
                 string message = $"Single instance property {propertyName} already has a value for flight Id {flightId}";
                 throw new ValueExistsException(message);
+            }
+        }
+
+        /// <summary>
+        /// Throw an exception if a flight property value does not exist
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="id"></param>
+        [ExcludeFromCodeCoverage]
+        private void ThrowIfPropertyValueNotFound(FlightPropertyValue value, int id)
+        {
+            if (value == null)
+            {
+                string message = $"Flight property value with ID {id} not found";
+                throw new PropertyValueNotFoundException(message);
             }
         }
     }
