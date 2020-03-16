@@ -163,6 +163,9 @@ namespace DroneFlightLog.Data.Logic
         /// <returns></returns>
         public Drone UpdateDrone(int id, string name, string serialNumber, int modelId)
         {
+            // This will throw an exception if the model does not exist
+            _factory.Models.GetModel(modelId);
+
             Drone existing = FindDrone(serialNumber, modelId);
             ThrowIfDroneFound(existing, serialNumber, modelId);
 
@@ -185,6 +188,9 @@ namespace DroneFlightLog.Data.Logic
         /// <returns></returns>
         public async Task<Drone> UpdateDroneAsync(int id, string name, string serialNumber, int modelId)
         {
+            // This will throw an exception if the model does not exist
+            await _factory.Models.GetModelAsync(modelId);
+
             Drone existing = await FindDroneAsync(serialNumber, modelId);
             ThrowIfDroneFound(existing, serialNumber, modelId);
 

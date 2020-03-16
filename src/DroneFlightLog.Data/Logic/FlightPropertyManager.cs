@@ -215,6 +215,30 @@ namespace DroneFlightLog.Data.Logic
                     .AsAsyncEnumerable();
 
         /// <summary>
+        /// Return the specified flight property value
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public FlightPropertyValue GetPropertyValue(int id)
+        {
+            FlightPropertyValue value = _context.FlightPropertyValues.FirstOrDefault(p => p.Id == id);
+            ThrowIfPropertyValueNotFound(value, id);
+            return value;
+        }
+
+        /// <summary>
+        /// Return the specified flight property value
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<FlightPropertyValue> GetPropertyValueAsync(int id)
+        {
+            FlightPropertyValue value = await _context.FlightPropertyValues.FirstOrDefaultAsync(p => p.Id == id);
+            ThrowIfPropertyValueNotFound(value, id);
+            return value;
+        }
+
+        /// <summary>
         /// Create a new property value
         /// </summary>
         /// <param name="definition"></param>

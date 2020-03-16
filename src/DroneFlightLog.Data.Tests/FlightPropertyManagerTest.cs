@@ -183,6 +183,26 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
+        public void GetPropertyValueTest()
+        {
+            FlightPropertyValue value = _factory.Properties.GetPropertyValue(_propertyValueId);
+            Assert.AreEqual(_propertyId, value.PropertyId);
+            Assert.AreEqual(PropertyValue, value.NumberValue);
+            Assert.IsNull(value.DateValue);
+            Assert.IsNull(value.StringValue);
+        }
+
+        [TestMethod]
+        public async Task GetPropertyValueAsyncTest()
+        {
+            FlightPropertyValue value = await _factory.Properties.GetPropertyValueAsync(_propertyValueId);
+            Assert.AreEqual(_propertyId, value.PropertyId);
+            Assert.AreEqual(PropertyValue, value.NumberValue);
+            Assert.IsNull(value.DateValue);
+            Assert.IsNull(value.StringValue);
+        }
+
+        [TestMethod]
         public void UpdatePropertyValueTest()
         {
             _factory.Properties.UpdatePropertyValue(_propertyValueId, UpdatedPropertyValue);
