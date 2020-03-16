@@ -84,6 +84,42 @@ namespace DroneFlightLog.Data.Logic
         }
 
         /// <summary>
+        /// Update a location name
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public Location UpdateLocation(int id, string name)
+        {
+            Location existing = FindLocation(name);
+            ThrowIfLocationFound(existing, name);
+
+            Location location = _context.Locations.FirstOrDefault(m => m.Id == id);
+            ThrowIfLocationNotFound(location, id);
+
+            location.Name = name.CleanString();
+            return location;
+        }
+
+        /// <summary>
+        /// Update a location name
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public async Task<Location> UpdateLocationAsync(int id, string name)
+        {
+            Location existing = await FindLocationAsync(name);
+            ThrowIfLocationFound(existing, name);
+
+            Location location = await _context.Locations.FirstOrDefaultAsync(m => m.Id == id);
+            ThrowIfLocationNotFound(location, id);
+
+            location.Name = name.CleanString();
+            return location;
+        }
+
+        /// <summary>
         /// Find a location given its name
         /// </summary>
         /// <param name="name"></param>
