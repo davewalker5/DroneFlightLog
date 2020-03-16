@@ -69,6 +69,33 @@ namespace DroneFlightLog.Api.Controllers
             return drone;
         }
 
+        [HttpPut]
+        [Route("")]
+        public async Task<ActionResult<Drone>> UpdateDroneAsync([FromBody] Drone template)
+        {
+            Drone drone;
+
+            try
+            {
+                drone = await _factory.Drones.UpdateDroneAsync(template.Id, template.Name, template.SerialNumber, template.ModelId);
+                await _factory.Context.SaveChangesAsync();
+            }
+            catch (ModelNotFoundException)
+            {
+                return BadRequest();
+            }
+            catch (DroneExistsException)
+            {
+                return BadRequest();
+            }
+            catch (DroneNotFoundException)
+            {
+                return NotFound();
+            }
+
+            return drone;
+        }
+
         [HttpPost]
         [Route("")]
         public async Task<ActionResult<Drone>> CreateDroneAsync([FromBody] Drone template)

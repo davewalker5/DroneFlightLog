@@ -80,6 +80,10 @@ namespace DroneFlightLog.Api.Controllers
                 model = await _factory.Models.UpdateModelAsync(template.Id, template.Name, template.ManufacturerId);
                 await _factory.Context.SaveChangesAsync();
             }
+            catch (ManufacturerNotFoundException)
+            {
+                return BadRequest();
+            }
             catch (ModelExistsException)
             {
                 return BadRequest();

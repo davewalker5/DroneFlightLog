@@ -2,13 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <PackageVersion>1.0.0.3</PackageVersion>
+    <PackageVersion>1.0.0.4</PackageVersion>
     <Authors>Dave Walker</Authors>
     <Copyright>Copyright (c) Dave Walker 2020</Copyright>
     <PackageLicenseUrl>https://github.com/davewalker5/DroneFlightLog.Api/blob/master/LICENSE</PackageLicenseUrl>
     <Owners>Dave Walker</Owners>
     <PackageProjectUrl>https://github.com/davewalker5/DroneFlightLog.Api</PackageProjectUrl>
-    <PackageReleaseNotes>Added security via JWT</PackageReleaseNotes>
+    <PackageReleaseNotes>Added methods to update existing records
+Change JWT token to include user name</PackageReleaseNotes>
     <Summary>Personal Drone Flight Log Web API</Summary>
     <PackageTags>Drone Flight Logbook Log API C#</PackageTags>
     <Title>Personal Drone Flight Log Web API</Title>
