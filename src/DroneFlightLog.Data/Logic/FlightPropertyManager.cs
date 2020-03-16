@@ -221,7 +221,9 @@ namespace DroneFlightLog.Data.Logic
         /// <returns></returns>
         public FlightPropertyValue GetPropertyValue(int id)
         {
-            FlightPropertyValue value = _context.FlightPropertyValues.FirstOrDefault(p => p.Id == id);
+            FlightPropertyValue value = _context.FlightPropertyValues
+                                                .Include(v => v.Property)
+                                                .FirstOrDefault(v => v.Id == id);
             ThrowIfPropertyValueNotFound(value, id);
             return value;
         }
@@ -233,7 +235,9 @@ namespace DroneFlightLog.Data.Logic
         /// <returns></returns>
         public async Task<FlightPropertyValue> GetPropertyValueAsync(int id)
         {
-            FlightPropertyValue value = await _context.FlightPropertyValues.FirstOrDefaultAsync(p => p.Id == id);
+            FlightPropertyValue value = await _context.FlightPropertyValues
+                                                      .Include(v => v.Property)
+                                                      .FirstOrDefaultAsync(v => v.Id == id);
             ThrowIfPropertyValueNotFound(value, id);
             return value;
         }
