@@ -37,6 +37,29 @@ namespace DroneFlightLog.Api.Controllers
             return properties;
         }
 
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<ActionResult<FlightProperty>> UpdatePropertyAsync(int id, [FromBody] string name)
+        {
+            FlightProperty property;
+
+            try
+            {
+                property = await _factory.Properties.UpdatePropertyAsync(id, name);
+                await _factory.Context.SaveChangesAsync();
+            }
+            catch (PropertyExistsException)
+            {
+                return BadRequest();
+            }
+            catch (PropertyNotFoundException)
+            {
+                return NotFound();
+            }
+
+            return property;
+        }
+
         [HttpPost]
         [Route("")]
         public async Task<ActionResult<FlightProperty>> CreatePropertyAsync([FromBody] FlightProperty template)

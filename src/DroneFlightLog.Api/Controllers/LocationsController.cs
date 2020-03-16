@@ -66,6 +66,10 @@ namespace DroneFlightLog.Api.Controllers
                 location = await _factory.Locations.UpdateLocationAsync(id, name);
                 await _factory.Context.SaveChangesAsync();
             }
+            catch (LocationExistsException)
+            {
+                return BadRequest();
+            }
             catch (LocationNotFoundException)
             {
                 return NotFound();
