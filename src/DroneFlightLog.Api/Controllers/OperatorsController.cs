@@ -115,6 +115,39 @@ namespace DroneFlightLog.Api.Controllers
             return Ok();
         }
 
+        [HttpPut]
+        [Route("")]
+        public async Task<ActionResult<Operator>> UpdateOperatorAsync([FromBody] Operator template)
+        {
+            Operator op;
+
+            try
+            {
+                op = await _factory.Operators.UpdateOperatorAsync(template.Id,
+                                                                  template.FirstNames,
+                                                                  template.Surname,
+                                                                  template.DoB,
+                                                                  template.FlyerNumber,
+                                                                  template.OperatorNumber,
+                                                                  template.AddressId);
+                await _factory.Context.SaveChangesAsync();
+            }
+            catch (AddressNotFoundException)
+            {
+                return BadRequest();
+            }
+            catch (OperatorExistsException)
+            {
+                return BadRequest();
+            }
+            catch (OperatorNotFoundException)
+            {
+                return NotFound();
+            }
+
+            return op;
+        }
+
         [HttpPost]
         [Route("")]
         public async Task<ActionResult<Operator>> CreateOperatorAsync([FromBody] Operator template)
