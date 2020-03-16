@@ -17,5 +17,7 @@ namespace DroneFlightLog.Data.Interfaces
         IAsyncEnumerable<Operator> GetOperatorsAsync(int? addressId);
         void SetOperatorAddress(int operatorId, int addressId);
         Task SetOperatorAddressAsync(int operatorId, int addressId);
+        Operator UpdateOperator(int id, string firstnames, string surname, DateTime dob, string flyerNumber, string operatorNumber, int addressId);
+        Task<Operator> UpdateOperatorAsync(int id, string firstnames, string surname, DateTime dob, string flyerNumber, string operatorNumber, int addressId);
     }
 }

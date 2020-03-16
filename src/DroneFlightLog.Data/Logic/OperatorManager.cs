@@ -127,7 +127,7 @@ namespace DroneFlightLog.Data.Logic
         public async Task<Operator> AddOperatorAsync(string firstnames, string surname, DateTime dob, string flyerNumber, string operatorNumber, int addressId)
         {
             // This will throw an exception if the address doesn't exist
-            _factory.Addresses.GetAddress(addressId);
+            await _factory.Addresses.GetAddressAsync(addressId);
 
             Operator op = await FindOperatorAsync(firstnames, surname, addressId);
             ThrowIfOperatorFound(op, firstnames, surname, addressId);
@@ -143,6 +143,64 @@ namespace DroneFlightLog.Data.Logic
             };
 
             await _factory.Context.Operators.AddAsync(op);
+            return op;
+        }
+
+        /// <summary>
+        /// Update an existing operator
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="firstnames"></param>
+        /// <param name="surname"></param>
+        /// <param name="dob"></param>
+        /// <param name="flyerNumber"></param>
+        /// <param name="operatorNumber"></param>
+        /// <param name="addressId"></param>
+        /// <returns></returns>
+        public Operator UpdateOperator(int id, string firstnames, string surname, DateTime dob, string flyerNumber, string operatorNumber, int addressId)
+        {
+            // This will throw an exception if the address doesn't exist
+            _factory.Addresses.GetAddress(addressId);
+
+            Operator existing = FindOperator(firstnames, surname, addressId);
+            ThrowIfOperatorFound(existing, firstnames, surname, addressId);
+
+            Operator op = GetOperator(id);
+            op.FirstNames = firstnames.CleanString();
+            op.Surname = surname.CleanString();
+            op.DoB = dob;
+            op.FlyerNumber = flyerNumber.CleanString();
+            op.OperatorNumber = operatorNumber.CleanString();
+            op.AddressId = addressId;
+            return op;
+        }
+
+        /// <summary>
+        /// Update an existing operator
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="firstnames"></param>
+        /// <param name="surname"></param>
+        /// <param name="dob"></param>
+        /// <param name="flyerNumber"></param>
+        /// <param name="operatorNumber"></param>
+        /// <param name="addressId"></param>
+        /// <returns></returns>
+        public async Task<Operator> UpdateOperatorAsync(int id, string firstnames, string surname, DateTime dob, string flyerNumber, string operatorNumber, int addressId)
+        {
+            // This will throw an exception if the address doesn't exist
+            await _factory.Addresses.GetAddressAsync(addressId);
+
+            Operator existing = await FindOperatorAsync(firstnames, surname, addressId);
+            ThrowIfOperatorFound(existing, firstnames, surname, addressId);
+
+            Operator op = await GetOperatorAsync(id);
+            op.FirstNames = firstnames.CleanString();
+            op.Surname = surname.CleanString();
+            op.DoB = dob;
+            op.FlyerNumber = flyerNumber.CleanString();
+            op.OperatorNumber = operatorNumber.CleanString();
+            op.AddressId = addressId;
             return op;
         }
 

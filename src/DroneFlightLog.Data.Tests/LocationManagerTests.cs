@@ -14,6 +14,7 @@ namespace DroneFlightLog.Data.Tests
     public class LocationManagerTests
     {
         private const string Name = "My Local Drone Flight Location";
+        private const string UpdatedName = "My Other Local Drone Flight Location";
         private const string AsyncName = "My Local Async Drone Flight Location";
 
         private IDroneFlightLogFactory<DroneFlightLogDbContext> _factory;
@@ -74,6 +75,26 @@ namespace DroneFlightLog.Data.Tests
         public void GetMissingLocationByIdTest()
         {
             _factory.Locations.GetLocation(-1);
+        }
+
+        [TestMethod]
+        public void UpdateLocationTest()
+        {
+            _factory.Locations.UpdateLocation(_locationId, UpdatedName);
+            _factory.Context.SaveChanges();
+            Location location = _factory.Locations.GetLocation(_locationId);
+            Assert.AreEqual(_locationId, location.Id);
+            Assert.AreEqual(UpdatedName, location.Name);
+        }
+
+        [TestMethod]
+        public async Task UpdateManufacturerAsyncTest()
+        {
+            await _factory.Locations.UpdateLocationAsync(_locationId, UpdatedName);
+            await _factory.Context.SaveChangesAsync();
+            Location location = await _factory.Locations.GetLocationAsync(_locationId);
+            Assert.AreEqual(_locationId, location.Id);
+            Assert.AreEqual(UpdatedName, location.Name);
         }
 
         [TestMethod]

@@ -35,8 +35,10 @@ namespace DroneFlightLog.Data.Tests
         private const string DroneSerialNumber = "1234567890";
 
         private const string PropertyName = "Wind Speed";
+        private const string UpdatedPropertyName = "Updated Wind Speed";
         private const FlightPropertyDataType PropertyType = FlightPropertyDataType.Number;
         private const decimal PropertyValue = 7.8M;
+        private const decimal UpdatedPropertyValue = 4.67M;
 
         private const string MultiInstancePropertyName = "Some Property";
         private const string DatePropertyName = "Some Date Property";
@@ -49,6 +51,7 @@ namespace DroneFlightLog.Data.Tests
         private IDroneFlightLogFactory<DroneFlightLogDbContext> _factory;
         private int _flightId;
         private int _propertyId;
+        private int _propertyValueId;
 
         [TestInitialize]
         public void TestInitialize()
@@ -82,8 +85,9 @@ namespace DroneFlightLog.Data.Tests
             _factory.Context.SaveChanges();
             _propertyId = property.Id;
 
-            _factory.Properties.AddPropertyValue(_flightId, _propertyId, PropertyValue);
+            FlightPropertyValue value = _factory.Properties.AddPropertyValue(_flightId, _propertyId, PropertyValue);
             _factory.Context.SaveChanges();
+            _propertyValueId = value.Id;
         }
 
         [TestMethod]
@@ -135,6 +139,24 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
+        public void UpdatePropertyTest()
+        {
+            _factory.Properties.UpdateProperty(_propertyId, UpdatedPropertyName);
+            _factory.Context.SaveChanges();
+            FlightProperty property = _factory.Properties.GetProperties().First(p => p.Id == _propertyId);
+            Assert.AreEqual(UpdatedPropertyName, property.Name);
+        }
+
+        [TestMethod]
+        public async Task UpdatePropertyAsyncTest()
+        {
+            await _factory.Properties.UpdatePropertyAsync(_propertyId, UpdatedPropertyName);
+            await _factory.Context.SaveChangesAsync();
+            FlightProperty property = _factory.Properties.GetProperties().First(p => p.Id == _propertyId);
+            Assert.AreEqual(UpdatedPropertyName, property.Name);
+        }
+
+        [TestMethod]
         public void AddPropertyValueTest()
         {
             // The property has been added during test initialisation. All that needs
@@ -158,6 +180,24 @@ namespace DroneFlightLog.Data.Tests
             Assert.AreEqual(_flightId, value.FlightId);
             Assert.AreEqual(_propertyId, value.PropertyId);
             Assert.AreEqual(AsyncPropertyValue, value.NumberValue);
+        }
+
+        [TestMethod]
+        public void UpdatePropertyValueTest()
+        {
+            _factory.Properties.UpdatePropertyValue(_propertyValueId, UpdatedPropertyValue);
+            _factory.Context.SaveChanges();
+            FlightPropertyValue value = _factory.Properties.GetPropertyValues(_flightId).First(v => v.Id == _propertyValueId);
+            Assert.AreEqual(UpdatedPropertyValue, value.NumberValue);
+        }
+
+        [TestMethod]
+        public async Task UpdatePropertyValueAsyncTest()
+        {
+            await _factory.Properties.UpdatePropertyValueAsync(_propertyValueId, UpdatedPropertyValue);
+            await _factory.Context.SaveChangesAsync();
+            FlightPropertyValue value = await _factory.Properties.GetPropertyValuesAsync(_flightId).FirstAsync(v => v.Id == _propertyValueId);
+            Assert.AreEqual(UpdatedPropertyValue, value.NumberValue);
         }
 
         [TestMethod, ExpectedException(typeof(ValueExistsException))]
