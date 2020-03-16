@@ -61,6 +61,22 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
+        public void DeleteUserTest()
+        {
+            _factory.Users.DeleteUser(UserName);
+            IEnumerable<FlightLogUser> users = _factory.Users.GetUsers();
+            Assert.IsFalse(users.Any());
+        }
+
+        [TestMethod]
+        public async Task DeleteUserAsyncTest()
+        {
+            await _factory.Users.DeleteUserAsync(UserName);
+            List<FlightLogUser> users = await _factory.Users.GetUsersAsync().ToListAsync();
+            Assert.IsFalse(users.Any());
+        }
+
+        [TestMethod]
         public void GetUserByIdTest()
         {
             FlightLogUser user = _factory.Users.GetUser(_userId);
