@@ -16,6 +16,7 @@ namespace DroneFlightLog.Data.Tests
         private const string UserName = "Some User";
         private const string AsyncUserName = "Some Other User";
         private const string Password = "password";
+        private const string UpdatedPassword = "newpassword";
 
         private IDroneFlightLogFactory<DroneFlightLogDbContext> _factory;
         private int _userId;
@@ -116,8 +117,24 @@ namespace DroneFlightLog.Data.Tests
         [TestMethod]
         public void FailedAuthenticationTest()
         {
-            bool authenticated = _factory.Users.Authenticate(UserName, "");
+            bool authenticated = _factory.Users.Authenticate(UserName, "the wrong password");
             Assert.IsFalse(authenticated);
+        }
+
+        [TestMethod]
+        public void SetPassswordTest()
+        {
+            _factory.Users.SetPassword(UserName, UpdatedPassword);
+            bool authenticated = _factory.Users.Authenticate(UserName, UpdatedPassword);
+            Assert.IsTrue(authenticated);
+        }
+
+        [TestMethod]
+        public async Task SetPassswordAsyncTest()
+        {
+            await _factory.Users.SetPasswordAsync(UserName, UpdatedPassword);
+            bool authenticated = await _factory.Users.AuthenticateAsync(UserName, UpdatedPassword);
+            Assert.IsTrue(authenticated);
         }
     }
 }
