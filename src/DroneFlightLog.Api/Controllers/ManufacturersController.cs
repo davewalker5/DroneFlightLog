@@ -55,6 +55,29 @@ namespace DroneFlightLog.Api.Controllers
             return manufacturer;
         }
 
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<ActionResult<Manufacturer>> UpdateManufacturerAsync(int id, [FromBody] string name)
+        {
+            Manufacturer manufacturer;
+
+            try
+            {
+                manufacturer = await _factory.Manufacturers.UpdateManufacturerAsync(id, name);
+                await _factory.Context.SaveChangesAsync();
+            }
+            catch (ManufacturerExistsException)
+            {
+                return BadRequest();
+            }
+            catch (ManufacturerNotFoundException)
+            {
+                return NotFound();
+            }
+
+            return manufacturer;
+        }
+
         [HttpPost]
         [Route("")]
         public async Task<ActionResult<Manufacturer>> CreateManufacturerAsync([FromBody] string name)
