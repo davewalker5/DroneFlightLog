@@ -20,25 +20,31 @@
             <th>Drone</th>
             <th>Location</th>
             <th>Operator</th>
-            <th/>
+            <th />
+            <th />
         </tr>
         @foreach (var flight in Model.Flights)
         {
-            <tr>
-                <td valign="center">@flight.StartTimeFormatted</td>
-                <td valign="center" style="white-space: nowrap">@flight.StartDateFormatted</td>
-                <td valign="center">@flight.EndTimeFormatted</td>
-                <td valign="center" style="white-space: nowrap">@flight.EndDateFormatted</td>
-                <td valign="center">@flight.Duration</td>
-                <td valign="center">@flight.Drone.Name</td>
-                <td valign="center">@flight.Location.Name</td>
-                <td valign="center">@flight.GetOperatorName()</td>
-                <td valign="center">
-                    <a class="btn btn-lg" asp-area="" asp-controller="FlightDetails" asp-action="Index" asp-route-id="@flight.Id">
-                        <i class="fas fa-edit"></i>
-                    </a>
-                </td>
-            </tr>
+    <tr>
+        <td valign="center">@flight.StartTimeFormatted</td>
+        <td valign="center" style="white-space: nowrap">@flight.StartDateFormatted</td>
+        <td valign="center">@flight.EndTimeFormatted</td>
+        <td valign="center" style="white-space: nowrap">@flight.EndDateFormatted</td>
+        <td valign="center">@flight.Duration</td>
+        <td valign="center">@flight.Drone.Name</td>
+        <td valign="center">@flight.Location.Name</td>
+        <td valign="center">@flight.GetOperatorName()</td>
+        <td valign="center">
+            <a class="btn btn-lg" asp-area="" asp-controller="Flights" asp-action="Edit" asp-route-id="@flight.Id">
+                <i class="fas fa-edit"></i>
+            </a>
+        </td>
+        <td valign="center">
+            <a class="btn btn-lg" asp-area="" asp-controller="FlightDetails" asp-action="Index" asp-route-id="@flight.Id">
+                <i class="fas fa-sign-in-alt"></i>
+            </a>
+        </td>
+    </tr>
         }
     </table>
 }
