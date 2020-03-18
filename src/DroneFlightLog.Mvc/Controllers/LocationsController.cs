@@ -36,7 +36,7 @@ namespace DroneFlightLog.Mvc.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            return View(new LocationViewModel());
+            return View(new AddLocationViewModel());
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace DroneFlightLog.Mvc.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add(LocationViewModel model)
+        public async Task<IActionResult> Add(AddLocationViewModel model)
         {
             if (ModelState.IsValid)
             {

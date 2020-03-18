@@ -44,9 +44,10 @@ namespace DroneFlightLog.Mvc
             // The typed HttpClient needs to access session via the context
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            // Interactions with the REST service are managed via a typed HttpClient
+            // Interactions with the REST service are managed via typed HttpClients
             // with "lookup" caching for performance
             services.AddSingleton<ICacheWrapper>(s => new CacheWrapper(new MemoryCacheOptions()));
+            services.AddHttpClient<AuthenticationClient>();
             services.AddHttpClient<DroneFlightLogClient>();
 
             // Configure session state for token storage

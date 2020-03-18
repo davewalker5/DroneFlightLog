@@ -12,9 +12,9 @@ namespace DroneFlightLog.Mvc.Controllers
         public const string TokenSessionKey = "Token";
         public const string LoginPath = "/login";
 
-        private readonly DroneFlightLogClient _client;
+        private readonly AuthenticationClient _client;
 
-        public LoginController(DroneFlightLogClient client)
+        public LoginController(AuthenticationClient client)
         {
             _client = client;
         }
