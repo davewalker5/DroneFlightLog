@@ -1,23 +1,19 @@
 ﻿@using DroneFlightLog.Mvc.Entities
 @model FlightPropertyValue
 
-@{
-    string controlReadonly = (Model.Id > 0) ? "readonly" : "";
-}
-
 <div class="col">
     <strong>@Html.Label(Model.Property.Name)</strong>
     <div class="input-group">
         @switch (Model.Property.DataType)
         {
             case FlightPropertyDataType.Date:
-                <input name="@Model.ControlName" id="@Model.ControlName" value="@Model.DateValueFormatted" class="form-control" @controlReadonly/>
+                <input name="@Model.ControlName" id="@Model.ControlName" value="@Model.DateValueFormatted" class="form-control" />
                 break;
             case FlightPropertyDataType.Number:
-                <input name="@Model.ControlName" id="@Model.ControlName" value="@Model.NumberValue" class="form-control" @controlReadonly/>
+                <input name="@Model.ControlName" id="@Model.ControlName" value="@Model.NumberValue" class="form-control" />
                 break;
             case FlightPropertyDataType.String:
-                <input name="@Model.ControlName" id="@Model.ControlName" value="@Model.StringValue" class="form-control" @controlReadonly/>
+                <input name="@Model.ControlName" id="@Model.ControlName" value="@Model.StringValue" class="form-control" />
                 break;
             default:
                 break;

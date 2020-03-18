@@ -37,7 +37,7 @@ namespace DroneFlightLog.Mvc.Controllers
         {
             Flight flight = await _flights.GetFlightAsync(id);
             FlightDetailsViewModel model = _mapper.Map<FlightDetailsViewModel>(flight);
-            await LoadModelProperties(model);
+            await LoadModelPropertiesAsync(model);
             return View(model);
         }
 
@@ -56,7 +56,7 @@ namespace DroneFlightLog.Mvc.Controllers
             // The (complex) model properties will not be bound by the model binder
             // and so need to be loaded, here, and updated using the dictionary of
             // property values that are bound by the model binder
-            await LoadModelProperties(model);
+            await LoadModelPropertiesAsync(model);
 
             if (ModelState.IsValid)
             {
@@ -64,34 +64,20 @@ namespace DroneFlightLog.Mvc.Controllers
                 model.UpdatePropertiesFromBoundValues();
 
                 // Save newly added property values
-                // foreach (FlightPropertyValue value in model.Properties.Where(p => p.IsNewPropertyValue))
                 for (int i = 0; i < model.Properties.Count; i++)
                 {
                     FlightPropertyValue value = model.Properties[i];
                     if (value.IsNewPropertyValue)
                     {
-                        // Create a new property value
-                        FlightPropertyValue updated;
-                        switch (value.Property.DataType)
-                        {
-                            case FlightPropertyDataType.Date:
-                                // TODO Date value creation
-                                updated = value;
-                                break;
-                            case FlightPropertyDataType.Number:
-                                updated = await _properties.AddFlightPropertyNumberValueAsync(
-                                                model.Id, value.Property.Id, value.NumberValue);
-                                break;
-                            case FlightPropertyDataType.String:
-                                updated = await _properties.AddFlightPropertyStringValueAsync(
-                                                model.Id, value.Property.Id, value.StringValue);
-                                break;
-                            default:
-                                updated = value;
-                                break;
-                        }
-
-                        model.Properties[i] = updated;
+                        model.Properties[i] = await AddNewPropertyValueAsync(model.Id, model.Properties[i]);
+                    }
+                    else if (value.Id > 0)
+                    {
+                        model.Properties[i] = await _properties.UpdateFlightPropertyValueAsync(
+                                                                    value.Id,
+                                                                    value.NumberValue,
+                                                                    value.StringValue,
+                                                                    value.DateValue);
                     }
                 }
             }
@@ -104,7 +90,7 @@ namespace DroneFlightLog.Mvc.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        private async Task LoadModelProperties(FlightDetailsViewModel model)
+        private async Task LoadModelPropertiesAsync(FlightDetailsViewModel model)
         {
             // Load any existing flight property values
             model.Properties = await _properties.GetFlightPropertyValuesAsync(model.Id);
@@ -118,6 +104,38 @@ namespace DroneFlightLog.Mvc.Controllers
             model.MergeProperties(availableProperties);
 
             model.PropertiesPerRow = _settings.Value.FlightPropertiesPerRow;
+        }
+
+        /// <summary>
+        /// Create a new flight property value
+        /// </summary>
+        /// <param name="flightId"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private async Task<FlightPropertyValue> AddNewPropertyValueAsync(int flightId, FlightPropertyValue value)
+        {
+            // Create a new property value
+            FlightPropertyValue updated;
+            switch (value.Property.DataType)
+            {
+                case FlightPropertyDataType.Date:
+                    // TODO Date value creation
+                    updated = value;
+                    break;
+                case FlightPropertyDataType.Number:
+                    updated = await _properties.AddFlightPropertyNumberValueAsync(
+                                    flightId, value.Property.Id, value.NumberValue);
+                    break;
+                case FlightPropertyDataType.String:
+                    updated = await _properties.AddFlightPropertyStringValueAsync(
+                                    flightId, value.Property.Id, value.StringValue);
+                    break;
+                default:
+                    updated = value;
+                    break;
+            }
+
+            return updated;
         }
     }
 }

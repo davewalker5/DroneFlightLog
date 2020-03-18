@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -151,6 +152,31 @@ namespace DroneFlightLog.Mvc.Api
 
             string data = JsonConvert.SerializeObject(template);
             string json = await SendIndirectAsync(ValuesRouteKey, data, HttpMethod.Post);
+
+            FlightPropertyValue value = JsonConvert.DeserializeObject<FlightPropertyValue>(json);
+            return value;
+        }
+
+        /// <summary>
+        /// Update an existing property value
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="numberValue"></param>
+        /// <param name="stringValue"></param>
+        /// <param name="dateValue"></param>
+        /// <returns></returns>
+        public async Task<FlightPropertyValue> UpdateFlightPropertyValueAsync(int id, decimal? numberValue, string stringValue, DateTime? dateValue)
+        {
+            dynamic template = new
+            {
+                Id = id,
+                NumberValue = numberValue,
+                StringValue = stringValue,
+                DateValue = dateValue
+            };
+
+            string data = JsonConvert.SerializeObject(template);
+            string json = await SendIndirectAsync(ValuesRouteKey, data, HttpMethod.Put);
 
             FlightPropertyValue value = JsonConvert.DeserializeObject<FlightPropertyValue>(json);
             return value;

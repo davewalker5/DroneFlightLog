@@ -38,15 +38,20 @@ namespace DroneFlightLog.Mvc.Models
         }
 
         /// <summary>
-        /// Identify properties that have not already been saved and apply the
-        /// updated values to them from the bound property values dictionary
+        /// Update the model's flight property values from the bound property
+        /// values dictionary
         /// </summary>
         public void UpdatePropertiesFromBoundValues()
         {
-            foreach (var kvp in BoundPropertyValues.Where(v => !string.IsNullOrEmpty(v.Value)))
+            // Iterate over the bound values
+            foreach (var kvp in BoundPropertyValues)
             {
-                FlightPropertyValue value = Properties.FirstOrDefault(p => (p.Id == 0) && (p.Property.Id == kvp.Key));
-                if (value != null)
+                // Find the property value that is associated with the bound value property
+                FlightPropertyValue value = Properties.FirstOrDefault(p => p.Property.Id == kvp.Key);
+
+                // Update the value if either it corresponds to a value that's already
+                // been saved (updating) or the associated bound value isn't empty (creating)
+                if ((value != null) && ((value.Id > 0) || !string.IsNullOrEmpty(kvp.Value)))
                 {
                     switch (value.Property.DataType)
                     {
