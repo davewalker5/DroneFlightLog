@@ -48,36 +48,6 @@ namespace DroneFlightLog.Mvc.Api
         }
 
         /// <summary>
-        /// Return a list of locations
-        /// </summary>
-        /// <returns></returns>
-        public async Task<List<Location>> GetLocationsAsync()
-        {
-            List<Location> locations = _cache.Get<List<Location>>(CacheLocations);
-            if (locations == null)
-            {
-                string json = await SendIndirectAsync("Locations", null, HttpMethod.Get);
-                locations = JsonConvert.DeserializeObject<List<Location>>(json);
-                _cache.Set(CacheLocations, locations, _settings.Value.CacheLifetimeSeconds);
-            }
-            return locations;
-        }
-
-        /// <summary>
-        /// Create a new location
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public async Task<Location> AddLocationAsync(string name)
-        {
-            _cache.Remove(CacheLocations);
-            string data = $"\"{name}\"";
-            string json = await SendIndirectAsync("Locations", data, HttpMethod.Post);
-            Location location = JsonConvert.DeserializeObject<Location>(json);
-            return location;
-        }
-
-        /// <summary>
         /// Return a list of operator details
         /// </summary>
         /// <returns></returns>

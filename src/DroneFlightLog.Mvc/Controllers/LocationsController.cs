@@ -11,9 +11,9 @@ namespace DroneFlightLog.Mvc.Controllers
     [Authorize]
     public class LocationsController : Controller
     {
-        private readonly DroneFlightLogClient _client;
+        private readonly LocationClient _client;
 
-        public LocationsController(DroneFlightLogClient client)
+        public LocationsController(LocationClient client)
         {
             _client = client;
         }

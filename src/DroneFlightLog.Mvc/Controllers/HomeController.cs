@@ -15,11 +15,13 @@ namespace DroneFlightLog.Mvc.Controllers
     public class HomeController : Controller
     {
         private readonly DroneClient _drones;
+        private readonly LocationClient _locations;
         private readonly DroneFlightLogClient _client;
 
-        public HomeController(DroneClient drones, DroneFlightLogClient client)
+        public HomeController(DroneClient drones, LocationClient locations, DroneFlightLogClient client)
         {
             _drones = drones;
+            _locations = locations;
             _client = client;
         }
 
@@ -31,7 +33,7 @@ namespace DroneFlightLog.Mvc.Controllers
         public async Task<IActionResult> Index()
         {
             List<Drone> drones = await _drones.GetDronesAsync();
-            List<Location> locations = await _client.GetLocationsAsync();
+            List<Location> locations = await _locations.GetLocationsAsync();
             List<Operator> operators = await _client.GetOperatorsAsync();
 
             FlightViewModel model = new FlightViewModel();
@@ -72,7 +74,7 @@ namespace DroneFlightLog.Mvc.Controllers
                 // If the model state isn't valid, load the lists of drones,
                 // locations and operators and redisplay the flight logging page
                 List<Drone> drones = await _drones.GetDronesAsync();
-                List<Location> locations = await _client.GetLocationsAsync();
+                List<Location> locations = await _locations.GetLocationsAsync();
                 List<Operator> operators = await _client.GetOperatorsAsync();
 
                 model.SetDrones(drones);
