@@ -70,8 +70,7 @@ namespace DroneFlightLog.Mvc.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            Manufacturer manufacturer = await _client.GetManufacturer(id);
-            EditManufacturerViewModel model = _mapper.Map<EditManufacturerViewModel>(manufacturer);
+            Manufacturer model = await _client.GetManufacturer(id);
             return View(model);
         }
 
@@ -82,7 +81,7 @@ namespace DroneFlightLog.Mvc.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(EditManufacturerViewModel model)
+        public async Task<IActionResult> Edit(Manufacturer model)
         {
             IActionResult result;
 

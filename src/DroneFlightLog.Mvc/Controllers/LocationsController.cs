@@ -70,8 +70,7 @@ namespace DroneFlightLog.Mvc.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            Location location = await _client.GetLocation(id);
-            EditLocationViewModel model = _mapper.Map<EditLocationViewModel>(location);
+            Location model = await _client.GetLocation(id);
             return View(model);
         }
 
@@ -82,7 +81,7 @@ namespace DroneFlightLog.Mvc.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(EditLocationViewModel model)
+        public async Task<IActionResult> Edit(Location model)
         {
             IActionResult result;
 

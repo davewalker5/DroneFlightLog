@@ -1,4 +1,4 @@
-﻿@model DroneFlightLog.Mvc.Models.EditLocationViewModel
+﻿@model DroneFlightLog.Mvc.Entities.Location
 
 @{
     ViewData["Title"] = "Edit Location";
@@ -15,16 +15,6 @@
             </div>
         </div>
         <hr />
-
-        @if (!string.IsNullOrEmpty(Model.Message))
-        {
-            <div class="row">
-                <div class="col-md">
-                    <span>@Html.Raw(Model.Message)</span>
-                </div>
-            </div>
-            <br />
-        }
 
         @await Html.PartialAsync("Location", Model);
     }

@@ -1,4 +1,4 @@
-﻿@model DroneFlightLog.Mvc.Models.EditManufacturerViewModel
+﻿@model DroneFlightLog.Mvc.Entities.Manufacturer
 
 @{
     ViewData["Title"] = "Edit Manufacturer";
@@ -13,16 +13,6 @@
             </div>
         </div>
         <hr />
-
-        @if (!string.IsNullOrEmpty(Model.Message))
-        {
-            <div class="row">
-                <div class="col-md">
-                    <span>@Html.Raw(Model.Message)</span>
-                </div>
-            </div>
-            <br />
-        }
 
         @await Html.PartialAsync("Manufacturer", Model);
     }
