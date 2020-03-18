@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using DroneFlightLog.Mvc.Api;
 using DroneFlightLog.Mvc.Entities;
 using DroneFlightLog.Mvc.Models;
@@ -13,11 +14,13 @@ namespace DroneFlightLog.Mvc.Controllers
     {
         private readonly ModelClient _models;
         private readonly DroneClient _drones;
+        private readonly IMapper _mapper;
 
-        public DronesController(ModelClient models, DroneClient drones)
+        public DronesController(ModelClient models, DroneClient drones, IMapper mapper)
         {
             _models = models;
             _drones = drones;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -39,7 +42,7 @@ namespace DroneFlightLog.Mvc.Controllers
         public async Task<IActionResult> Add()
         {
             List<Model> models = await _models.GetModelsAsync();
-            DroneViewModel model = new DroneViewModel();
+            AddDroneViewModel model = new AddDroneViewModel();
             model.SetModels(models);
             return View(model);
         }
@@ -51,7 +54,7 @@ namespace DroneFlightLog.Mvc.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add(DroneViewModel droneModel)
+        public async Task<IActionResult> Add(AddDroneViewModel droneModel)
         {
             if (ModelState.IsValid)
             {
@@ -65,6 +68,47 @@ namespace DroneFlightLog.Mvc.Controllers
             droneModel.SetModels(models);
 
             return View(droneModel);
+        }
+
+        /// <summary>
+        /// Serve the drone editing page
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            Drone drone = await _drones.GetDroneAsync(id);
+            List<Model> models = await _models.GetModelsAsync();
+            EditDroneViewModel model = _mapper.Map<EditDroneViewModel>(drone);
+            model.SetModels(models);
+            return View(model);
+        }
+
+        /// <summary>
+        /// Handle POST events to save updated drones
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(EditDroneViewModel droneModel)
+        {
+            IActionResult result;
+
+            if (ModelState.IsValid)
+            {
+                await _drones.UpdateDroneAsync(droneModel.Id, droneModel.Name, droneModel.SerialNumber, droneModel.ModelId);
+                result = RedirectToAction("Index");
+            }
+            else
+            {
+                List<Model> models = await _models.GetModelsAsync();
+                droneModel.SetModels(models);
+                result = View(droneModel);
+            }
+
+            return result;
         }
     }
 }

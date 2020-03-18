@@ -42,7 +42,7 @@ namespace DroneFlightLog.Mvc.Api
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<Model> GetModel(int id)
+        public async Task<Model> GetModelAsync(int id)
         {
             // TODO : This needs to be replaced with a call to retrieve a single
             // model by Id. For now, retrieve them all then pick the one required

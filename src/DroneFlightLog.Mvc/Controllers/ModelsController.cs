@@ -78,7 +78,7 @@ namespace DroneFlightLog.Mvc.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            Model droneModel = await _models.GetModel(id);
+            Model droneModel = await _models.GetModelAsync(id);
             List<Manufacturer> manufacturers = await _manufacturers.GetManufacturersAsync();
             EditModelViewModel model = _mapper.Map<EditModelViewModel>(droneModel);
             model.SetManufacturers(manufacturers);

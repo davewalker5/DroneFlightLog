@@ -68,7 +68,7 @@ namespace DroneFlightLog.Mvc.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            Manufacturer model = await _client.GetManufacturer(id);
+            Manufacturer model = await _client.GetManufacturerAsync(id);
             return View(model);
         }
 

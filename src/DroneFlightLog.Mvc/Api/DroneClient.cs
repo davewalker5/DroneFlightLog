@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using DroneFlightLog.Mvc.Configuration;
@@ -37,6 +38,20 @@ namespace DroneFlightLog.Mvc.Api
         }
 
         /// <summary>
+        /// Return the drone with the specified Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<Drone> GetDroneAsync(int id)
+        {
+            // TODO : This needs to be replaced with a call to retrieve a single
+            // drone by Id. For now, retrieve them all then pick the one required
+            List<Drone> drones = await GetDronesAsync();
+            Drone drone = drones.First(l => l.Id == id);
+            return drone;
+        }
+
+        /// <summary>
         /// Create a new drone
         /// </summary>
         /// <param name="name"></param>
@@ -56,6 +71,32 @@ namespace DroneFlightLog.Mvc.Api
 
             string data = JsonConvert.SerializeObject(template);
             string json = await SendIndirectAsync(RouteKey, data, HttpMethod.Post);
+
+            Drone drone = JsonConvert.DeserializeObject<Drone>(json);
+            return drone;
+        }
+
+        /// <summary>
+        /// Update an existing drone
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="serialNumber"></param>
+        /// <param name="modelId"></param>
+        /// <returns></returns>
+        public async Task<Drone> UpdateDroneAsync(int id, string name, string serialNumber, int modelId)
+        {
+            _cache.Remove(CacheKey);
+
+            dynamic template = new
+            {
+                Id = id,
+                Name = name,
+                SerialNumber = serialNumber,
+                ModelId = modelId
+            };
+
+            string data = JsonConvert.SerializeObject(template);
+            string json = await SendIndirectAsync(RouteKey, data, HttpMethod.Put);
 
             Drone drone = JsonConvert.DeserializeObject<Drone>(json);
             return drone;

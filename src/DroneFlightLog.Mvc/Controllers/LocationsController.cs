@@ -68,7 +68,7 @@ namespace DroneFlightLog.Mvc.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            Location model = await _client.GetLocation(id);
+            Location model = await _client.GetLocationAsync(id);
             return View(model);
         }
 
