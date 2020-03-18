@@ -14,6 +14,8 @@ namespace DroneFlightLog.Mvc.Configuration
             CreateMap<Model, EditModelViewModel>();
             CreateMap<Drone, AddDroneViewModel>();
             CreateMap<Drone, EditDroneViewModel>();
+            CreateMap<FlightProperty, AddFlightPropertyViewModel>();
+            CreateMap<FlightProperty, EditFlightPropertyViewModel>();
             CreateMap<Flight, FlightDetailsViewModel>();
         }
     }

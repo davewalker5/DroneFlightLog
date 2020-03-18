@@ -23,6 +23,7 @@
         <th>Name</th>
         <th>DataType</th>
         <th>Single Instance</th>
+        <th />
     </tr>
     @foreach (var property in Model)
     {
@@ -30,6 +31,11 @@
             <td valign="center">@property.Name</td>
             <td valign="center">@property.DataType.ToString()</td>
             <td valign="center">@property.IsSingleInstanceYesNo</td>
+            <td valign="center">
+                <a class="btn btn-lg" asp-area="" asp-controller="FlightProperties" asp-action="Edit" asp-route-id="@property.Id">
+                    <i class="fas fa-edit"></i>
+                </a>
+            </td>
         </tr>
     }
 </table>

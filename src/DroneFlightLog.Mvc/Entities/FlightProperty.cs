@@ -11,6 +11,7 @@ namespace DroneFlightLog.Mvc.Entities
         [Required(ErrorMessage = "You must provide a name")]
         public string Name { get; set; }
 
+        [DisplayName("Data Type")]
         public FlightPropertyDataType DataType { get; set; }
 
         [DisplayName("Single Instance")]

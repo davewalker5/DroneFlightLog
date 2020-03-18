@@ -39,6 +39,20 @@ namespace DroneFlightLog.Mvc.Api
         }
 
         /// <summary>
+        /// Return the flight property with the specified Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<FlightProperty> GetFlightPropertyAsync(int id)
+        {
+            // TODO : This needs to be replaced with a call to retrieve a single
+            // property by Id. For now, retrieve them all then pick the one required
+            List<FlightProperty> poperties = await GetFlightPropertiesAsync();
+            FlightProperty property = poperties.First(l => l.Id == id);
+            return property;
+        }
+
+        /// <summary>
         /// Create a new flight property
         /// </summary>
         /// <param name="name"></param>
@@ -58,6 +72,25 @@ namespace DroneFlightLog.Mvc.Api
 
             string data = JsonConvert.SerializeObject(template);
             string json = await SendIndirectAsync(PropertiesRouteKey, data, HttpMethod.Post);
+
+            FlightProperty property = JsonConvert.DeserializeObject<FlightProperty>(json);
+            return property;
+        }
+
+        /// <summary>
+        /// Update an existing flight property
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="dataType"></param>
+        /// <param name="isSingleInstance"></param>
+        /// <returns></returns>
+        public async Task<FlightProperty> UpdateFlightPropertyAsync(int id, string name)
+        {
+            _cache.Remove(CacheKey);
+            string data = $"\"{name}\"";
+            string baseRoute = _settings.Value.ApiRoutes.First(r => r.Name == PropertiesRouteKey).Route;
+            string route = $"{baseRoute}/{id}";
+            string json = await SendDirectAsync(route, data, HttpMethod.Put);
 
             FlightProperty property = JsonConvert.DeserializeObject<FlightProperty>(json);
             return property;

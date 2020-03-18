@@ -1,0 +1,58 @@
+﻿@model DroneFlightLog.Mvc.Models.EditFlightPropertyViewModel
+
+@{
+    ViewData["Title"] = "Edit Flight Property";
+}
+
+<div class="container-fluid">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="row">
+            <div class="col-md">
+                <span style="font-size: 1.2rem"><strong>Edit Flight Property</strong></span>
+            </div>
+        </div>
+        <hr />
+
+        <div class="row">
+            <div class="col-md">
+                <strong>@Html.LabelFor(m => m.Name)</strong>
+                <div class="input-group">
+                    @Html.EditorFor(m => m.Name, new { @class = "form-control" })
+                </div>
+                <span>@Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })</span>
+            </div>
+        </div>
+        <br />
+
+        <div class="row">
+            <div class="col-md">
+                <strong>@Html.LabelFor(m => m.DataType)</strong>
+                <div class="input-group">
+                    @Html.Raw(Model.DataType.ToString())
+                </div>
+            </div>
+        </div>
+        <br />
+
+        <div class="row">
+            <div class="col-md">
+                <strong>@Html.LabelFor(m => m.IsSingleInstance)</strong>
+                <div class="input-group">
+                    @Html.Raw(Model.IsSingleInstanceYesNo)
+                </div>
+            </div>
+        </div>
+        <br />
+
+        <div class="row">
+            <div class="col-md">
+                <div class="input-group">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
