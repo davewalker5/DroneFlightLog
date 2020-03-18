@@ -84,13 +84,19 @@ namespace DroneFlightLog.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(EditManufacturerViewModel model)
         {
+            IActionResult result;
+
             if (ModelState.IsValid)
             {
-                Manufacturer manufacturer = await _client.UpdateManufacturerAsync(model.Id, model.Name);
-                model.Message = $"Manufacturer '{manufacturer.Name}' updated successfully";
+                await _client.UpdateManufacturerAsync(model.Id, model.Name);
+                result = RedirectToAction("Index");
+            }
+            else
+            {
+                result = View(model);
             }
 
-            return View(model);
+            return result;
         }
     }
 }

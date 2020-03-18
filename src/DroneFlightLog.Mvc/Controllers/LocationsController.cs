@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using DroneFlightLog.Mvc.Api;
 using DroneFlightLog.Mvc.Entities;
 using DroneFlightLog.Mvc.Models;
@@ -12,10 +13,12 @@ namespace DroneFlightLog.Mvc.Controllers
     public class LocationsController : Controller
     {
         private readonly LocationClient _client;
+        private readonly IMapper _mapper;
 
-        public LocationsController(LocationClient client)
+        public LocationsController(LocationClient client, IMapper mapper)
         {
             _client = client;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -57,6 +60,43 @@ namespace DroneFlightLog.Mvc.Controllers
             }
 
             return View(model);
+        }
+
+        /// <summary>
+        /// Serve the location editing page
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            Location location = await _client.GetLocation(id);
+            EditLocationViewModel model = _mapper.Map<EditLocationViewModel>(location);
+            return View(model);
+        }
+
+        /// <summary>
+        /// Handle POST events to save updated locations
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(EditLocationViewModel model)
+        {
+            IActionResult result;
+
+            if (ModelState.IsValid)
+            {
+                await _client.UpdateLocationAsync(model.Id, model.Name);
+                result = RedirectToAction("Index");
+            }
+            else
+            {
+                result = View(model);
+            }
+
+            return result;
         }
     }
 }

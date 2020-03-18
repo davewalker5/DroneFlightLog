@@ -67,7 +67,7 @@ namespace DroneFlightLog.Mvc.Api
         }
 
         /// <summary>
-        /// Create a new manufacturer
+        /// Update an existing manufacturer
         /// </summary>
         /// <param name="id"></param>
         /// <param name="name"></param>

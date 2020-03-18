@@ -21,11 +21,17 @@
 <table class="table">
     <tr>
         <th>Name</th>
+        <th />
     </tr>
     @foreach (var location in Model)
     {
         <tr>
             <td valign="center">@location.Name</td>
+            <td valign="center">
+                <a class="btn btn-lg" asp-area="" asp-controller="Locations" asp-action="Edit" asp-route-id="@location.Id">
+                    <i class="fas fa-edit"></i>
+                </a>
+            </td>
         </tr>
     }
 </table>

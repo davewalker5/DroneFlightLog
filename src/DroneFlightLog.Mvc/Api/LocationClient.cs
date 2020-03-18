@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using DroneFlightLog.Mvc.Configuration;
@@ -37,6 +38,21 @@ namespace DroneFlightLog.Mvc.Api
         }
 
         /// <summary>
+        /// Return the manufacturer with the specified Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<Location> GetLocation(int id)
+        {
+            // TODO : This needs to be replaced with a call to retrieve a single
+            // location by Id. For now, retrieve them all then pick the one
+            // required
+            List<Location> locations = await GetLocationsAsync();
+            Location location = locations.First(l => l.Id == id);
+            return location;
+        }
+
+        /// <summary>
         /// Create a new location
         /// </summary>
         /// <param name="name"></param>
@@ -46,6 +62,22 @@ namespace DroneFlightLog.Mvc.Api
             _cache.Remove(CacheKey);
             string data = $"\"{name}\"";
             string json = await SendIndirectAsync(RouteKey, data, HttpMethod.Post);
+            Location location = JsonConvert.DeserializeObject<Location>(json);
+            return location;
+        }
+
+        /// <summary>
+        /// Update an existing location
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public async Task<Location> UpdateLocationAsync(int id, string name)
+        {
+            _cache.Remove(CacheKey);
+            string data = $"\"{name}\"";
+            string route = @$"{_settings.Value.ApiRoutes.First(r => r.Name == RouteKey).Route}/{id}/";
+            string json = await SendDirectAsync(route, data, HttpMethod.Put);
             Location location = JsonConvert.DeserializeObject<Location>(json);
             return location;
         }
