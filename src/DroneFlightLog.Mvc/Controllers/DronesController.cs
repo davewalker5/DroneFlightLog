@@ -11,10 +11,12 @@ namespace DroneFlightLog.Mvc.Controllers
     [Authorize]
     public class DronesController : Controller
     {
+        private readonly ModelClient _models;
         private readonly DroneFlightLogClient _client;
 
-        public DronesController(DroneFlightLogClient client)
+        public DronesController(ModelClient models, DroneFlightLogClient client)
         {
+            _models = models;
             _client = client;
         }
 
@@ -36,7 +38,7 @@ namespace DroneFlightLog.Mvc.Controllers
         [HttpGet]
         public async Task<IActionResult> Add()
         {
-            List<Model> models = await _client.GetModelsAsync();
+            List<Model> models = await _models.GetModelsAsync();
             DroneViewModel model = new DroneViewModel();
             model.SetModels(models);
             return View(model);
@@ -59,7 +61,7 @@ namespace DroneFlightLog.Mvc.Controllers
                 droneModel.Message = $"Model '{drone.Name}' added successfully";
             }
 
-            List<Model> models = await _client.GetModelsAsync();
+            List<Model> models = await _models.GetModelsAsync();
             droneModel.SetModels(models);
 
             return View(droneModel);

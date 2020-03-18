@@ -11,11 +11,13 @@ namespace DroneFlightLog.Mvc.Controllers
     [Authorize]
     public class ModelsController : Controller
     {
-        private readonly DroneFlightLogClient _client;
+        private readonly ManufacturerClient _manufacturers;
+        private readonly ModelClient _models;
 
-        public ModelsController(DroneFlightLogClient client)
+        public ModelsController(ManufacturerClient manufacturers, ModelClient models)
         {
-            _client = client;
+            _manufacturers = manufacturers;
+            _models = models;
         }
 
         /// <summary>
@@ -25,7 +27,7 @@ namespace DroneFlightLog.Mvc.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            List<Model> models = await _client.GetModelsAsync();
+            List<Model> models = await _models.GetModelsAsync();
             return View(models);
         }
 
@@ -36,7 +38,7 @@ namespace DroneFlightLog.Mvc.Controllers
         [HttpGet]
         public async Task<IActionResult> Add()
         {
-            List<Manufacturer> manufacturers = await _client.GetManufacturersAsync();
+            List<Manufacturer> manufacturers = await _manufacturers.GetManufacturersAsync();
             ModelViewModel model = new ModelViewModel();
             model.SetManufacturers(manufacturers);
             return View(model);
@@ -53,13 +55,13 @@ namespace DroneFlightLog.Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                Model droneModel = await _client.AddModelAsync(model.Name, model.ManufacturerId);
+                Model droneModel = await _models.AddModelAsync(model.Name, model.ManufacturerId);
                 ModelState.Clear();
                 model.Clear();
                 model.Message = $"Model '{droneModel.Name}' added successfully";
             }
 
-            List<Manufacturer> manufacturers = await _client.GetManufacturersAsync();
+            List<Manufacturer> manufacturers = await _manufacturers.GetManufacturersAsync();
             model.SetManufacturers(manufacturers);
 
             return View(model);

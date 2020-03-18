@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using DroneFlightLog.Mvc.Api;
@@ -13,10 +12,10 @@ namespace DroneFlightLog.Mvc.Controllers
     [Authorize]
     public class ManufacturersController : Controller
     {
-        private readonly DroneFlightLogClient _client;
+        private readonly ManufacturerClient _client;
         private readonly IMapper _mapper;
 
-        public ManufacturersController(DroneFlightLogClient client, IMapper mapper)
+        public ManufacturersController(ManufacturerClient client, IMapper mapper)
         {
             _client = client;
             _mapper = mapper;

@@ -16,7 +16,7 @@ namespace DroneFlightLog.Mvc.Api
     {
         protected HttpClient _client { get; private set; }
         protected IOptions<AppSettings> _settings { get; private set; }
-        private readonly ICacheWrapper _cache;
+        protected ICacheWrapper _cache { get; private set; }
 
         public DroneFlightLogClientBase(HttpClient client, IOptions<AppSettings> settings, IHttpContextAccessor accessor, ICacheWrapper cache)
         {

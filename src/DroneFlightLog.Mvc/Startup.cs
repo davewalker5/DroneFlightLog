@@ -48,6 +48,8 @@ namespace DroneFlightLog.Mvc
             // with "lookup" caching for performance
             services.AddSingleton<ICacheWrapper>(s => new CacheWrapper(new MemoryCacheOptions()));
             services.AddHttpClient<AuthenticationClient>();
+            services.AddHttpClient<ManufacturerClient>();
+            services.AddHttpClient<ModelClient>();
             services.AddHttpClient<DroneFlightLogClient>();
 
             // Configure session state for token storage
