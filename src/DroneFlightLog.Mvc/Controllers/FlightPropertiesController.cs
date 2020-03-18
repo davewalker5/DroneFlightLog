@@ -11,9 +11,9 @@ namespace DroneFlightLog.Mvc.Controllers
     [Authorize]
     public class FlightPropertiesController : Controller
     {
-        private readonly DroneFlightLogClient _client;
+        private readonly FlightPropertyClient _client;
 
-        public FlightPropertiesController(DroneFlightLogClient client)
+        public FlightPropertiesController(FlightPropertyClient client)
         {
             _client = client;
         }

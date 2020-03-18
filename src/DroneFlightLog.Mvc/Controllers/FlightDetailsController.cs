@@ -14,12 +14,14 @@ namespace DroneFlightLog.Mvc.Controllers
     [Authorize]
     public class FlightDetailsController : Controller
     {
+        private readonly FlightPropertyClient _properties;
         private readonly DroneFlightLogClient _client;
         private readonly IOptions<AppSettings> _settings;
         private readonly IMapper _mapper;
 
-        public FlightDetailsController(DroneFlightLogClient client, IOptions<AppSettings> settings, IMapper mapper)
+        public FlightDetailsController(FlightPropertyClient properties, DroneFlightLogClient client, IOptions<AppSettings> settings, IMapper mapper)
         {
+            _properties = properties;
             _client = client;
             _settings = settings;
             _mapper = mapper;
@@ -77,11 +79,11 @@ namespace DroneFlightLog.Mvc.Controllers
                                 updated = value;
                                 break;
                             case FlightPropertyDataType.Number:
-                                updated = await _client.AddFlightPropertyNumberValueAsync(
+                                updated = await _properties.AddFlightPropertyNumberValueAsync(
                                                 model.Id, value.Property.Id, value.NumberValue);
                                 break;
                             case FlightPropertyDataType.String:
-                                updated = await _client.AddFlightPropertyStringValueAsync(
+                                updated = await _properties.AddFlightPropertyStringValueAsync(
                                                 model.Id, value.Property.Id, value.StringValue);
                                 break;
                             default:
@@ -105,14 +107,14 @@ namespace DroneFlightLog.Mvc.Controllers
         private async Task LoadModelProperties(FlightDetailsViewModel model)
         {
             // Load any existing flight property values
-            model.Properties = await _client.GetFlightPropertyValuesAsync(model.Id);
+            model.Properties = await _properties.GetFlightPropertyValuesAsync(model.Id);
 
             // The model will only contain values for properties where the value
             // has been set. This is not necessarily all available properties but
             // we need controls for all properties to be rendered so we can enter
             // values for them. To achieve this, merge in the list of available
             // properties (with empty values)
-            List<FlightProperty> availableProperties = await _client.GetFlightPropertiesAsync();
+            List<FlightProperty> availableProperties = await _properties.GetFlightPropertiesAsync();
             model.MergeProperties(availableProperties);
 
             model.PropertiesPerRow = _settings.Value.FlightPropertiesPerRow;
