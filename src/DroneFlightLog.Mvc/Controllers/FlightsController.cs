@@ -49,7 +49,7 @@ namespace DroneFlightLog.Mvc.Controllers
         }
 
         /// <summary>
-        /// Handle POST events to save new locations
+        /// Handle POST events to save new flights
         /// </summary>
         /// <returns></returns>
         [HttpPost]
@@ -115,6 +115,50 @@ namespace DroneFlightLog.Mvc.Controllers
             model.EndTime = model.Start.ToString("HH:mm");
 
             return View(model);
+        }
+
+        /// <summary>
+        /// Handle POST events to update existing flights
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(EditFlightViewModel model)
+        {
+            IActionResult result;
+
+            if (ModelState.IsValid)
+            {
+                DateTime start = CombineDateAndTime(model.StartDate, model.StartTime);
+                DateTime end = CombineDateAndTime(model.EndDate, model.EndTime);
+
+                Flight flight = await _flights.UpdateFlightAsync(
+                                                model.Id,
+                                                model.DroneId,
+                                                model.LocationId,
+                                                model.OperatorId,
+                                                start,
+                                                end);
+
+                // Redirect to the flight details/properties page
+                result = RedirectToAction("Index", "FlightDetails", new { id = flight.Id });
+            }
+            else
+            {
+                // If the model state isn't valid, load the lists of drones,
+                // locations and operators and redisplay the flight logging page
+                List<Drone> drones = await _drones.GetDronesAsync();
+                List<Location> locations = await _locations.GetLocationsAsync();
+                List<Operator> operators = await _operators.GetOperatorsAsync();
+
+                model.SetDrones(drones);
+                model.SetLocations(locations);
+                model.SetOperators(operators);
+
+                result = View(model);
+            }
+
+            return result;
         }
 
         /// <summary>
