@@ -17,14 +17,14 @@ namespace DroneFlightLog.Mvc.Controllers
         private readonly DroneClient _drones;
         private readonly LocationClient _locations;
         private readonly OperatorClient _operators;
-        private readonly DroneFlightLogClient _client;
+        private readonly FlightClient _flights;
 
-        public HomeController(DroneClient drones, LocationClient locations, OperatorClient operators, DroneFlightLogClient client)
+        public HomeController(DroneClient drones, LocationClient locations, OperatorClient operators, FlightClient flights)
         {
             _drones = drones;
             _locations = locations;
             _operators = operators;
-            _client = client;
+            _flights = flights;
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace DroneFlightLog.Mvc.Controllers
                 DateTime start = CombineDateAndTime(model.StartDate, model.StartTime);
                 DateTime end = CombineDateAndTime(model.EndDate, model.EndTime);
 
-                Flight flight = await _client.AddFlightAsync(
+                Flight flight = await _flights.AddFlightAsync(
                                                 model.DroneId,
                                                 model.LocationId,
                                                 model.OperatorId,

@@ -15,14 +15,14 @@ namespace DroneFlightLog.Mvc.Controllers
     public class FlightDetailsController : Controller
     {
         private readonly FlightPropertyClient _properties;
-        private readonly DroneFlightLogClient _client;
+        private readonly FlightClient _flights;
         private readonly IOptions<AppSettings> _settings;
         private readonly IMapper _mapper;
 
-        public FlightDetailsController(FlightPropertyClient properties, DroneFlightLogClient client, IOptions<AppSettings> settings, IMapper mapper)
+        public FlightDetailsController(FlightPropertyClient properties, FlightClient flights, IOptions<AppSettings> settings, IMapper mapper)
         {
             _properties = properties;
-            _client = client;
+            _flights = flights;
             _settings = settings;
             _mapper = mapper;
         }
@@ -35,7 +35,7 @@ namespace DroneFlightLog.Mvc.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(int id)
         {
-            Flight flight = await _client.GetFlightAsync(id);
+            Flight flight = await _flights.GetFlightAsync(id);
             FlightDetailsViewModel model = _mapper.Map<FlightDetailsViewModel>(flight);
             await LoadModelProperties(model);
             return View(model);
@@ -50,7 +50,7 @@ namespace DroneFlightLog.Mvc.Controllers
         public async Task<IActionResult> Index(FlightDetailsViewModel model)
         {
             // Load the flight details
-            Flight flight = await _client.GetFlightAsync(model.Id);
+            Flight flight = await _flights.GetFlightAsync(model.Id);
             _mapper.Map<Flight, FlightDetailsViewModel>(flight, model);
 
             // The (complex) model properties will not be bound by the model binder
