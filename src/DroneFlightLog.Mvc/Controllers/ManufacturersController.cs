@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using DroneFlightLog.Mvc.Api;
 using DroneFlightLog.Mvc.Entities;
 using DroneFlightLog.Mvc.Models;
@@ -12,10 +14,12 @@ namespace DroneFlightLog.Mvc.Controllers
     public class ManufacturersController : Controller
     {
         private readonly DroneFlightLogClient _client;
+        private readonly IMapper _mapper;
 
-        public ManufacturersController(DroneFlightLogClient client)
+        public ManufacturersController(DroneFlightLogClient client, IMapper mapper)
         {
             _client = client;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -36,7 +40,7 @@ namespace DroneFlightLog.Mvc.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            return View(new ManufacturerViewModel());
+            return View(new AddManufacturerViewModel());
         }
 
         /// <summary>
@@ -46,7 +50,7 @@ namespace DroneFlightLog.Mvc.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add(ManufacturerViewModel model)
+        public async Task<IActionResult> Add(AddManufacturerViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -54,6 +58,37 @@ namespace DroneFlightLog.Mvc.Controllers
                 ModelState.Clear();
                 model.Clear();
                 model.Message = $"Manufacturer '{manufacturer.Name}' added successfully";
+            }
+
+            return View(model);
+        }
+
+        /// <summary>
+        /// Serve the manufacturer editing page
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            Manufacturer manufacturer = await _client.GetManufacturer(id);
+            EditManufacturerViewModel model = _mapper.Map<EditManufacturerViewModel>(manufacturer);
+            return View(model);
+        }
+
+        /// <summary>
+        /// Handle POST events to save updated manufacturers
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(EditManufacturerViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                Manufacturer manufacturer = await _client.UpdateManufacturerAsync(model.Id, model.Name);
+                model.Message = $"Manufacturer '{manufacturer.Name}' updated successfully";
             }
 
             return View(model);

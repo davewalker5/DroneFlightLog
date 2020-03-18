@@ -1,7 +1,7 @@
-﻿@model DroneFlightLog.Mvc.Models.AddManufacturerViewModel
+﻿@model DroneFlightLog.Mvc.Models.EditManufacturerViewModel
 
 @{
-    ViewData["Title"] = "Add Manufacturer";
+    ViewData["Title"] = "Edit Manufacturer";
 }
 
 <div class="container-fluid">
@@ -9,11 +9,10 @@
     {
         <div class="row">
             <div class="col-md">
-                <span style="font-size: 1.2rem"><strong>Add Manufacturer</strong></span>
+                <span style="font-size: 1.2rem"><strong>Edit Manufacturer</strong></span>
             </div>
         </div>
         <hr />
-
 
         @if (!string.IsNullOrEmpty(Model.Message))
         {

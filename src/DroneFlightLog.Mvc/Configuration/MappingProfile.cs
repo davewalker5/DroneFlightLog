@@ -8,6 +8,8 @@ namespace DroneFlightLog.Mvc.Configuration
     {
         public MappingProfile()
         {
+            CreateMap<Manufacturer, AddManufacturerViewModel>();
+            CreateMap<Manufacturer, EditManufacturerViewModel>();
             CreateMap<Flight, FlightDetailsViewModel>();
         }
     }

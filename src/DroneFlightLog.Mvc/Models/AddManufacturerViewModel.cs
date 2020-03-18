@@ -2,7 +2,7 @@
 
 namespace DroneFlightLog.Mvc.Models
 {
-    public class ManufacturerViewModel : Manufacturer
+    public class AddManufacturerViewModel : Manufacturer
     {
         public string Message { get; set; }
 

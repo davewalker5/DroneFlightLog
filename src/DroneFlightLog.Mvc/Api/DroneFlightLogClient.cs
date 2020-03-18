@@ -85,11 +85,26 @@ namespace DroneFlightLog.Mvc.Api
             List<Manufacturer> manufacturers = _cache.Get<List<Manufacturer>>(CacheManufacturers);
             if (manufacturers == null)
             {
-                string json = await GetIndirectAsync("Manufacturers");
+                string json = await SendIndirectAsync("Manufacturers", null, HttpMethod.Get);
                 manufacturers = JsonConvert.DeserializeObject<List<Manufacturer>>(json);
                 _cache.Set(CacheManufacturers, manufacturers, _settings.Value.CacheLifetimeSeconds);
             }
             return manufacturers;
+        }
+
+        /// <summary>
+        /// Return the manufacturer with the specified Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<Manufacturer> GetManufacturer(int id)
+        {
+            // TODO : This needs to be replaced with a call to retrieve a single
+            // manufacturer by Id. For now, retrieve them all then pick the one
+            // required
+            List<Manufacturer> manufacturers = await GetManufacturersAsync();
+            Manufacturer manufacturer = manufacturers.First(m => m.Id == id);
+            return manufacturer;
         }
 
         /// <summary>
@@ -101,7 +116,23 @@ namespace DroneFlightLog.Mvc.Api
         {
             _cache.Remove(CacheManufacturers);
             string data = $"\"{name}\"";
-            string json = await PostIndirectAsync("Manufacturers", data);
+            string json = await SendIndirectAsync("Manufacturers", data, HttpMethod.Post);
+            Manufacturer manufacturer = JsonConvert.DeserializeObject<Manufacturer>(json);
+            return manufacturer;
+        }
+
+        /// <summary>
+        /// Create a new manufacturer
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public async Task<Manufacturer> UpdateManufacturerAsync(int id, string name)
+        {
+            _cache.Remove(CacheManufacturers);
+            string data = $"\"{name}\"";
+            string route = @$"{_settings.Value.ApiRoutes.First(r => r.Name == "Manufacturers").Route}/{id}/";
+            string json = await SendDirectAsync(route, data, HttpMethod.Put);
             Manufacturer manufacturer = JsonConvert.DeserializeObject<Manufacturer>(json);
             return manufacturer;
         }
@@ -115,7 +146,7 @@ namespace DroneFlightLog.Mvc.Api
             List<Model> models = _cache.Get<List<Model>>(CacheModels);
             if (models == null)
             {
-                string json = await GetIndirectAsync("Models");
+                string json = await SendIndirectAsync("Models", null, HttpMethod.Get);
                 models = JsonConvert.DeserializeObject<List<Model>>(json);
                 _cache.Set(CacheModels, models, _settings.Value.CacheLifetimeSeconds);
             }
@@ -139,7 +170,7 @@ namespace DroneFlightLog.Mvc.Api
             };
 
             string data = JsonConvert.SerializeObject(template);
-            string json = await PostIndirectAsync("Models", data);
+            string json = await SendIndirectAsync("Models", data, HttpMethod.Post);
 
             Model model = JsonConvert.DeserializeObject<Model>(json);
             return model;
@@ -154,7 +185,7 @@ namespace DroneFlightLog.Mvc.Api
             List<Drone> drones = _cache.Get<List<Drone>>(CacheDrones);
             if (drones == null)
             {
-                string json = await GetIndirectAsync("Drones");
+                string json = await SendIndirectAsync("Drones", null, HttpMethod.Get);
                 drones = JsonConvert.DeserializeObject<List<Drone>>(json);
                 _cache.Set(CacheDrones, drones, _settings.Value.CacheLifetimeSeconds);
             }
@@ -180,7 +211,7 @@ namespace DroneFlightLog.Mvc.Api
             };
 
             string data = JsonConvert.SerializeObject(template);
-            string json = await PostIndirectAsync("Drones", data);
+            string json = await SendIndirectAsync("Drones", data, HttpMethod.Post);
 
             Drone drone = JsonConvert.DeserializeObject<Drone>(json);
             return drone;
@@ -195,7 +226,7 @@ namespace DroneFlightLog.Mvc.Api
             List<Location> locations = _cache.Get<List<Location>>(CacheLocations);
             if (locations == null)
             {
-                string json = await GetIndirectAsync("Locations");
+                string json = await SendIndirectAsync("Locations", null, HttpMethod.Get);
                 locations = JsonConvert.DeserializeObject<List<Location>>(json);
                 _cache.Set(CacheLocations, locations, _settings.Value.CacheLifetimeSeconds);
             }
@@ -211,7 +242,7 @@ namespace DroneFlightLog.Mvc.Api
         {
             _cache.Remove(CacheLocations);
             string data = $"\"{name}\"";
-            string json = await PostIndirectAsync("Locations", data);
+            string json = await SendIndirectAsync("Locations", data, HttpMethod.Post);
             Location location = JsonConvert.DeserializeObject<Location>(json);
             return location;
         }
@@ -225,7 +256,7 @@ namespace DroneFlightLog.Mvc.Api
             List<Operator> operators = _cache.Get<List<Operator>>(CacheOperators);
             if  (operators == null)
             {
-                string json = await GetIndirectAsync("Operators");
+                string json = await SendIndirectAsync("Operators", null, HttpMethod.Get);
                 operators = JsonConvert.DeserializeObject<List<Operator>>(json);
                 _cache.Set(CacheOperators, operators, _settings.Value.CacheLifetimeSeconds);
             }
@@ -257,7 +288,7 @@ namespace DroneFlightLog.Mvc.Api
             };
 
             string data = JsonConvert.SerializeObject(template);
-            string json = await PostIndirectAsync("Operators", data);
+            string json = await SendIndirectAsync("Operators", data, HttpMethod.Post);
 
             Operator op = JsonConvert.DeserializeObject<Operator>(json);
             return op;
@@ -272,7 +303,7 @@ namespace DroneFlightLog.Mvc.Api
             List<FlightProperty> properties = _cache.Get<List<FlightProperty>>(CacheFlightProperties);
             if (properties == null)
             {
-                string json = await GetIndirectAsync("FlightProperties");
+                string json = await SendIndirectAsync("FlightProperties", null, HttpMethod.Get);
                 properties = JsonConvert.DeserializeObject<List<FlightProperty>>(json);
                 _cache.Set(CacheFlightProperties, properties, _settings.Value.CacheLifetimeSeconds);
             }
@@ -298,7 +329,7 @@ namespace DroneFlightLog.Mvc.Api
             };
 
             string data = JsonConvert.SerializeObject(template);
-            string json = await PostIndirectAsync("FlightProperties", data);
+            string json = await SendIndirectAsync("FlightProperties", data, HttpMethod.Post);
 
             FlightProperty property = JsonConvert.DeserializeObject<FlightProperty>(json);
             return property;
@@ -313,7 +344,7 @@ namespace DroneFlightLog.Mvc.Api
         {
             string baseRoute = _settings.Value.ApiRoutes.First(r => r.Name == "FlightPropertyValues").Route;
             string route = $"{baseRoute}/{flightId}";
-            string json = await GetDirectAsync(route);
+            string json = await SendDirectAsync(route, null, HttpMethod.Get);
             List<FlightPropertyValue> values = JsonConvert.DeserializeObject<List<FlightPropertyValue>>(json);
             return values;
         }
@@ -335,7 +366,7 @@ namespace DroneFlightLog.Mvc.Api
             };
 
             string data = JsonConvert.SerializeObject(template);
-            string json = await PostIndirectAsync("FlightPropertyValues", data);
+            string json = await SendIndirectAsync("FlightPropertyValues", data, HttpMethod.Post);
 
             FlightPropertyValue value = JsonConvert.DeserializeObject<FlightPropertyValue>(json);
             return value;
@@ -358,7 +389,7 @@ namespace DroneFlightLog.Mvc.Api
             };
 
             string data = JsonConvert.SerializeObject(template);
-            string json = await PostIndirectAsync("FlightPropertyValues", data);
+            string json = await SendIndirectAsync("FlightPropertyValues", data, HttpMethod.Post);
 
             FlightPropertyValue value = JsonConvert.DeserializeObject<FlightPropertyValue>(json);
             return value;
@@ -374,7 +405,7 @@ namespace DroneFlightLog.Mvc.Api
         {
             string baseRoute = _settings.Value.ApiRoutes.First(r => r.Name == "Flights").Route;
             string route = $"{baseRoute}/{page}/{pageSize}";
-            string json = await GetDirectAsync(route);
+            string json = await SendDirectAsync(route, null, HttpMethod.Get);
             List<Flight> flight = JsonConvert.DeserializeObject<List<Flight>>(json);
             return flight;
         }
@@ -405,7 +436,7 @@ namespace DroneFlightLog.Mvc.Api
         {
             string baseRoute = _settings.Value.ApiRoutes.First(r => r.Name == "Flights").Route;
             string route = $"{baseRoute}/operator/{operatorId}/{page}/{pageSize}";
-            string json = await GetDirectAsync(route);
+            string json = await SendDirectAsync(route, null, HttpMethod.Get);
             List<Flight> flight = JsonConvert.DeserializeObject<List<Flight>>(json);
             return flight;
         }
@@ -421,7 +452,7 @@ namespace DroneFlightLog.Mvc.Api
         {
             string baseRoute = _settings.Value.ApiRoutes.First(r => r.Name == "Flights").Route;
             string route = $"{baseRoute}/drone/{droneId}/{page}/{pageSize}";
-            string json = await GetDirectAsync(route);
+            string json = await SendDirectAsync(route, null, HttpMethod.Get);
             List<Flight> flight = JsonConvert.DeserializeObject<List<Flight>>(json);
             return flight;
         }
@@ -437,7 +468,7 @@ namespace DroneFlightLog.Mvc.Api
         {
             string baseRoute = _settings.Value.ApiRoutes.First(r => r.Name == "Flights").Route;
             string route = $"{baseRoute}/location/{locationId}/{page}/{pageSize}";
-            string json = await GetDirectAsync(route);
+            string json = await SendDirectAsync(route, null, HttpMethod.Get);
             List<Flight> flight = JsonConvert.DeserializeObject<List<Flight>>(json);
             return flight;
         }
@@ -457,7 +488,7 @@ namespace DroneFlightLog.Mvc.Api
             string endDateSegment = HttpUtility.UrlEncode(end.ToString(_settings.Value.ApiDateFormat));
             string route = $"{baseRoute}/date/{startDateSegment}/{endDateSegment}/{page}/{pageSize}";
 
-            string json = await GetDirectAsync(route);
+            string json = await SendIndirectAsync(route, null, HttpMethod.Get);
             List<Flight> flight = JsonConvert.DeserializeObject<List<Flight>>(json);
             return flight;
         }
@@ -483,7 +514,7 @@ namespace DroneFlightLog.Mvc.Api
             };
 
             string data = JsonConvert.SerializeObject(template);
-            string json = await PostIndirectAsync("Flights", data);
+            string json = await SendIndirectAsync("Flights", data, HttpMethod.Post);
 
             Flight flight = JsonConvert.DeserializeObject<Flight>(json);
             return flight;
@@ -525,7 +556,7 @@ namespace DroneFlightLog.Mvc.Api
             string countrySegment = HttpUtility.UrlEncode(country);
             string route = $"{baseRoute}/{numberSegment}/{postcodeSegment}/{countrySegment}";
 
-            string json = await GetDirectAsync(route);
+            string json = await SendDirectAsync(route, null, HttpMethod.Get);
             Address address = (json != null) ? JsonConvert.DeserializeObject<Address>(json) : null;
             return address;
         }
@@ -553,22 +584,10 @@ namespace DroneFlightLog.Mvc.Api
             };
 
             string data = JsonConvert.SerializeObject(template);
-            string json = await PostIndirectAsync("Addresses", data);
+            string json = await SendIndirectAsync("Addresses", data, HttpMethod.Post);
 
             Address address = JsonConvert.DeserializeObject<Address>(json);
             return address;
-        }
-
-        /// <summary>
-        /// Given a route name, retrieve the route value (read from the application
-        /// settings) and use the "direct" method to read the JSON response
-        /// </summary>
-        /// <param name="routeName"></param>
-        /// <returns></returns>
-        private async Task<string> GetIndirectAsync(string routeName)
-        {
-            string route = _settings.Value.ApiRoutes.First(r => r.Name == routeName).Route;
-            return await GetDirectAsync(route);
         }
 
         /// <summary>
@@ -581,46 +600,51 @@ namespace DroneFlightLog.Mvc.Api
         }
 
         /// <summary>
-        /// Given a route, use GET to retrieve data and return the response content
-        /// as a JSON string
+        /// Given a route name, some data (null in the case of GET) and an HTTP method,
+        /// look up the route from the application settings then send the request to
+        /// the service and return the JSON response
         /// </summary>
-        /// <param name="route"></param>
+        /// <param name="routeName"></param>
+        /// <param name="data"></param>
+        /// <param name="method"></param>
         /// <returns></returns>
-        private async Task<string> GetDirectAsync(string route)
+        private async Task<string> SendIndirectAsync(string routeName, string data, HttpMethod method)
         {
-            string json = null;
-
-            HttpResponseMessage response = await _client.GetAsync(route);
-            if (response.IsSuccessStatusCode)
-            {
-                // Read the response body
-                json = await response.Content.ReadAsStringAsync();
-            }
-
+            string route = _settings.Value.ApiRoutes.First(r => r.Name == routeName).Route;
+            string json = await SendDirectAsync(route, data, method);
             return json;
         }
 
         /// <summary>
-        /// Given a route name, retrieve the route value (read from the application
-        /// settings), POST the data to it, await the response and return the response
-        /// content as a JSON string
+        /// Given a route, some data (null in the case of GET) and an HTTP method,
+        /// send the request to the service and return the JSON response
         /// </summary>
-        /// <param name="routeName"></param>
+        /// <param name="route"></param>
         /// <param name="data"></param>
+        /// <param name="method"></param>
         /// <returns></returns>
-        private async Task<string> PostIndirectAsync(string routeName, string data)
+        private async Task<string> SendDirectAsync(string route, string data, HttpMethod method)
         {
             string json = null;
 
-            // Get the route and create the message content
-            string route = _settings.Value.ApiRoutes.First(r => r.Name == routeName).Route;
-            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
-
-            // Send the request
-            HttpResponseMessage response = await _client.PostAsync(route, content);
-            if (response.IsSuccessStatusCode)
+            HttpResponseMessage response = null;
+            if (method == HttpMethod.Get)
             {
-                // Read the response body
+                response = await _client.GetAsync(route);
+            }
+            else if (method == HttpMethod.Post)
+            {
+                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+                response = await _client.PostAsync(route, content);
+            }
+            else if (method == HttpMethod.Put)
+            {
+                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+                response = await _client.PutAsync(route, content);
+            }
+
+            if ((response != null) && response.IsSuccessStatusCode)
+            {
                 json = await response.Content.ReadAsStringAsync();
             }
 
