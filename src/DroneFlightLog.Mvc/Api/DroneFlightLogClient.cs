@@ -48,47 +48,6 @@ namespace DroneFlightLog.Mvc.Api
         }
 
         /// <summary>
-        /// Return a list of drones
-        /// </summary>
-        /// <returns></returns>
-        public async Task<List<Drone>> GetDronesAsync()
-        {
-            List<Drone> drones = _cache.Get<List<Drone>>(CacheDrones);
-            if (drones == null)
-            {
-                string json = await SendIndirectAsync("Drones", null, HttpMethod.Get);
-                drones = JsonConvert.DeserializeObject<List<Drone>>(json);
-                _cache.Set(CacheDrones, drones, _settings.Value.CacheLifetimeSeconds);
-            }
-            return drones;
-        }
-
-        /// <summary>
-        /// Create a new drone
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="serialNumber"></param>
-        /// <param name="modelId"></param>
-        /// <returns></returns>
-        public async Task<Drone> AddDroneAsync(string name, string serialNumber, int modelId)
-        {
-            _cache.Remove(CacheDrones);
-
-            dynamic template = new
-            {
-                Name = name,
-                SerialNumber = serialNumber,
-                ModelId = modelId
-            };
-
-            string data = JsonConvert.SerializeObject(template);
-            string json = await SendIndirectAsync("Drones", data, HttpMethod.Post);
-
-            Drone drone = JsonConvert.DeserializeObject<Drone>(json);
-            return drone;
-        }
-
-        /// <summary>
         /// Return a list of locations
         /// </summary>
         /// <returns></returns>

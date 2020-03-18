@@ -14,10 +14,12 @@ namespace DroneFlightLog.Mvc.Controllers
     [Authorize]
     public class HomeController : Controller
     {
+        private readonly DroneClient _drones;
         private readonly DroneFlightLogClient _client;
 
-        public HomeController(DroneFlightLogClient client)
+        public HomeController(DroneClient drones, DroneFlightLogClient client)
         {
+            _drones = drones;
             _client = client;
         }
 
@@ -28,7 +30,7 @@ namespace DroneFlightLog.Mvc.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            List<Drone> drones = await _client.GetDronesAsync();
+            List<Drone> drones = await _drones.GetDronesAsync();
             List<Location> locations = await _client.GetLocationsAsync();
             List<Operator> operators = await _client.GetOperatorsAsync();
 
@@ -69,7 +71,7 @@ namespace DroneFlightLog.Mvc.Controllers
             {
                 // If the model state isn't valid, load the lists of drones,
                 // locations and operators and redisplay the flight logging page
-                List<Drone> drones = await _client.GetDronesAsync();
+                List<Drone> drones = await _drones.GetDronesAsync();
                 List<Location> locations = await _client.GetLocationsAsync();
                 List<Operator> operators = await _client.GetOperatorsAsync();
 

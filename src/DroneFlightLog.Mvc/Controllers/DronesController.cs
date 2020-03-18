@@ -12,12 +12,12 @@ namespace DroneFlightLog.Mvc.Controllers
     public class DronesController : Controller
     {
         private readonly ModelClient _models;
-        private readonly DroneFlightLogClient _client;
+        private readonly DroneClient _drones;
 
-        public DronesController(ModelClient models, DroneFlightLogClient client)
+        public DronesController(ModelClient models, DroneClient drones)
         {
             _models = models;
-            _client = client;
+            _drones = drones;
         }
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace DroneFlightLog.Mvc.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            List<Drone> drones = await _client.GetDronesAsync();
+            List<Drone> drones = await _drones.GetDronesAsync();
             return View(drones);
         }
 
@@ -55,10 +55,10 @@ namespace DroneFlightLog.Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                Drone drone = await _client.AddDroneAsync(droneModel.Name, droneModel.SerialNumber, droneModel.ModelId);
+                Drone drone = await _drones.AddDroneAsync(droneModel.Name, droneModel.SerialNumber, droneModel.ModelId);
                 ModelState.Clear();
                 droneModel.Clear();
-                droneModel.Message = $"Model '{drone.Name}' added successfully";
+                droneModel.Message = $"Drone '{drone.Name}' added successfully";
             }
 
             List<Model> models = await _models.GetModelsAsync();

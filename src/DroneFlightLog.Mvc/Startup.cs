@@ -50,6 +50,7 @@ namespace DroneFlightLog.Mvc
             services.AddHttpClient<AuthenticationClient>();
             services.AddHttpClient<ManufacturerClient>();
             services.AddHttpClient<ModelClient>();
+            services.AddHttpClient<DroneClient>();
             services.AddHttpClient<DroneFlightLogClient>();
 
             // Configure session state for token storage
