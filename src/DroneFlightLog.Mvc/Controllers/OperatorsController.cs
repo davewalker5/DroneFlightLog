@@ -90,6 +90,7 @@ namespace DroneFlightLog.Mvc.Controllers
             EditOperatorViewModel model = new EditOperatorViewModel();
             model.Operator = op;
             model.Address = op.Address;
+            model.OperatorDateOfBirth = op.DoB.ToString("MM/dd/yyyy");
             return View(model);
         }
 

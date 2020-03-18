@@ -109,6 +109,11 @@ namespace DroneFlightLog.Mvc.Controllers
             model.SetLocations(locations);
             model.SetOperators(operators);
 
+            model.StartDate = model.Start.ToString("MM/dd/yyyy");
+            model.StartTime = model.Start.ToString("HH:mm");
+            model.EndDate = model.End.ToString("MM/dd/yyyy");
+            model.EndTime = model.Start.ToString("HH:mm");
+
             return View(model);
         }
 
