@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using DroneFlightLog.Mvc.Api;
 using DroneFlightLog.Mvc.Entities;
 using DroneFlightLog.Mvc.Models;
@@ -13,11 +14,13 @@ namespace DroneFlightLog.Mvc.Controllers
     {
         private readonly ManufacturerClient _manufacturers;
         private readonly ModelClient _models;
+        private readonly IMapper _mapper;
 
-        public ModelsController(ManufacturerClient manufacturers, ModelClient models)
+        public ModelsController(ManufacturerClient manufacturers, ModelClient models, IMapper mapper)
         {
             _manufacturers = manufacturers;
             _models = models;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -39,7 +42,7 @@ namespace DroneFlightLog.Mvc.Controllers
         public async Task<IActionResult> Add()
         {
             List<Manufacturer> manufacturers = await _manufacturers.GetManufacturersAsync();
-            ModelViewModel model = new ModelViewModel();
+            AddModelViewModel model = new AddModelViewModel();
             model.SetManufacturers(manufacturers);
             return View(model);
         }
@@ -51,7 +54,7 @@ namespace DroneFlightLog.Mvc.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add(ModelViewModel model)
+        public async Task<IActionResult> Add(AddModelViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -65,6 +68,47 @@ namespace DroneFlightLog.Mvc.Controllers
             model.SetManufacturers(manufacturers);
 
             return View(model);
+        }
+
+        /// <summary>
+        /// Serve the location editing page
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            Model droneModel = await _models.GetModel(id);
+            List<Manufacturer> manufacturers = await _manufacturers.GetManufacturersAsync();
+            EditModelViewModel model = _mapper.Map<EditModelViewModel>(droneModel);
+            model.SetManufacturers(manufacturers);
+            return View(model);
+        }
+
+        /// <summary>
+        /// Handle POST events to save updated locations
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(EditModelViewModel model)
+        {
+            IActionResult result;
+
+            if (ModelState.IsValid)
+            {
+                await _models.UpdateModelAsync(model.Id, model.ManufacturerId, model.Name);
+                result = RedirectToAction("Index");
+            }
+            else
+            {
+                List<Manufacturer> manufacturers = await _manufacturers.GetManufacturersAsync();
+                model.SetManufacturers(manufacturers);
+                result = View(model);
+            }
+
+            return result;
         }
     }
 }

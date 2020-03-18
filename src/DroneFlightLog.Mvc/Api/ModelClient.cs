@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using DroneFlightLog.Mvc.Configuration;
@@ -37,6 +38,20 @@ namespace DroneFlightLog.Mvc.Api
         }
 
         /// <summary>
+        /// Return the model with the specified Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<Model> GetModel(int id)
+        {
+            // TODO : This needs to be replaced with a call to retrieve a single
+            // model by Id. For now, retrieve them all then pick the one required
+            List<Model> models = await GetModelsAsync();
+            Model model = models.First(m => m.Id == id);
+            return model;
+        }
+
+        /// <summary>
         /// Create a new model
         /// </summary>
         /// <param name="name"></param>
@@ -55,6 +70,30 @@ namespace DroneFlightLog.Mvc.Api
             string data = JsonConvert.SerializeObject(template);
             string json = await SendIndirectAsync(RouteKey, data, HttpMethod.Post);
 
+            Model model = JsonConvert.DeserializeObject<Model>(json);
+            return model;
+        }
+
+        /// <summary>
+        /// Update an existing model
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="manufacturerId"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public async Task<Model> UpdateModelAsync(int id, int manufacturerId, string name)
+        {
+            _cache.Remove(CacheKey);
+
+            dynamic template = new
+            {
+                Id = id,
+                Name = name,
+                ManufacturerId = manufacturerId
+            };
+
+            string data = JsonConvert.SerializeObject(template);
+            string json = await SendIndirectAsync(RouteKey, data, HttpMethod.Put);
             Model model = JsonConvert.DeserializeObject<Model>(json);
             return model;
         }

@@ -13,12 +13,10 @@ namespace DroneFlightLog.Mvc.Controllers
     public class LocationsController : Controller
     {
         private readonly LocationClient _client;
-        private readonly IMapper _mapper;
 
-        public LocationsController(LocationClient client, IMapper mapper)
+        public LocationsController(LocationClient client)
         {
             _client = client;
-            _mapper = mapper;
         }
 
         /// <summary>

@@ -5,22 +5,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DroneFlightLog.Mvc.Models
 {
-    public class ModelViewModel : Model
+    public abstract class ModelViewModelBase : Model
     {
-        public List<SelectListItem> Manufacturers { get; private set; }
-        public string Message { get; set; }
-
-        /// <summary>
-        /// Reset the view model
-        /// </summary>
-        public void Clear()
-        {
-            Id = 0;
-            ManufacturerId = 0;
-            Name = "";
-            Manufacturers = null;
-            Message = "";
-        }
+        public List<SelectListItem> Manufacturers { get; set; }
 
         /// <summary>
         /// Construct the options for the manufacturers drop-down

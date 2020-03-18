@@ -13,12 +13,10 @@ namespace DroneFlightLog.Mvc.Controllers
     public class ManufacturersController : Controller
     {
         private readonly ManufacturerClient _client;
-        private readonly IMapper _mapper;
 
-        public ManufacturersController(ManufacturerClient client, IMapper mapper)
+        public ManufacturersController(ManufacturerClient client)
         {
             _client = client;
-            _mapper = mapper;
         }
 
         /// <summary>

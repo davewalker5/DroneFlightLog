@@ -38,7 +38,7 @@ namespace DroneFlightLog.Mvc.Api
         }
 
         /// <summary>
-        /// Return the manufacturer with the specified Id
+        /// Return the location with the specified Id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
