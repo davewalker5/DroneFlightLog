@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using DroneFlightLog.Mvc.Configuration;
@@ -38,6 +39,20 @@ namespace DroneFlightLog.Mvc.Api
         }
 
         /// <summary>
+        /// Return the operator with the specified Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<Operator> GetOperatorAsync(int id)
+        {
+            // TODO : This needs to be replaced with a call to retrieve a single
+            // operator by Id. For now, retrieve them all then pick the one required
+            List<Operator> operators = await GetOperatorsAsync();
+            Operator op = operators.First(l => l.Id == id);
+            return op;
+        }
+
+        /// <summary>
         /// Create a new operator
         /// </summary>
         /// <param name="firstNames"></param>
@@ -63,6 +78,39 @@ namespace DroneFlightLog.Mvc.Api
 
             string data = JsonConvert.SerializeObject(template);
             string json = await SendIndirectAsync(RouteKey, data, HttpMethod.Post);
+
+            Operator op = JsonConvert.DeserializeObject<Operator>(json);
+            return op;
+        }
+
+        /// <summary>
+        /// Update an existing operator
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="firstNames"></param>
+        /// <param name="surname"></param>
+        /// <param name="operatorNumber"></param>
+        /// <param name="flyerNumber"></param>
+        /// <param name="doB"></param>
+        /// <param name="addressId"></param>
+        /// <returns></returns>
+        public async Task<Operator> UpdateOperatorAsync(int id, string firstNames, string surname, string operatorNumber, string flyerNumber, DateTime doB, int addressId)
+        {
+            _cache.Remove(CacheKey);
+
+            dynamic template = new
+            {
+                Id = id,
+                FirstNames = firstNames,
+                Surname = surname,
+                OperatorNumber = operatorNumber,
+                FlyerNumber = flyerNumber,
+                DoB = doB,
+                AddressId = addressId
+            };
+
+            string data = JsonConvert.SerializeObject(template);
+            string json = await SendIndirectAsync(RouteKey, data, HttpMethod.Put);
 
             Operator op = JsonConvert.DeserializeObject<Operator>(json);
             return op;

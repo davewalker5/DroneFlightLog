@@ -26,6 +26,7 @@
         <th>Flyer Number</th>
         <th>Date of Birth</th>
         <th>Address</th>
+        <th />
     </tr>
     @foreach (var op in Model)
     {
@@ -36,6 +37,11 @@
             <td valign="center">@op.FlyerNumber</td>
             <td valign="center">@op.DoBFormatted</td>
             <td valign="center">@op.GetAddressSummary()</td>
+            <td valign="center">
+                <a class="btn btn-lg" asp-area="" asp-controller="Operators" asp-action="Edit" asp-route-id="@op.Id">
+                    <i class="fas fa-edit"></i>
+                </a>
+            </td>
         </tr>
     }
 </table>

@@ -4,7 +4,7 @@ using DroneFlightLog.Mvc.Entities;
 
 namespace DroneFlightLog.Mvc.Models
 {
-    public class OperatorViewModel
+    public abstract class OperatorViewModelBase
     {
         public Operator Operator { get; set; }
         public Address Address { get; set; }
@@ -13,18 +13,15 @@ namespace DroneFlightLog.Mvc.Models
         [Required(ErrorMessage = "You must provide a date of birth")]
         public string OperatorDateOfBirth { get; set; }
 
-        public string Message { get; set; }
-
-        public OperatorViewModel()
+        public OperatorViewModelBase()
         {
             Clear();
         }
 
-        public void Clear()
+        public virtual void Clear()
         {
             Operator = new Operator();
             Address = new Address();
-            Message = "";
         }
     }
 }
