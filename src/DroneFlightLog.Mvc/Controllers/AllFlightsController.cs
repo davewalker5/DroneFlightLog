@@ -13,10 +13,10 @@ namespace DroneFlightLog.Mvc.Controllers
     [Authorize]
     public class AllFlightsController : Controller
     {
-        private readonly DroneFlightLogClient _client;
+        private readonly FlightSearchClient _client;
         private readonly IOptions<AppSettings> _settings;
 
-        public AllFlightsController(DroneFlightLogClient client, IOptions<AppSettings> settings)
+        public AllFlightsController(FlightSearchClient client, IOptions<AppSettings> settings)
         {
             _client = client;
             _settings = settings;

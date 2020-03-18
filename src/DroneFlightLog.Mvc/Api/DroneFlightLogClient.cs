@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 using DroneFlightLog.Mvc.Configuration;
 using DroneFlightLog.Mvc.Controllers;
 using DroneFlightLog.Mvc.Entities;
@@ -48,21 +47,6 @@ namespace DroneFlightLog.Mvc.Api
         }
 
         /// <summary>
-        /// Return the specified page of flights
-        /// </summary>
-        /// <param name="page"></param>
-        /// <param name="pageSize"></param>
-        /// <returns></returns>
-        public async Task<List<Flight>> GetFlightsAsync(int page, int pageSize)
-        {
-            string baseRoute = _settings.Value.ApiRoutes.First(r => r.Name == "Flights").Route;
-            string route = $"{baseRoute}/{page}/{pageSize}";
-            string json = await SendDirectAsync(route, null, HttpMethod.Get);
-            List<Flight> flight = JsonConvert.DeserializeObject<List<Flight>>(json);
-            return flight;
-        }
-
-        /// <summary>
         /// Retrieve a single flight given its ID
         /// </summary>
         /// <param name="flightId"></param>
@@ -72,76 +56,11 @@ namespace DroneFlightLog.Mvc.Api
             // TODO : This needs to be replaced with a call to retrieve a single flight
             // by Id. For now, retrieve an arbitrary large number that will cover them
             // all then pick the one required
-            List<Flight> flights = await GetFlightsAsync(1, 1000000);
+            string baseRoute = _settings.Value.ApiRoutes.First(r => r.Name == "Flights").Route;
+            string route = $"{baseRoute}/1/1000000";
+            string json = await SendDirectAsync(route, null, HttpMethod.Get);
+            List<Flight> flights = JsonConvert.DeserializeObject<List<Flight>>(json);
             Flight flight = flights.First(f => f.Id == flightId);
-            return flight;
-        }
-
-        /// <summary>
-        /// Return the specified page of flights, filtered by operator
-        /// </summary>
-        /// <param name="operatorId"></param>
-        /// <param name="page"></param>
-        /// <param name="pageSize"></param>
-        /// <returns></returns>
-        public async Task<List<Flight>> GetFlightsByOperatorAsync(int operatorId, int page, int pageSize)
-        {
-            string baseRoute = _settings.Value.ApiRoutes.First(r => r.Name == "Flights").Route;
-            string route = $"{baseRoute}/operator/{operatorId}/{page}/{pageSize}";
-            string json = await SendDirectAsync(route, null, HttpMethod.Get);
-            List<Flight> flight = JsonConvert.DeserializeObject<List<Flight>>(json);
-            return flight;
-        }
-
-        /// <summary>
-        /// Return the specified page of flights, filtered by drone
-        /// </summary>
-        /// <param name="droneId"></param>
-        /// <param name="page"></param>
-        /// <param name="pageSize"></param>
-        /// <returns></returns>
-        public async Task<List<Flight>> GetFlightsByDroneAsync(int droneId, int page, int pageSize)
-        {
-            string baseRoute = _settings.Value.ApiRoutes.First(r => r.Name == "Flights").Route;
-            string route = $"{baseRoute}/drone/{droneId}/{page}/{pageSize}";
-            string json = await SendDirectAsync(route, null, HttpMethod.Get);
-            List<Flight> flight = JsonConvert.DeserializeObject<List<Flight>>(json);
-            return flight;
-        }
-
-        /// <summary>
-        /// Return the specified page of flights, filtered by location
-        /// </summary>
-        /// <param name="locationId"></param>
-        /// <param name="page"></param>
-        /// <param name="pageSize"></param>
-        /// <returns></returns>
-        public async Task<List<Flight>> GetFlightsByLocationAsync(int locationId, int page, int pageSize)
-        {
-            string baseRoute = _settings.Value.ApiRoutes.First(r => r.Name == "Flights").Route;
-            string route = $"{baseRoute}/location/{locationId}/{page}/{pageSize}";
-            string json = await SendDirectAsync(route, null, HttpMethod.Get);
-            List<Flight> flight = JsonConvert.DeserializeObject<List<Flight>>(json);
-            return flight;
-        }
-
-        /// <summary>
-        /// Return the specified page of flights, filtered by location
-        /// </summary>
-        /// <param name="start"></param>
-        /// <param name="end"></param>
-        /// <param name="page"></param>
-        /// <param name="pageSize"></param>
-        /// <returns></returns>
-        public async Task<List<Flight>> GetFlightsByDateAsync(DateTime start, DateTime end, int page, int pageSize)
-        {
-            string baseRoute = _settings.Value.ApiRoutes.First(r => r.Name == "Flights").Route;
-            string startDateSegment = HttpUtility.UrlEncode(start.ToString(_settings.Value.ApiDateFormat));
-            string endDateSegment = HttpUtility.UrlEncode(end.ToString(_settings.Value.ApiDateFormat));
-            string route = $"{baseRoute}/date/{startDateSegment}/{endDateSegment}/{page}/{pageSize}";
-
-            string json = await SendIndirectAsync(route, null, HttpMethod.Get);
-            List<Flight> flight = JsonConvert.DeserializeObject<List<Flight>>(json);
             return flight;
         }
 
