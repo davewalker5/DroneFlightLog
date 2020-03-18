@@ -12,11 +12,13 @@ namespace DroneFlightLog.Mvc.Controllers
     [Authorize]
     public class OperatorsController : Controller
     {
-        private readonly DroneFlightLogClient _client;
+        private readonly OperatorClient _operators;
+        private readonly AddressClient _addresses;
 
-        public OperatorsController(DroneFlightLogClient client)
+        public OperatorsController(OperatorClient operators, AddressClient addresses)
         {
-            _client = client;
+            _operators = operators;
+            _addresses = addresses;
         }
 
         /// <summary>
@@ -26,7 +28,7 @@ namespace DroneFlightLog.Mvc.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            List<Operator> operators = await _client.GetOperatorsAsync();
+            List<Operator> operators = await _operators.GetOperatorsAsync();
             return View(operators);
         }
 
@@ -51,7 +53,7 @@ namespace DroneFlightLog.Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                Address address = await _client.FindOrAddAddressAsync(
+                Address address = await _addresses.FindOrAddAddressAsync(
                                                 model.Address.Number,
                                                 model.Address.Street,
                                                 model.Address.Town,
@@ -60,7 +62,7 @@ namespace DroneFlightLog.Mvc.Controllers
                                                 model.Address.Country);
 
                 DateTime doB = DateTime.Parse(model.OperatorDateOfBirth);
-                Operator op = await _client.AddOperatorAsync(
+                Operator op = await _operators.AddOperatorAsync(
                                                 model.Operator.FirstNames,
                                                 model.Operator.Surname,
                                                 model.Operator.OperatorNumber,

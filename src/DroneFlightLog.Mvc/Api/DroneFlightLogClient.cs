@@ -48,53 +48,6 @@ namespace DroneFlightLog.Mvc.Api
         }
 
         /// <summary>
-        /// Return a list of operator details
-        /// </summary>
-        /// <returns></returns>
-        public async Task<List<Operator>> GetOperatorsAsync()
-        {
-            List<Operator> operators = _cache.Get<List<Operator>>(CacheOperators);
-            if  (operators == null)
-            {
-                string json = await SendIndirectAsync("Operators", null, HttpMethod.Get);
-                operators = JsonConvert.DeserializeObject<List<Operator>>(json);
-                _cache.Set(CacheOperators, operators, _settings.Value.CacheLifetimeSeconds);
-            }
-            return operators;
-        }
-
-        /// <summary>
-        /// Create a new operator
-        /// </summary>
-        /// <param name="firstNames"></param>
-        /// <param name="surname"></param>
-        /// <param name="operatorNumber"></param>
-        /// <param name="flyerNumber"></param>
-        /// <param name="doB"></param>
-        /// <param name="addressId"></param>
-        /// <returns></returns>
-        public async Task<Operator> AddOperatorAsync(string firstNames, string surname, string operatorNumber, string flyerNumber, DateTime doB, int addressId)
-        {
-            _cache.Remove(CacheOperators);
-
-            dynamic template = new
-            {
-                FirstNames = firstNames,
-                Surname = surname,
-                OperatorNumber = operatorNumber,
-                FlyerNumber = flyerNumber,
-                DoB = doB,
-                AddressId = addressId
-            };
-
-            string data = JsonConvert.SerializeObject(template);
-            string json = await SendIndirectAsync("Operators", data, HttpMethod.Post);
-
-            Operator op = JsonConvert.DeserializeObject<Operator>(json);
-            return op;
-        }
-
-        /// <summary>
         /// Return a list of available flight properties
         /// </summary>
         /// <returns></returns>
@@ -318,76 +271,6 @@ namespace DroneFlightLog.Mvc.Api
 
             Flight flight = JsonConvert.DeserializeObject<Flight>(json);
             return flight;
-        }
-
-        /// <summary>
-        /// Find and return a matching address or create a new one if not found
-        /// </summary>
-        /// <param name="number"></param>
-        /// <param name="street"></param>
-        /// <param name="town"></param>
-        /// <param name="county"></param>
-        /// <param name="postcode"></param>
-        /// <param name="country"></param>
-        /// <returns></returns>
-        public async Task<Address> FindOrAddAddressAsync(string number, string street, string town, string county, string postcode, string country)
-        {
-            Address address = await FindAddressAsync(number, postcode, country);
-            if (address == null)
-            {
-                address = await AddAddressAsync(number, street, town, county, postcode, country);
-            }
-
-            return address;
-        }
-
-        /// <summary>
-        /// Find and return an address, returning null if it doesn't exist
-        /// </summary>
-        /// <param name="number"></param>
-        /// <param name="postcode"></param>
-        /// <param name="country"></param>
-        /// <returns></returns>
-        private async Task<Address> FindAddressAsync(string number, string postcode, string country)
-        {
-            string baseRoute = _settings.Value.ApiRoutes.First(r => r.Name == "Addresses").Route;
-            string numberSegment = HttpUtility.UrlEncode(number);
-            string postcodeSegment = HttpUtility.UrlEncode(postcode);
-            string countrySegment = HttpUtility.UrlEncode(country);
-            string route = $"{baseRoute}/{numberSegment}/{postcodeSegment}/{countrySegment}";
-
-            string json = await SendDirectAsync(route, null, HttpMethod.Get);
-            Address address = (json != null) ? JsonConvert.DeserializeObject<Address>(json) : null;
-            return address;
-        }
-
-        /// <summary>
-        /// Create a new address
-        /// </summary>
-        /// <param name="number"></param>
-        /// <param name="street"></param>
-        /// <param name="town"></param>
-        /// <param name="county"></param>
-        /// <param name="postcode"></param>
-        /// <param name="country"></param>
-        /// <returns></returns>
-        private async Task<Address> AddAddressAsync(string number, string street, string town, string county, string postcode, string country)
-        {
-            dynamic template = new
-            {
-                Number = number,
-                Street = street,
-                Town = town,
-                County = county,
-                Postcode = postcode,
-                Country = country
-            };
-
-            string data = JsonConvert.SerializeObject(template);
-            string json = await SendIndirectAsync("Addresses", data, HttpMethod.Post);
-
-            Address address = JsonConvert.DeserializeObject<Address>(json);
-            return address;
         }
 
         /// <summary>
