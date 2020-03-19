@@ -46,6 +46,7 @@ namespace DroneFlightLog.Mvc
 
             // Interactions with the REST service are managed via typed HttpClients
             // with "lookup" caching for performance
+            services.AddMemoryCache();
             services.AddSingleton<ICacheWrapper>(s => new CacheWrapper(new MemoryCacheOptions()));
             services.AddHttpClient<AuthenticationClient>();
             services.AddHttpClient<ManufacturerClient>();

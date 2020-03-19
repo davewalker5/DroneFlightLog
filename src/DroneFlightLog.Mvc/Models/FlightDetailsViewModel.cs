@@ -20,17 +20,21 @@ namespace DroneFlightLog.Mvc.Models
         public void MergeProperties(List<FlightProperty> availableProperties)
         {
             // Identify the list of properties that don't already have values
-            // associated with the flight
-            IEnumerable<int> associatedPropertyIds = Properties.Select(p => p.Property.Id);
-            IEnumerable<FlightProperty> missing = availableProperties.Where(ap => !associatedPropertyIds.Contains(ap.Id));
-
-            // Add an empty value for available but not associated properties
-            foreach (FlightProperty property in missing)
+            // associated with the flight and add entries to the properties list
+            if (Properties != null)
             {
-                Properties.Add(new FlightPropertyValue
+                IEnumerable<int> associatedPropertyIds = Properties.Select(p => p.Property.Id);
+                IEnumerable<FlightProperty> missing = availableProperties.Where(ap => !associatedPropertyIds.Contains(ap.Id)).ToList();
+
+                // Add an empty value for available but not associated properties
+                if (missing.Any())
                 {
-                    Property = property
-                });
+                    Properties.AddRange(missing.Select(m => new FlightPropertyValue { Property = m }));
+                }
+            }
+            else
+            {
+                Properties = availableProperties.Select(m => new FlightPropertyValue { Property = m }).ToList();
             }
 
             // Sort the properties by name
