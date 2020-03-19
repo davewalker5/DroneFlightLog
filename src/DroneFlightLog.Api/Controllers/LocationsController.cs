@@ -55,6 +55,29 @@ namespace DroneFlightLog.Api.Controllers
             return location;
         }
 
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<ActionResult<Location>> UpdateLocationAsync(int id, [FromBody] string name)
+        {
+            Location location;
+
+            try
+            {
+                location = await _factory.Locations.UpdateLocationAsync(id, name);
+                await _factory.Context.SaveChangesAsync();
+            }
+            catch (LocationExistsException)
+            {
+                return BadRequest();
+            }
+            catch (LocationNotFoundException)
+            {
+                return NotFound();
+            }
+
+            return location;
+        }
+
         [HttpPost]
         [Route("")]
         public async Task<ActionResult<Location>> CreateLocationAsync([FromBody] string name)

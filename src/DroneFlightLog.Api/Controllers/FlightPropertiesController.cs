@@ -37,6 +37,29 @@ namespace DroneFlightLog.Api.Controllers
             return properties;
         }
 
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<ActionResult<FlightProperty>> UpdatePropertyAsync(int id, [FromBody] string name)
+        {
+            FlightProperty property;
+
+            try
+            {
+                property = await _factory.Properties.UpdatePropertyAsync(id, name);
+                await _factory.Context.SaveChangesAsync();
+            }
+            catch (PropertyExistsException)
+            {
+                return BadRequest();
+            }
+            catch (PropertyNotFoundException)
+            {
+                return NotFound();
+            }
+
+            return property;
+        }
+
         [HttpPost]
         [Route("")]
         public async Task<ActionResult<FlightProperty>> CreatePropertyAsync([FromBody] FlightProperty template)
@@ -68,6 +91,40 @@ namespace DroneFlightLog.Api.Controllers
             }
 
             return properties;
+        }
+
+        [HttpPut]
+        [Route("values")]
+        public async Task<ActionResult<FlightPropertyValue>> UpdatePropertyValueAsync([FromBody] FlightPropertyValue template)
+        {
+            FlightPropertyValue value;
+
+            try
+            {
+                value = await _factory.Properties.GetPropertyValueAsync(template.Id);
+                switch (value.Property.DataType)
+                {
+                    case FlightPropertyDataType.Date:
+                        value = await _factory.Properties.UpdatePropertyValueAsync(template.Id, template.DateValue);
+                        break;
+                    case FlightPropertyDataType.Number:
+                        value = await _factory.Properties.UpdatePropertyValueAsync(template.Id, template.NumberValue);
+                        break;
+                    case FlightPropertyDataType.String:
+                        value = await _factory.Properties.UpdatePropertyValueAsync(template.Id, template.StringValue);
+                        break;
+                    default:
+                        return BadRequest();
+                }
+
+                await _factory.Context.SaveChangesAsync();
+            }
+            catch (PropertyValueNotFoundException)
+            {
+                return NotFound();
+            }
+
+            return value;
         }
 
         [HttpPost]

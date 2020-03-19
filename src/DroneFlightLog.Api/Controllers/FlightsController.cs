@@ -100,6 +100,42 @@ namespace DroneFlightLog.Api.Controllers
             return flights;
         }
 
+        [HttpPut]
+        [Route("")]
+        public async Task<ActionResult<Flight>> UpdateFlightAsync([FromBody] Flight template)
+        {
+            Flight flight;
+
+            try
+            {
+                flight = await _factory.Flights.UpdateFlightAsync(template.Id,
+                                                                  template.OperatorId,
+                                                                  template.DroneId,
+                                                                  template.LocationId,
+                                                                  template.Start,
+                                                                  template.End);
+                await _factory.Context.SaveChangesAsync();
+            }
+            catch (OperatorNotFoundException)
+            {
+                return BadRequest();
+            }
+            catch (DroneNotFoundException)
+            {
+                return BadRequest();
+            }
+            catch (LocationNotFoundException)
+            {
+                return BadRequest();
+            }
+            catch (FlightNotFoundException)
+            {
+                return NotFound();
+            }
+
+            return flight;
+        }
+
         [HttpPost]
         [Route("")]
         public async Task<ActionResult<Flight>> CreateFlightAsync([FromBody] Flight template)

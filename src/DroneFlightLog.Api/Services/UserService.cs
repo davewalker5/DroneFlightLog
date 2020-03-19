@@ -50,7 +50,7 @@ namespace DroneFlightLog.Api.Services
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                     {
-                        new Claim(ClaimTypes.Name, user.Id.ToString())
+                        new Claim(ClaimTypes.Name, user.UserName)
                     }),
                     Expires = expiry,
                     SigningCredentials = credentials

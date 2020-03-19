@@ -27,14 +27,14 @@ The following "docker run" parameters are recommended when running the droneflig
 | Parameter | Value | Purpose |
 | --- | --- | --- |
 | -d | - | Run as a background  process
-| -v | /local:/var/opt/droneflightlog.api-1.0.0.3 | Mount the host folder containing the SQLite database |
+| -v | /local:/var/opt/droneflightlog.api-1.0.0.4 | Mount the host folder containing the SQLite database |
 | -p | 5001:80 | Expose the container's port 80 as port 5001 on the host |
 | --rm | - | Remove the container automatically when it stops |
 
 For example:
 
 ```shell
-docker run -d -v  /local:/var/opt/droneflightlog.api-1.0.0.3/ -p 5001:80 --rm  davewalker5/droneflightlogapisqlite:latest
+docker run -d -v  /local:/var/opt/droneflightlog.api-1.0.0.4/ -p 5001:80 --rm  davewalker5/droneflightlogapisqlite:latest
 ```
 
 The "/local" path given to the -v argument is described, below, and should be replaced with a value appropriate for the host running the container. Similarly, the port number "5001" can be replaced with any available port on the host.
@@ -57,7 +57,7 @@ The folder containing the "droneflightlog.db" file can then be passed to the "do
 To run the image, enter the following command, substituting "/local" for the host folder containing the SQLite database, as described:
 
 ```shell
-docker run -d -v  /local:/var/opt/droneflightlog.api-1.0.0.3/ -p 5001:80 --rm  davewalker5/droneflightlogapisqlite:latest
+docker run -d -v  /local:/var/opt/droneflightlog.api-1.0.0.4/ -p 5001:80 --rm  davewalker5/droneflightlogapisqlite:latest
 ```
 
 Once the container is running, browse to the following URL on the host:
