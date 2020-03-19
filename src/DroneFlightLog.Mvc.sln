@@ -14,4 +14,11 @@ Global
 		{C958BFE3-A23B-4BC7-A11F-E3BB9987F377}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C958BFE3-A23B-4BC7-A11F-E3BB9987F377}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.StandardHeader = $1
+		$0.VersionControlPolicy = $2
+		description = Drone Flight Log User Interface
+		version = 1.0.0.1
+	EndGlobalSection
 EndGlobal

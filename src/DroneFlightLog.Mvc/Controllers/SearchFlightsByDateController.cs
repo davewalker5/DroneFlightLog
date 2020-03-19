@@ -14,10 +14,10 @@ namespace DroneFlightLog.Mvc.Controllers
     [Authorize]
     public class SearchFlightsByDateController : Controller
     {
-        private readonly DroneFlightLogClient _client;
+        private readonly FlightSearchClient _client;
         private readonly IOptions<AppSettings> _settings;
 
-        public SearchFlightsByDateController(DroneFlightLogClient client, IOptions<AppSettings> settings)
+        public SearchFlightsByDateController(FlightSearchClient client, IOptions<AppSettings> settings)
         {
             _client = client;
             _settings = settings;

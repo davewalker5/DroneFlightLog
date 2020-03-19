@@ -1,48 +1,29 @@
-﻿@model DroneFlightLog.Mvc.Models.LocationViewModel
+﻿@model DroneFlightLog.Mvc.Models.AddLocationViewModel
 
 @{
     ViewData["Title"] = "Add Location";
 }
 
-    <div class="container-fluid">
-        @using (Html.BeginForm())
-        {
-            @Html.AntiForgeryToken()
-
-            <div class="row">
-                <div class="col-md">
-                    <span style="font-size: 1.2rem"><strong>Add Location</strong></span>
-                </div>
+<div class="container-fluid">
+    @using (Html.BeginForm())
+    {
+        <div class="row">
+            <div class="col-md">
+                <span style="font-size: 1.2rem"><strong>Add Location</strong></span>
             </div>
-            <hr />
+        </div>
+        <hr />
 
-            @if (!string.IsNullOrEmpty(Model.Message))
-            {
-                <div class="row">
-                    <div class="col-md">
-                        <span>@Html.Raw(Model.Message)</span>
-                    </div>
-                </div>
-                <br />
-            }
-
+        @if (!string.IsNullOrEmpty(Model.Message))
+        {
             <div class="row">
                 <div class="col-md">
-                    <strong>@Html.LabelFor(m => m.Name)</strong>
-                    <div class="input-group">
-                        @Html.EditorFor(m => m.Name, new { @class = "form-control" })
-                    </div>
-                    <span>@Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })</span>
+                    <span>@Html.Raw(Model.Message)</span>
                 </div>
             </div>
             <br />
-
-            <div class="row">
-                <div class="col-md">
-                    <div class="input-group">
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </div>
-                </div>
-            </div>
         }
-    </div>
+
+        @await Html.PartialAsync("Location", Model);
+    }
+</div>

@@ -13,12 +13,14 @@ namespace DroneFlightLog.Mvc.Controllers
     [Authorize]
     public class SearchFlightsByDroneController : Controller
     {
-        private readonly DroneFlightLogClient _client;
+        private readonly DroneClient _drones;
+        private readonly FlightSearchClient _flights;
         private readonly IOptions<AppSettings> _settings;
 
-        public SearchFlightsByDroneController(DroneFlightLogClient client, IOptions<AppSettings> settings)
+        public SearchFlightsByDroneController(DroneClient drones, FlightSearchClient flights, IOptions<AppSettings> settings)
         {
-            _client = client;
+            _drones = drones;
+            _flights = flights;
             _settings = settings;
         }
 
@@ -33,7 +35,7 @@ namespace DroneFlightLog.Mvc.Controllers
             {
                 PageNumber = 1
             };
-            List<Drone> drones = await _client.GetDronesAsync();
+            List<Drone> drones = await _drones.GetDronesAsync();
             model.SetDrones(drones);
             return View(model);
         }
@@ -61,11 +63,11 @@ namespace DroneFlightLog.Mvc.Controllers
                         break;
                 }
 
-                List<Flight> flights = await _client.GetFlightsByDroneAsync(model.DroneId, model.PageNumber, _settings.Value.FlightSearchPageSize);
+                List<Flight> flights = await _flights.GetFlightsByDroneAsync(model.DroneId, model.PageNumber, _settings.Value.FlightSearchPageSize);
                 model.SetFlights(flights, _settings.Value.FlightSearchPageSize);
             }
 
-            List<Drone> drones = await _client.GetDronesAsync();
+            List<Drone> drones = await _drones.GetDronesAsync();
             model.SetDrones(drones);
 
             return View(model);

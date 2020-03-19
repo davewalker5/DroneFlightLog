@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using DroneFlightLog.Mvc.Api;
 using DroneFlightLog.Mvc.Entities;
 using DroneFlightLog.Mvc.Models;
@@ -11,11 +12,13 @@ namespace DroneFlightLog.Mvc.Controllers
     [Authorize]
     public class FlightPropertiesController : Controller
     {
-        private readonly DroneFlightLogClient _client;
+        private readonly FlightPropertyClient _client;
+        private readonly IMapper _mapper;
 
-        public FlightPropertiesController(DroneFlightLogClient client)
+        public FlightPropertiesController(FlightPropertyClient client, IMapper mapper)
         {
             _client = client;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -36,7 +39,7 @@ namespace DroneFlightLog.Mvc.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            return View(new FlightPropertyViewModel());
+            return View(new AddFlightPropertyViewModel());
         }
 
         /// <summary>
@@ -46,7 +49,7 @@ namespace DroneFlightLog.Mvc.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add(FlightPropertyViewModel model)
+        public async Task<IActionResult> Add(AddFlightPropertyViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -57,6 +60,43 @@ namespace DroneFlightLog.Mvc.Controllers
             }
 
             return View(model);
+        }
+
+        /// <summary>
+        /// Serve the flight property editing page
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            FlightProperty property = await _client.GetFlightPropertyAsync(id);
+            EditFlightPropertyViewModel model = _mapper.Map<EditFlightPropertyViewModel>(property);
+            return View(model);
+        }
+
+        /// <summary>
+        /// Handle POST events to save updated flight properties
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(EditFlightPropertyViewModel model)
+        {
+            IActionResult result;
+
+            if (ModelState.IsValid)
+            {
+                await _client.UpdateFlightPropertyAsync(model.Id, model.Name);
+                result = RedirectToAction("Index");
+            }
+            else
+            {
+                result = View(model);
+            }
+
+            return result;
         }
     }
 }

@@ -1,0 +1,19 @@
+﻿@model DroneFlightLog.Mvc.Models.EditDroneViewModel
+
+@{
+    ViewData["Title"] = "Edit Drone";
+}
+
+<div class="container-fluid">
+    @using (Html.BeginForm())
+    {
+        <div class="row">
+            <div class="col-md">
+                <span style="font-size: 1.2rem"><strong>Edit Drone</strong></span>
+            </div>
+        </div>
+        <hr />
+
+        @await Html.PartialAsync("Drone", Model);
+    }
+</div>

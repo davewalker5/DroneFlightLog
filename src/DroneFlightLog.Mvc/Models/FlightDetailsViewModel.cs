@@ -20,17 +20,21 @@ namespace DroneFlightLog.Mvc.Models
         public void MergeProperties(List<FlightProperty> availableProperties)
         {
             // Identify the list of properties that don't already have values
-            // associated with the flight
-            IEnumerable<int> associatedPropertyIds = Properties.Select(p => p.Property.Id);
-            IEnumerable<FlightProperty> missing = availableProperties.Where(ap => !associatedPropertyIds.Contains(ap.Id));
-
-            // Add an empty value for available but not associated properties
-            foreach (FlightProperty property in missing)
+            // associated with the flight and add entries to the properties list
+            if (Properties != null)
             {
-                Properties.Add(new FlightPropertyValue
+                IEnumerable<int> associatedPropertyIds = Properties.Select(p => p.Property.Id);
+                IEnumerable<FlightProperty> missing = availableProperties.Where(ap => !associatedPropertyIds.Contains(ap.Id)).ToList();
+
+                // Add an empty value for available but not associated properties
+                if (missing.Any())
                 {
-                    Property = property
-                });
+                    Properties.AddRange(missing.Select(m => new FlightPropertyValue { Property = m }));
+                }
+            }
+            else
+            {
+                Properties = availableProperties.Select(m => new FlightPropertyValue { Property = m }).ToList();
             }
 
             // Sort the properties by name
@@ -38,15 +42,20 @@ namespace DroneFlightLog.Mvc.Models
         }
 
         /// <summary>
-        /// Identify properties that have not already been saved and apply the
-        /// updated values to them from the bound property values dictionary
+        /// Update the model's flight property values from the bound property
+        /// values dictionary
         /// </summary>
         public void UpdatePropertiesFromBoundValues()
         {
-            foreach (var kvp in BoundPropertyValues.Where(v => !string.IsNullOrEmpty(v.Value)))
+            // Iterate over the bound values
+            foreach (var kvp in BoundPropertyValues)
             {
-                FlightPropertyValue value = Properties.FirstOrDefault(p => (p.Id == 0) && (p.Property.Id == kvp.Key));
-                if (value != null)
+                // Find the property value that is associated with the bound value property
+                FlightPropertyValue value = Properties.FirstOrDefault(p => p.Property.Id == kvp.Key);
+
+                // Update the value if either it corresponds to a value that's already
+                // been saved (updating) or the associated bound value isn't empty (creating)
+                if ((value != null) && ((value.Id > 0) || !string.IsNullOrEmpty(kvp.Value)))
                 {
                     switch (value.Property.DataType)
                     {

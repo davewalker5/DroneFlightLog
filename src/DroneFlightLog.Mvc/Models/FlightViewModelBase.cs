@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DroneFlightLog.Mvc.Models
 {
-    public class FlightViewModel : Flight
+    public class FlightViewModelBase : Flight
     {
         public List<SelectListItem> Drones { get; private set; }
         public List<SelectListItem> Locations { get; private set; }

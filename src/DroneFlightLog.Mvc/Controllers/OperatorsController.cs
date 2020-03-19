@@ -12,11 +12,13 @@ namespace DroneFlightLog.Mvc.Controllers
     [Authorize]
     public class OperatorsController : Controller
     {
-        private readonly DroneFlightLogClient _client;
+        private readonly OperatorClient _operators;
+        private readonly AddressClient _addresses;
 
-        public OperatorsController(DroneFlightLogClient client)
+        public OperatorsController(OperatorClient operators, AddressClient addresses)
         {
-            _client = client;
+            _operators = operators;
+            _addresses = addresses;
         }
 
         /// <summary>
@@ -26,7 +28,7 @@ namespace DroneFlightLog.Mvc.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            List<Operator> operators = await _client.GetOperatorsAsync();
+            List<Operator> operators = await _operators.GetOperatorsAsync();
             return View(operators);
         }
 
@@ -37,21 +39,21 @@ namespace DroneFlightLog.Mvc.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            return View(new OperatorViewModel());
+            return View(new AddOperatorViewModel());
         }
 
         /// <summary>
-        /// Handle POST events to save new locations
+        /// Handle POST events to save new operators
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add(OperatorViewModel model)
+        public async Task<IActionResult> Add(AddOperatorViewModel model)
         {
             if (ModelState.IsValid)
             {
-                Address address = await _client.FindOrAddAddressAsync(
+                Address address = await _addresses.FindOrAddAddressAsync(
                                                 model.Address.Number,
                                                 model.Address.Street,
                                                 model.Address.Town,
@@ -60,7 +62,7 @@ namespace DroneFlightLog.Mvc.Controllers
                                                 model.Address.Country);
 
                 DateTime doB = DateTime.Parse(model.OperatorDateOfBirth);
-                Operator op = await _client.AddOperatorAsync(
+                Operator op = await _operators.AddOperatorAsync(
                                                 model.Operator.FirstNames,
                                                 model.Operator.Surname,
                                                 model.Operator.OperatorNumber,
@@ -74,6 +76,63 @@ namespace DroneFlightLog.Mvc.Controllers
             }
 
             return View(model);
+        }
+
+        /// <summary>
+        /// Serve the page to edit an existing operator
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            Operator op = await _operators.GetOperatorAsync(id);
+            EditOperatorViewModel model = new EditOperatorViewModel();
+            model.Operator = op;
+            model.Address = op.Address;
+            model.OperatorDateOfBirth = op.DoB.ToString("MM/dd/yyyy");
+            return View(model);
+        }
+
+        /// <summary>
+        /// Handle POST events to update existing operators
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(EditOperatorViewModel model)
+        {
+            IActionResult result;
+
+            if (ModelState.IsValid)
+            {
+                Address address = await _addresses.FindOrAddAddressAsync(
+                                                model.Address.Number,
+                                                model.Address.Street,
+                                                model.Address.Town,
+                                                model.Address.County,
+                                                model.Address.Postcode,
+                                                model.Address.Country);
+
+                DateTime doB = DateTime.Parse(model.OperatorDateOfBirth);
+                Operator op = await _operators.UpdateOperatorAsync(
+                                                model.Operator.Id,
+                                                model.Operator.FirstNames,
+                                                model.Operator.Surname,
+                                                model.Operator.OperatorNumber,
+                                                model.Operator.FlyerNumber,
+                                                doB,
+                                                address.Id);
+
+                result = RedirectToAction("Index");
+            }
+            else
+            {
+                result = View(model);
+            }
+
+            return result;
         }
     }
 }

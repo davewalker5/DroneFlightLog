@@ -1,145 +1,29 @@
-﻿@model DroneFlightLog.Mvc.Models.OperatorViewModel
+﻿@model DroneFlightLog.Mvc.Models.AddOperatorViewModel
 
 @{
     ViewData["Title"] = "Add Operator";
 }
 
-    <div class="container-fluid">
-        @using (Html.BeginForm())
+<div class="container-fluid">
+    @using (Html.BeginForm())
+    {
+        <div class="row">
+            <div class="col-md">
+                <span style="font-size: 1.2rem"><strong>Add Operator</strong></span>
+            </div>
+        </div>
+        <hr />
+
+        @if (!string.IsNullOrEmpty(Model.Message))
         {
-            @Html.AntiForgeryToken()
-
             <div class="row">
                 <div class="col-md">
-                    <span style="font-size: 1.2rem"><strong>Add Operator</strong></span>
-                </div>
-            </div>
-            <hr />
-
-            @if (!string.IsNullOrEmpty(Model.Message))
-            {
-                <div class="row">
-                    <div class="col-md">
-                        <span>@Html.Raw(Model.Message)</span>
-                    </div>
-                </div>
-                <br />
-            }
-
-            <div class="row">
-                <div class="col-md">
-                    <span class="text-muted" style="font-size: 1.1rem"><strong>Operator Details</strong></span>
+                    <span>@Html.Raw(Model.Message)</span>
                 </div>
             </div>
             <br />
-
-            <div class="row">
-                <div class="col">
-                    <strong>@Html.LabelFor(m => m.Operator.FirstNames)</strong>
-                    <div class="input-group">
-                        @Html.EditorFor(m => m.Operator.FirstNames, new { @class = "form-control" })
-                    </div>
-                    <span>@Html.ValidationMessageFor(m => m.Operator.FirstNames, "", new { @class = "text-danger" })</span>
-                </div>
-                <div class="col">
-                    <strong>@Html.LabelFor(m => m.Operator.Surname)</strong>
-                    <div class="input-group">
-                        @Html.EditorFor(m => m.Operator.Surname, new { @class = "form-control" })
-                    </div>
-                    <span>@Html.ValidationMessageFor(m => m.Operator.Surname, "", new { @class = "text-danger" })</span>
-                </div>
-                <div class="col">
-                    <strong>@Html.LabelFor(m => m.Operator.OperatorNumber)</strong>
-                    <div class="input-group">
-                        @Html.EditorFor(m => m.Operator.OperatorNumber, new { @class = "form-control" })
-                    </div>
-                    <span>@Html.ValidationMessageFor(m => m.Operator.OperatorNumber, "", new { @class = "text-danger" })</span>
-                </div>
-                <div class="col">
-                    <strong>@Html.LabelFor(m => m.Operator.FlyerNumber)</strong>
-                    <div class="input-group">
-                        @Html.EditorFor(m => m.Operator.FlyerNumber, new { @class = "form-control" })
-                    </div>
-                    <span>@Html.ValidationMessageFor(m => m.Operator.FlyerNumber, "", new { @class = "text-danger" })</span>
-                </div>
-                <div class="col">
-                    <strong>@Html.LabelFor(m => m.OperatorDateOfBirth)</strong>
-                    <div class="input-group">
-                        @Html.EditorFor(m => m.OperatorDateOfBirth, new { @class = "form-control" })
-                        <script type="text/javascript">new GijgoDatePicker(document.getElementById("OperatorDateOfBirth"), { calendarWeeks: false, uiLibrary: "bootstrap4" });</script>
-                    </div>
-                    <span>@Html.ValidationMessageFor(m => m.OperatorDateOfBirth, "", new { @class = "text-danger" })</span>
-                </div>
-            </div>
-            <hr />
-
-            <div class="row">
-                <div class="col-md">
-                    <span class="text-muted" style="font-size: 1.1rem"><strong>Address Details</strong></span>
-                </div>
-            </div>
-            <br />
-
-            <div class="row">
-                <div class="col">
-                    <strong>@Html.LabelFor(m => m.Address.Number)</strong>
-                    <div class="input-group">
-                        @Html.EditorFor(m => m.Address.Number, new { @class = "form-control" })
-                    </div>
-                    <span>@Html.ValidationMessageFor(m => m.Address.Number, "", new { @class = "text-danger" })</span>
-                </div>
-                <div class="col">
-                    <strong>@Html.LabelFor(m => m.Address.Street)</strong>
-                    <div class="input-group">
-                        @Html.EditorFor(m => m.Address.Street, new { @class = "form-control" })
-                    </div>
-                    <span>@Html.ValidationMessageFor(m => m.Address.Street, "", new { @class = "text-danger" })</span>
-                </div>
-            </div>
-            <br />
-
-            <div class="row">
-                <div class="col">
-                    <strong>@Html.LabelFor(m => m.Address.Town)</strong>
-                    <div class="input-group">
-                        @Html.EditorFor(m => m.Address.Town, new { @class = "form-control" })
-                    </div>
-                    <span>@Html.ValidationMessageFor(m => m.Address.Town, "", new { @class = "text-danger" })</span>
-                </div>
-                <div class="col">
-                    <strong>@Html.LabelFor(m => m.Address.County)</strong>
-                    <div class="input-group">
-                        @Html.EditorFor(m => m.Address.County, new { @class = "form-control" })
-                    </div>
-                    <span>@Html.ValidationMessageFor(m => m.Address.County, "", new { @class = "text-danger" })</span>
-                </div>
-            </div>
-            <br />
-
-            <div class="row">
-                <div class="col">
-                    <strong>@Html.LabelFor(m => m.Address.Postcode)</strong>
-                    <div class="input-group">
-                        @Html.EditorFor(m => m.Address.Postcode, new { @class = "form-control" })
-                    </div>
-                    <span>@Html.ValidationMessageFor(m => m.Address.Postcode, "", new { @class = "text-danger" })</span>
-                </div>
-                <div class="col">
-                    <strong>@Html.LabelFor(m => m.Address.Country)</strong>
-                    <div class="input-group">
-                        @Html.EditorFor(m => m.Address.Country, new { @class = "form-control" })
-                    </div>
-                    <span>@Html.ValidationMessageFor(m => m.Address.Country, "", new { @class = "text-danger" })</span>
-                </div>
-            </div>
-            <hr />
-
-            <div class="row">
-                <div class="col">
-                    <div class="input-group">
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </div>
-                </div>
-            </div>
         }
-    </div>
+
+        @await Html.PartialAsync("Operator", Model);
+    }
+</div>

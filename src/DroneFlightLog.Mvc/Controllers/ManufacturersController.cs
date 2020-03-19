@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using DroneFlightLog.Mvc.Api;
 using DroneFlightLog.Mvc.Entities;
 using DroneFlightLog.Mvc.Models;
@@ -11,9 +12,9 @@ namespace DroneFlightLog.Mvc.Controllers
     [Authorize]
     public class ManufacturersController : Controller
     {
-        private readonly DroneFlightLogClient _client;
+        private readonly ManufacturerClient _client;
 
-        public ManufacturersController(DroneFlightLogClient client)
+        public ManufacturersController(ManufacturerClient client)
         {
             _client = client;
         }
@@ -36,7 +37,7 @@ namespace DroneFlightLog.Mvc.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            return View(new ManufacturerViewModel());
+            return View(new AddManufacturerViewModel());
         }
 
         /// <summary>
@@ -46,7 +47,7 @@ namespace DroneFlightLog.Mvc.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add(ManufacturerViewModel model)
+        public async Task<IActionResult> Add(AddManufacturerViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -57,6 +58,42 @@ namespace DroneFlightLog.Mvc.Controllers
             }
 
             return View(model);
+        }
+
+        /// <summary>
+        /// Serve the manufacturer editing page
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            Manufacturer model = await _client.GetManufacturerAsync(id);
+            return View(model);
+        }
+
+        /// <summary>
+        /// Handle POST events to save updated manufacturers
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Manufacturer model)
+        {
+            IActionResult result;
+
+            if (ModelState.IsValid)
+            {
+                await _client.UpdateManufacturerAsync(model.Id, model.Name);
+                result = RedirectToAction("Index");
+            }
+            else
+            {
+                result = View(model);
+            }
+
+            return result;
         }
     }
 }

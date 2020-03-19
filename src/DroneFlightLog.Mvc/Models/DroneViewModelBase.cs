@@ -5,23 +5,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DroneFlightLog.Mvc.Models
 {
-    public class DroneViewModel : Drone
+    public abstract class DroneViewModelBase : Drone
     {
-        public List<SelectListItem> Models { get; private set; }
-        public string Message { get; set; }
-
-        /// <summary>
-        /// Reset the view model
-        /// </summary>
-        public void Clear()
-        {
-            Id = 0;
-            ModelId = 0;
-            Name = "";
-            SerialNumber = "";
-            Models = null;
-            Message = "";
-        }
+        public List<SelectListItem> Models { get; set; }
 
         /// <summary>
         /// Construct the options for the models drop-down

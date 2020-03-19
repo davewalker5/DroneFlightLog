@@ -1,4 +1,4 @@
-﻿@model DroneFlightLog.Mvc.Models.ModelViewModel
+﻿@model DroneFlightLog.Mvc.Models.AddModelViewModel
 
 @{
     ViewData["Title"] = "Add Model";
@@ -7,8 +7,6 @@
 <div class="container-fluid">
     @using (Html.BeginForm())
     {
-        @Html.AntiForgeryToken()
-
         <div class="row">
             <div class="col-md">
                 <span style="font-size: 1.2rem"><strong>Add Model</strong></span>
@@ -26,34 +24,7 @@
             <br />
         }
 
-        <div class="row">
-            <div class="col-md">
-                <strong>@Html.LabelFor(m => m.ManufacturerId)</strong>
-                <div class="input-group">
-                    @Html.DropDownListFor(m => m.ManufacturerId, new List<SelectListItem>(Model.Manufacturers), new { @class = "form-control" })
-                </div>
-                <span>@Html.ValidationMessageFor(m => m.ManufacturerId, "", new { @class = "text-danger" })</span>
-            </div>
-        </div>
-        <br/>
+        @await Html.PartialAsync("Model", Model);
 
-        <div class="row">
-            <div class="col-md">
-                <strong>@Html.LabelFor(m => m.Name)</strong>
-                <div class="input-group">
-                    @Html.EditorFor(m => m.Name, new { @class = "form-control" })
-                </div>
-                <span>@Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })</span>
-            </div>
-        </div>
-        <br />
-
-        <div class="row">
-            <div class="col-md">
-                <div class="input-group">
-                    <button type="submit" class="btn btn-primary">Save</button>
-                </div>
-            </div>
-        </div>
     }
 </div>

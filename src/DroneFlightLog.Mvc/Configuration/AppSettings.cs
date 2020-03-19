@@ -10,5 +10,6 @@ namespace DroneFlightLog.Mvc.Configuration
         public string ApiDateFormat { get; set; }
         public int FlightSearchPageSize { get; set; }
         public int FlightPropertiesPerRow { get; set; }
+        public int CacheLifetimeSeconds { get; set; }
     }
 }

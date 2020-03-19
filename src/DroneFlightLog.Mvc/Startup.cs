@@ -4,10 +4,12 @@ using AutoMapper;
 using DroneFlightLog.Mvc.Api;
 using DroneFlightLog.Mvc.Configuration;
 using DroneFlightLog.Mvc.Controllers;
+using DroneFlightLog.Mvc.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -42,8 +44,20 @@ namespace DroneFlightLog.Mvc
             // The typed HttpClient needs to access session via the context
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            // Interactions with the REST service are managed via a typed HttpClient
-            services.AddHttpClient<DroneFlightLogClient>();
+            // Interactions with the REST service are managed via typed HttpClients
+            // with "lookup" caching for performance
+            services.AddMemoryCache();
+            services.AddSingleton<ICacheWrapper>(s => new CacheWrapper(new MemoryCacheOptions()));
+            services.AddHttpClient<AuthenticationClient>();
+            services.AddHttpClient<ManufacturerClient>();
+            services.AddHttpClient<ModelClient>();
+            services.AddHttpClient<DroneClient>();
+            services.AddHttpClient<LocationClient>();
+            services.AddHttpClient<OperatorClient>();
+            services.AddHttpClient<AddressClient>();
+            services.AddHttpClient<FlightPropertyClient>();
+            services.AddHttpClient<FlightSearchClient>();
+            services.AddHttpClient<FlightClient>();
 
             // Configure session state for token storage
             services.AddSession(options =>

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using DroneFlightLog.Mvc.Api;
 using DroneFlightLog.Mvc.Entities;
 using DroneFlightLog.Mvc.Models;
@@ -11,9 +12,9 @@ namespace DroneFlightLog.Mvc.Controllers
     [Authorize]
     public class LocationsController : Controller
     {
-        private readonly DroneFlightLogClient _client;
+        private readonly LocationClient _client;
 
-        public LocationsController(DroneFlightLogClient client)
+        public LocationsController(LocationClient client)
         {
             _client = client;
         }
@@ -36,7 +37,7 @@ namespace DroneFlightLog.Mvc.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            return View(new LocationViewModel());
+            return View(new AddLocationViewModel());
         }
 
         /// <summary>
@@ -46,7 +47,7 @@ namespace DroneFlightLog.Mvc.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add(LocationViewModel model)
+        public async Task<IActionResult> Add(AddLocationViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -57,6 +58,42 @@ namespace DroneFlightLog.Mvc.Controllers
             }
 
             return View(model);
+        }
+
+        /// <summary>
+        /// Serve the location editing page
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            Location model = await _client.GetLocationAsync(id);
+            return View(model);
+        }
+
+        /// <summary>
+        /// Handle POST events to save updated locations
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Location model)
+        {
+            IActionResult result;
+
+            if (ModelState.IsValid)
+            {
+                await _client.UpdateLocationAsync(model.Id, model.Name);
+                result = RedirectToAction("Index");
+            }
+            else
+            {
+                result = View(model);
+            }
+
+            return result;
         }
     }
 }
