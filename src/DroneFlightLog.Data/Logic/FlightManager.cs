@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using DroneFlightLog.Data.Entities;
+using DroneFlightLog.Data.Exceptions;
 using DroneFlightLog.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -76,6 +78,82 @@ namespace DroneFlightLog.Data.Logic
         }
 
         /// <summary>
+        /// Return a single flight given its Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Flight GetFlight(int id)
+        {
+            Flight flight = _factory.Context.Flights.FirstOrDefault(f => f.Id == id);
+            ThrowIfFlightNotFound(flight, id);
+            return flight;
+        }
+
+        /// <summary>
+        /// Return a single flight given its Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<Flight> GetFlightAsync(int id)
+        {
+            Flight flight = await _factory.Context.Flights.FirstOrDefaultAsync(f => f.Id == id);
+            ThrowIfFlightNotFound(flight, id);
+            return flight;
+        }
+
+        /// <summary>
+        /// Update an existing flight
+        /// </summary>
+        /// <param name="flightId"></param>
+        /// <param name="operatorId"></param>
+        /// <param name="droneId"></param>
+        /// <param name="locationId"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
+        public Flight UpdateFlight(int flightId, int operatorId, int droneId, int locationId, DateTime start, DateTime end)
+        {
+            // These will throw exceptions if the corresponding entities do not exist
+            _factory.Operators.GetOperator(operatorId);
+            _factory.Drones.GetDrone(droneId);
+            _factory.Locations.GetLocation(locationId);
+
+            Flight flight = GetFlight(flightId);
+            flight.OperatorId = operatorId;
+            flight.DroneId = droneId;
+            flight.LocationId = locationId;
+            flight.Start = start;
+            flight.End = end;
+            return flight;
+        }
+
+        /// <summary>
+        /// Update an existing flight
+        /// </summary>
+        /// <param name="flightId"></param>
+        /// <param name="operatorId"></param>
+        /// <param name="droneId"></param>
+        /// <param name="locationId"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
+        public async Task<Flight> UpdateFlightAsync(int flightId, int operatorId, int droneId, int locationId, DateTime start, DateTime end)
+        {
+            // These will throw exceptions if the corresponding entities do not exist
+            await _factory.Operators.GetOperatorAsync(operatorId);
+            await _factory.Drones.GetDroneAsync(droneId);
+            await _factory.Locations.GetLocationAsync(locationId);
+
+            Flight flight = await GetFlightAsync(flightId);
+            flight.OperatorId = operatorId;
+            flight.DroneId = droneId;
+            flight.LocationId = locationId;
+            flight.Start = start;
+            flight.End = end;
+            return flight;
+        }
+
+        /// <summary>
         /// Find flights matching the specified filtering criteria and return the specified
         /// page of results
         /// </summary>
@@ -138,6 +216,21 @@ namespace DroneFlightLog.Data.Logic
                                                                .AsAsyncEnumerable();
 
             return flights;
+        }
+
+        /// <summary>
+        /// Throw an error if a flight does not exist
+        /// </summary>
+        /// <param name="flight"></param>
+        /// <param name="flightId"></param>
+        [ExcludeFromCodeCoverage]
+        private void ThrowIfFlightNotFound(Flight flight, int flightId)
+        {
+            if (flight == null)
+            {
+                string message = $"Flight with ID {flightId} not found";
+                throw new FlightNotFoundException(message);
+            }
         }
     }
 }

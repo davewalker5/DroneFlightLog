@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using DroneFlightLog.Data.Entities;
 using DroneFlightLog.Data.Exceptions;
 using DroneFlightLog.Data.Factory;
@@ -23,10 +24,15 @@ namespace DroneFlightLog.Data.Tests
 
         private const string AsyncFirstNames = "Async First Names";
         private const string FirstNames = "First Names";
+        private const string UpdatedFirstNames = "Updated First Names";
         private const string Surname = "Surname";
+        private const string UpdatedSurname = "Updated Surname";
         private readonly DateTime DoB = DateTime.Now;
+        private readonly DateTime UpdatedDoB = DateTime.Now.AddDays(365);
         private const string FlyerNumber = "Some Flyer Number";
+        private const string UpdatedFlyerNumber = "Updated Flyer Number";
         private const string OperatorNumber = "Some Operator Number";
+        private const string UpdatedOperatorNumber = "Updated Operator Number";
 
         private IDroneFlightLogFactory<DroneFlightLogDbContext> _factory;
         private int _firstAddressId;
@@ -65,23 +71,51 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
-        public async void AddOperatorAsyncTest()
+        public async Task AddOperatorAsyncTest()
         {
             Operator op = await _factory.Operators.AddOperatorAsync(AsyncFirstNames, Surname, DoB, FlyerNumber, OperatorNumber, _firstAddressId);
             await _factory.Context.SaveChangesAsync();
-            Assert.AreEqual(1, _factory.Context.Operators.Count());
-            Assert.AreEqual(FirstNames, _factory.Context.Operators.First().FirstNames);
-            Assert.AreEqual(Surname, _factory.Context.Operators.First().Surname);
-            Assert.AreEqual(DoB, _factory.Context.Operators.First().DoB);
-            Assert.AreEqual(FlyerNumber, _factory.Context.Operators.First().FlyerNumber);
-            Assert.AreEqual(OperatorNumber, _factory.Context.Operators.First().OperatorNumber);
-            Assert.AreEqual(_firstAddressId, _factory.Context.Operators.First().AddressId);
+            Assert.AreEqual(2, _factory.Context.Operators.Count());
+            Assert.AreEqual(AsyncFirstNames, op.FirstNames);
+            Assert.AreEqual(Surname, op.Surname);
+            Assert.AreEqual(DoB, op.DoB);
+            Assert.AreEqual(FlyerNumber, op.FlyerNumber);
+            Assert.AreEqual(OperatorNumber, op.OperatorNumber);
+            Assert.AreEqual(_firstAddressId, op.AddressId);
         }
 
         [TestMethod, ExpectedException(typeof(OperatorExistsException))]
         public void AddExistingOperatorTest()
         {
             _factory.Operators.AddOperator(FirstNames, Surname, DateTime.Now, "", "", _firstAddressId);
+        }
+
+        [TestMethod]
+        public void UpdateOperatorTest()
+        {
+            _factory.Operators.UpdateOperator(_operatorId, UpdatedFirstNames, UpdatedSurname, UpdatedDoB, UpdatedFlyerNumber, UpdatedOperatorNumber, _secondAddressId);
+            _factory.Context.SaveChanges();
+            Operator op = _factory.Operators.GetOperator(_operatorId);
+            Assert.AreEqual(UpdatedFirstNames, op.FirstNames);
+            Assert.AreEqual(UpdatedSurname, op.Surname);
+            Assert.AreEqual(UpdatedDoB, op.DoB);
+            Assert.AreEqual(UpdatedFlyerNumber, op.FlyerNumber);
+            Assert.AreEqual(UpdatedOperatorNumber, op.OperatorNumber);
+            Assert.AreEqual(_secondAddressId, op.AddressId);
+        }
+
+        [TestMethod]
+        public async Task UpdateOperatorAsyncTest()
+        {
+            await _factory.Operators.UpdateOperatorAsync(_operatorId, UpdatedFirstNames, UpdatedSurname, UpdatedDoB, UpdatedFlyerNumber, UpdatedOperatorNumber, _secondAddressId);
+            await _factory.Context.SaveChangesAsync();
+            Operator op = await _factory.Operators.GetOperatorAsync(_operatorId);
+            Assert.AreEqual(UpdatedFirstNames, op.FirstNames);
+            Assert.AreEqual(UpdatedSurname, op.Surname);
+            Assert.AreEqual(UpdatedDoB, op.DoB);
+            Assert.AreEqual(UpdatedFlyerNumber, op.FlyerNumber);
+            Assert.AreEqual(UpdatedOperatorNumber, op.OperatorNumber);
+            Assert.AreEqual(_secondAddressId, op.AddressId);
         }
 
         [TestMethod]
@@ -92,7 +126,7 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
-        public async void GetOperatorByIdAsyncTest()
+        public async Task GetOperatorByIdAsyncTest()
         {
             Operator op = await _factory.Operators.GetOperatorAsync(_operatorId);
             ValidateOperator(op, _operatorId, _firstAddressId);
@@ -113,7 +147,7 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
-        public async void GetAllOperatorsAsyncTest()
+        public async Task GetAllOperatorsAsyncTest()
         {
             List<Operator> operators = await _factory.Operators.GetOperatorsAsync(null).ToListAsync();
             Assert.AreEqual(1, operators.Count());
@@ -143,7 +177,7 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
-        public async void FindOperatorAsyncTest()
+        public async Task FindOperatorAsyncTest()
         {
             Operator op = await _factory.Operators.FindOperatorAsync(FirstNames, Surname, _firstAddressId);
             ValidateOperator(op, _operatorId, _firstAddressId);
@@ -170,7 +204,7 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
-        public async void SetOperatorAddressAsyncTest()
+        public async Task SetOperatorAddressAsyncTest()
         {
             await _factory.Operators.SetOperatorAddressAsync(_operatorId, _secondAddressId);
             await _factory.Context.SaveChangesAsync();

@@ -12,5 +12,7 @@ namespace DroneFlightLog.Data.Interfaces
         Task<Model> GetModelAsync(int modelId);
         IEnumerable<Model> GetModels(int? manufacturerId);
         IAsyncEnumerable<Model> GetModelsAsync(int? manufacturerId);
+        Model UpdateModel(int id, string name, int manufacturerId);
+        Task<Model> UpdateModelAsync(int id, string name, int manufacturerId);
     }
 }

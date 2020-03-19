@@ -14,5 +14,7 @@ namespace DroneFlightLog.Data.Interfaces
         Task<Location> GetLocationAsync(int locationId);
         IEnumerable<Location> GetLocations();
         IAsyncEnumerable<Location> GetLocationsAsync();
+        Location UpdateLocation(int id, string name);
+        Task<Location> UpdateLocationAsync(int id, string name);
     }
 }

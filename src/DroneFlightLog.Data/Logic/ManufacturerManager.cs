@@ -85,6 +85,42 @@ namespace DroneFlightLog.Data.Logic
         }
 
         /// <summary>
+        /// Update a manufacturers name
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public Manufacturer UpdateManufacturer(int id, string name)
+        {
+            Manufacturer existing = FindManufacturer(name);
+            ThrowIfManufacturerFound(existing, name);
+
+            Manufacturer manufacturer = _context.Manufacturers.FirstOrDefault(m => m.Id == id);
+            ThrowIfManufacturerNotFound(manufacturer, id);
+
+            manufacturer.Name = name.CleanString();
+            return manufacturer;
+        }
+
+        /// <summary>
+        /// Update a manufacturers name
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public async Task<Manufacturer> UpdateManufacturerAsync(int id, string name)
+        {
+            Manufacturer existing = await FindManufacturerAsync(name);
+            ThrowIfManufacturerFound(existing, name);
+
+            Manufacturer manufacturer = await _context.Manufacturers.FirstOrDefaultAsync(m => m.Id == id);
+            ThrowIfManufacturerNotFound(manufacturer, id);
+
+            manufacturer.Name = name.CleanString();
+            return manufacturer;
+        }
+
+        /// <summary>
         /// Find a manufacturer given their name
         /// </summary>
         /// <param name="name"></param>

@@ -14,5 +14,7 @@ namespace DroneFlightLog.Data.Interfaces
         Task<Manufacturer> GetManufacturerAsync(int manufacturerId);
         IEnumerable<Manufacturer> GetManufacturers();
         IAsyncEnumerable<Manufacturer> GetManufacturersAsync();
+        Manufacturer UpdateManufacturer(int id, string name);
+        Task<Manufacturer> UpdateManufacturerAsync(int id, string name);
     }
 }

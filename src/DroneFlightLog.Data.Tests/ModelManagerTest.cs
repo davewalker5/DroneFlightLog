@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using DroneFlightLog.Data.Entities;
 using DroneFlightLog.Data.Exceptions;
 using DroneFlightLog.Data.Factory;
@@ -13,7 +14,9 @@ namespace DroneFlightLog.Data.Tests
     public class ModelManagerTest
     {
         private const string ManufacturerName = "Some Manufacturer";
+        private const string UpdatedManufacturerName = "Some OtherManufacturer";
         private const string ModelName = "Some Model";
+        private const string UpdatedModelName = "Some Other Model";
         private const string AsyncModelName = "Some Async Model";
 
         private IDroneFlightLogFactory<DroneFlightLogDbContext> _factory;
@@ -46,7 +49,7 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
-        public async void AddModelAsyncTest()
+        public async Task AddModelAsyncTest()
         {
             Model model = await _factory.Models.AddModelAsync(AsyncModelName, _manufacturerId);
             await _factory.Context.SaveChangesAsync();
@@ -75,7 +78,7 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
-        public async void GetModelByIdAsyncTest()
+        public async Task GetModelByIdAsyncTest()
         {
             Model model = await _factory.Models.GetModelAsync(_modelId);
             ValidateModel(model);
@@ -88,6 +91,36 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
+        public void UpdateModelTest()
+        {
+            // To make this a complete test, we need a second manufacturer
+            Manufacturer manufacturer = _factory.Manufacturers.AddManufacturer(UpdatedManufacturerName);
+            _factory.Context.SaveChanges();
+
+            _factory.Models.UpdateModel(_modelId, UpdatedModelName, manufacturer.Id);
+            _factory.Context.SaveChanges();
+
+            Model model = _factory.Models.GetModel(_modelId);
+            Assert.AreEqual(UpdatedModelName, model.Name);
+            Assert.AreEqual(manufacturer.Id, model.ManufacturerId);
+        }
+
+        [TestMethod]
+        public async Task UpdateModelAsyncTest()
+        {
+            // To make this a complete test, we need a second manufacturer
+            Manufacturer manufacturer = await _factory.Manufacturers.AddManufacturerAsync(UpdatedManufacturerName);
+            await _factory.Context.SaveChangesAsync();
+
+            await _factory.Models.UpdateModelAsync(_modelId, UpdatedModelName, manufacturer.Id);
+            await _factory.Context.SaveChangesAsync();
+
+            Model model = await _factory.Models.GetModelAsync(_modelId);
+            Assert.AreEqual(UpdatedModelName, model.Name);
+            Assert.AreEqual(manufacturer.Id, model.ManufacturerId);
+        }
+
+        [TestMethod]
         public void GetAllModelsTest()
         {
             IEnumerable<Model> models = _factory.Models.GetModels(null);
@@ -96,7 +129,7 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
-        public async void GetAllModelsAsyncTest()
+        public async Task GetAllModelsAsyncTest()
         {
             List<Model> models = await _factory.Models.GetModelsAsync(null).ToListAsync();
             Assert.AreEqual(1, models.Count());
