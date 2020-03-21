@@ -1,7 +1,7 @@
 # DroneFlightLog.Mvc
 
 [![Build Status](https://github.com/davewalker5/DroneFlightLog.Mvc/workflows/.NET%20Core%20CI%20Build/badge.svg)](https://github.com/davewalker5/DroneFlightLog.Mvc/actions)
-[![GitHub issues](https://img.shields.io/github/issues/davewalker5/DroneFlightLog.Mvc)](https://github.com/davewalker5/DroneFlightLogDb/issues)
+[![GitHub issues](https://img.shields.io/github/issues/davewalker5/DroneFlightLog.Mvc)](https://github.com/davewalker5/DroneFlightLog.Mvc/issues)
 [![Releases](https://img.shields.io/github/v/release/davewalker5/DroneFlightLog.Mvc.svg?include_prereleases)](https://github.com/davewalker5/DroneFlightLog.Mvc/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/davewalker5/DroneFlightLog.Mvc/blob/master/LICENSE)
 [![Language](https://img.shields.io/badge/language-c%23-blue.svg)](https://github.com/davewalker5/DroneFlightLog.Mvc/)
