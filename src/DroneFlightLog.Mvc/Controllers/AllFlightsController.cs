@@ -29,9 +29,9 @@ namespace DroneFlightLog.Mvc.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            AllFlightsViewModel model = new AllFlightsViewModel { PageNumber = 1 };
+            AllFlightsViewModel model = new AllFlightsViewModel();
             List<Flight> flights = await _client.GetFlightsAsync(1, _settings.Value.FlightSearchPageSize);
-            model.SetFlights(flights, _settings.Value.FlightSearchPageSize);
+            model.SetFlights(flights, 1, _settings.Value.FlightSearchPageSize);
             return View(model);
         }
 
@@ -45,20 +45,26 @@ namespace DroneFlightLog.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(AllFlightsViewModel model)
         {
+            int page = model.PageNumber;
             switch (model.Action)
             {
                 case ControllerActions.ActionPreviousPage:
-                    model.PageNumber -= 1;
+                    page -= 1;
                     break;
                 case ControllerActions.ActionNextPage:
-                    model.PageNumber += 1;
+                    page += 1;
                     break;
                 default:
                     break;
             }
 
-            List<Flight> flights = await _client.GetFlightsAsync(model.PageNumber, _settings.Value.FlightSearchPageSize);
-            model.SetFlights(flights, _settings.Value.FlightSearchPageSize);
+            // Need to clear model state here or the page number that was posted
+            // is returned and page navigation doesn't work correctly. So, capture
+            // and amend the page number, above, then apply it, below
+            ModelState.Clear();
+
+            List<Flight> flights = await _client.GetFlightsAsync(page, _settings.Value.FlightSearchPageSize);
+            model.SetFlights(flights, page, _settings.Value.FlightSearchPageSize);
             return View(model);
         }
     }

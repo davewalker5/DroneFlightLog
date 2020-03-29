@@ -15,11 +15,13 @@ namespace DroneFlightLog.Mvc.Models
         /// Set the collection of flights that are exposed to the view
         /// </summary>
         /// <param name="flights"></param>
+        /// <param name="pageNumber"></param>
         /// <param name="pageSize"></param>
-        public void SetFlights(List<Flight> flights, int pageSize)
+        public void SetFlights(List<Flight> flights, int pageNumber, int pageSize)
         {
             Flights = flights;
-            SetPreviousNextEnabled(pageSize);
+            PageNumber = pageNumber;
+            SetPreviousNextEnabled(pageNumber, pageSize);
         }
 
         /// <summary>
@@ -36,11 +38,13 @@ namespace DroneFlightLog.Mvc.Models
         /// < SZ    > 1     Yes         No
         /// 
         /// </summary>
+        /// <param name="pageNumber"/>
+        /// <param name="pageSize"/>
         /// <returns></returns>
-        private void SetPreviousNextEnabled(int pageSize)
+        private void SetPreviousNextEnabled(int pageNumber, int pageSize)
         {
             int count = Flights?.Count ?? 0;
-            PreviousEnabled = (count > 0) && (PageNumber > 1);
+            PreviousEnabled = (pageNumber > 1);
             NextEnabled = (count == pageSize);
         }
     }
