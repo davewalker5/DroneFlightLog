@@ -69,9 +69,9 @@ namespace DroneFlightLog.Mvc.Controllers
                 // and amend the page number, above, then apply it, below
                 ModelState.Clear();
 
-                List<Flight> flights = await _flights.GetFlightsByDroneAsync(model.DroneId, model.PageNumber, _settings.Value.FlightSearchPageSize);
-                model.SetFlights(flights, _settings.Value.FlightSearchPageSize);
+                List<Flight> flights = await _flights.GetFlightsByDroneAsync(model.DroneId, page, _settings.Value.FlightSearchPageSize);
                 model.PageNumber = page;
+                model.SetFlights(flights, _settings.Value.FlightSearchPageSize);
             }
 
             List<Drone> drones = await _drones.GetDronesAsync();

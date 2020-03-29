@@ -40,7 +40,7 @@ namespace DroneFlightLog.Mvc.Models
         private void SetPreviousNextEnabled(int pageSize)
         {
             int count = Flights?.Count ?? 0;
-            PreviousEnabled = (count > 0) && (PageNumber > 1);
+            PreviousEnabled = (PageNumber > 1);
             NextEnabled = (count == pageSize);
         }
     }

@@ -64,8 +64,8 @@ namespace DroneFlightLog.Mvc.Controllers
             ModelState.Clear();
 
             List<Flight> flights = await _client.GetFlightsAsync(page, _settings.Value.FlightSearchPageSize);
-            model.SetFlights(flights, _settings.Value.FlightSearchPageSize);
             model.PageNumber = page;
+            model.SetFlights(flights, _settings.Value.FlightSearchPageSize);
             return View(model);
         }
     }
