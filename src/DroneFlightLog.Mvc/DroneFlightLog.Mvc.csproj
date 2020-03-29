@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <ReleaseVersion>1.0.0.1</ReleaseVersion>
-    <PackageVersion>1.0.0.1</PackageVersion>
+    <ReleaseVersion>1.0.0.2</ReleaseVersion>
+    <PackageVersion>1.0.0.2</PackageVersion>
     <Authors>Dave Walker</Authors>
     <Copyright>Copyright (c) Dave Walker 2020</Copyright>
     <PackageLicenseUrl>https://github.com/davewalker5/DroneFlightLog.Mvc/blob/master/LICENSE</PackageLicenseUrl>
@@ -12,6 +12,7 @@
     <Summary>Drone Flight Log ASP.NET MVC User Interface</Summary>
     <Title>Drone Flight Log UI</Title>
     <Description>Drone Flight Log ASP.NET MVC User Interface</Description>
+    <PackageReleaseNotes>Fix page navigation issues in flight searches</PackageReleaseNotes>
   </PropertyGroup>
 
 

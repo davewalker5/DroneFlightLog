@@ -60,6 +60,9 @@ namespace DroneFlightLog.Mvc.Controllers
                     case ControllerActions.ActionNextPage:
                         page += 1;
                         break;
+                    case ControllerActions.ActionSearch:
+                        page = 1;
+                        break;
                     default:
                         break;
                 }
