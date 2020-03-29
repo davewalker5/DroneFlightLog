@@ -69,8 +69,7 @@ namespace DroneFlightLog.Mvc.Controllers
                 DateTime start = DateTime.Parse(model.From);
                 DateTime end = DateTime.Parse(model.To);
                 List<Flight> flights = await _client.GetFlightsByDateAsync(start, end, page, _settings.Value.FlightSearchPageSize);
-                model.PageNumber = page;
-                model.SetFlights(flights, _settings.Value.FlightSearchPageSize);
+                model.SetFlights(flights, page, _settings.Value.FlightSearchPageSize);
             }
 
             return View(model);

@@ -29,9 +29,9 @@ namespace DroneFlightLog.Mvc.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            AllFlightsViewModel model = new AllFlightsViewModel { PageNumber = 1 };
+            AllFlightsViewModel model = new AllFlightsViewModel();
             List<Flight> flights = await _client.GetFlightsAsync(1, _settings.Value.FlightSearchPageSize);
-            model.SetFlights(flights, _settings.Value.FlightSearchPageSize);
+            model.SetFlights(flights, 1, _settings.Value.FlightSearchPageSize);
             return View(model);
         }
 
@@ -64,8 +64,7 @@ namespace DroneFlightLog.Mvc.Controllers
             ModelState.Clear();
 
             List<Flight> flights = await _client.GetFlightsAsync(page, _settings.Value.FlightSearchPageSize);
-            model.PageNumber = page;
-            model.SetFlights(flights, _settings.Value.FlightSearchPageSize);
+            model.SetFlights(flights, page, _settings.Value.FlightSearchPageSize);
             return View(model);
         }
     }
