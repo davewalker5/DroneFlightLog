@@ -100,7 +100,7 @@ namespace DroneFlightLog.Mvc.Api
             string endDateSegment = HttpUtility.UrlEncode(end.ToString(_settings.Value.ApiDateFormat));
             string route = $"{baseRoute}/date/{startDateSegment}/{endDateSegment}/{page}/{pageSize}";
 
-            string json = await SendIndirectAsync(route, null, HttpMethod.Get);
+            string json = await SendDirectAsync(route, null, HttpMethod.Get);
             List<Flight> flight = JsonConvert.DeserializeObject<List<Flight>>(json);
             return flight;
         }
