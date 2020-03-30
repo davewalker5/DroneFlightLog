@@ -19,6 +19,6 @@ Global
 		$0.StandardHeader = $1
 		$0.VersionControlPolicy = $2
 		description = Drone Flight Log User Interface
-		version = 1.0.0.2
+		version = 1.0.0.3
 	EndGlobalSection
 EndGlobal
