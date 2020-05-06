@@ -30,7 +30,7 @@ In order to run this image you'll need docker installed.
 
 #### Service Container Parameters
 
-An instance of the dronefilghtlogsqlite image must be started first in order for the UI to work. The recommended parameters are:
+An instance of the dronefilghtlogapisqlite image must be started first in order for the UI to work. The recommended parameters are:
 
 | Parameter | Value | Purpose |
 | --- | --- | --- |
@@ -114,7 +114,7 @@ For the versions available, see the [tags on this repository](https://github.com
 
 ## Authors
 
-* **Dave Walker** - *Initial work* - [LinkedIn](https://github.com/PurpleBooth)
+* **Dave Walker** - *Initial work* - [LinkedIn](https://www.linkedin.com/in/davewalker5/)
 
 See also the list of [contributors](https://github.com/davewalker5/DroneFlightLog.Mvc/contributors) who 
 participated in this project.
