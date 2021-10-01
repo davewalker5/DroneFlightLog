@@ -6,15 +6,16 @@
     <PackageVersion>1.0.0.5</PackageVersion>
     <PackOnBuild>true</PackOnBuild>
     <Authors>Dave Walker</Authors>
-    <Copyright>Copyright (c) 2020 Dave Walker</Copyright>
+    <Copyright>Copyright (c) 2020, 2021 Dave Walker</Copyright>
     <Owners>Dave Walker</Owners>
-    <PackageReleaseNotes>Add ability to amend existing data
-Add ability to retrieve a single flight by Id</PackageReleaseNotes>
+    <PackageReleaseNotes>NuGet package and framework updates</PackageReleaseNotes>
     <Summary>Drone Flight Logging Database Layer</Summary>
     <PackageTags>Drone UAV Log Flight Logbook</PackageTags>
     <Title>Drone Flight Logging Database Layer</Title>
     <Description>Drone Flight Logging Database Layer</Description>
     <PackageProjectUrl>https://github.com/davewalker5/DroneFlightLogDb</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,7 +23,6 @@ Add ability to retrieve a single flight by Id</PackageReleaseNotes>
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Content\" />
     <Folder Include="Entities\" />
     <Folder Include="Interfaces\" />
     <Folder Include="Logic\" />
@@ -32,10 +32,5 @@ Add ability to retrieve a single flight by Id</PackageReleaseNotes>
   </ItemGroup>
   <ItemGroup>
     <None Remove="Content\DroneLog.Data.License.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\DroneFlightLog.Data.License.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 </Project>

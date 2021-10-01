@@ -6,14 +6,16 @@
     <PackageVersion>1.0.0.4</PackageVersion>
     <PackOnBuild>true</PackOnBuild>
     <Authors>Dave Walker</Authors>
-    <Copyright>Copyright (c) 2020 Dave Walker</Copyright>
+    <Copyright>Copyright (c) 2020, 2021 Dave Walker</Copyright>
     <Owners>Dave Walker</Owners>
-    <PackageReleaseNotes>Added flight log user for security support</PackageReleaseNotes>
+    <PackageReleaseNotes>NuGet package and framework updates</PackageReleaseNotes>
     <Summary>Drone Flight Logging SQLite Database Layer</Summary>
     <PackageTags>Drone UAV Log Flight Logbook</PackageTags>
     <Title>Drone Flight Logging SQLite Database Layer</Title>
     <Description>Drone Flight Logging SQLite Database Layer</Description>
     <PackageProjectUrl>https://github.com/davewalker5/DroneFlightLogDb</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>
@@ -32,15 +34,8 @@
   <ItemGroup>
     <None Remove="Content\DroneFlightLog.Data.InMemory.License.txt" />
     <None Remove="Content\DroneLog.Data.InMemory.License.txt" />
-    <None Remove="Content\DroneFlightLog.Data.Sqlite.License.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\DroneFlightLog.Data.Sqlite.License.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Content\" />
     <Folder Include="Content\" />
   </ItemGroup>
 </Project>

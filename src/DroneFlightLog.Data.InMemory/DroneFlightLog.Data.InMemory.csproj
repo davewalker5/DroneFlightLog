@@ -6,14 +6,16 @@
     <PackageVersion>1.0.0.2</PackageVersion>
     <PackOnBuild>true</PackOnBuild>
     <Authors>Dave Walker</Authors>
-    <Copyright>Copyright (c) 2020 Dave Walker</Copyright>
+    <Copyright>Copyright (c) 2020, 2021 Dave Walker</Copyright>
     <Owners>Dave Walker</Owners>
-    <PackageReleaseNotes>First release</PackageReleaseNotes>
+    <PackageReleaseNotes>NuGet package and framework updates</PackageReleaseNotes>
     <Summary>Drone Flight Logging In Memory Database Layer</Summary>
     <PackageTags>Drone UAV Log Flight Logbook</PackageTags>
     <Title>Drone Flight Logging In Memory Database Layer</Title>
     <Description>Drone Flight Logging In Memory Database Layer</Description>
     <PackageProjectUrl>https://github.com/davewalker5/DroneFlightLogDb</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,14 +31,5 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Content\DroneFlightLog.Data.License.txt" />
-    <None Remove="Content\DroneFlightLog.Data.InMemory.License.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\DroneFlightLog.Data.InMemory.License.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Content\" />
   </ItemGroup>
 </Project>
