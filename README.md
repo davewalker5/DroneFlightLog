@@ -33,6 +33,3 @@ To file issues or suggestions, please use the [Issues](https://github.com/davewa
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
-## Trello
-
-*  [Drone Flight Log on Trello](https://trello.com/b/AUdXWEIg)
