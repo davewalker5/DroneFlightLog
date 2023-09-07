@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Reflection;
 using DroneFlightLog.Data.Factory;
 using DroneFlightLog.Data.Sqlite;
 using DroneFlightLog.Manager.Entities;
@@ -11,8 +13,9 @@ namespace DroneFlightLog.Manager
     {
         static void Main(string[] args)
         {
-            string version = typeof(Program).Assembly.GetName().Version.ToString();
-            Console.WriteLine($"Drone Flight Log Database Management {version}");
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            FileVersionInfo info = FileVersionInfo.GetVersionInfo(assembly.Location);
+            Console.WriteLine($"Drone Flight Log Database Management {info.FileVersion}");
 
             Operation op = new CommandParser().ParseCommandLine(args);
             if (op.Valid)

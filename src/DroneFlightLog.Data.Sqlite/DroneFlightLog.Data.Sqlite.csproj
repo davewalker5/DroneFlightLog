@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <PackageId>DroneFlightLog.Data.Sqlite</PackageId>
-    <PackageVersion>1.0.1.0</PackageVersion>
+    <PackageVersion>1.1.0.0</PackageVersion>
     <PackOnBuild>true</PackOnBuild>
     <Authors>Dave Walker</Authors>
-    <Copyright>Copyright (c) 2020, 2021 Dave Walker</Copyright>
+    <Copyright>Copyright (c) 2020, 2021, 2022, 2023 Dave Walker</Copyright>
     <Owners>Dave Walker</Owners>
     <PackageReleaseNotes>NuGet package and framework updates</PackageReleaseNotes>
     <Summary>Drone Flight Logging SQLite Database Layer</Summary>
@@ -16,20 +16,21 @@
     <PackageProjectUrl>https://github.com/davewalker5/DroneFlightLogDb</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <ReleaseVersion>1.1.0.0</ReleaseVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DroneFlightLog.Data\DroneFlightLog.Data.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.5">
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.10">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.5" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.10" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Content\DroneFlightLog.Data.InMemory.License.txt" />
