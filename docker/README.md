@@ -87,7 +87,7 @@ For the versions available, see the [tags on this repository](https://github.com
 
 ## Authors
 
-- **Dave Walker** - _Initial work_ - [LinkedIn](https://github.com/)
+- **Dave Walker** - _Initial work_ - [LinkedIn](https://www.linkedin.com/in/davewalker5/)
 
 See also the list of [contributors](https://github.com/davewalker5/DroneFlightLog.Api/contributors) who
 participated in this project.
