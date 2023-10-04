@@ -2,9 +2,9 @@
 
 The [DroneFlightLogDb](https://github.com/davewalker5/DroneFlightLogDb) and [DroneFlightLog.Api](https://github.com/davewalker5/DroneFlightLog.Api) GitHub projects implement the entities, business logic and a REST service for a SQL-based drone flight logbook, providing facilities for recording and querying the following data:
 
-* Operator details
-* Drones, models and manufacturers
-* Flights, flight locations and flight properties
+- Operator details
+- Drones, models and manufacturers
+- Flights, flight locations and flight properties
 
 The droneflightlogapisqlite image contains a build of the logic and REST service for a SQLite database.
 
@@ -14,9 +14,9 @@ The droneflightlogapisqlite image contains a build of the logic and REST service
 
 In order to run this image you'll need docker installed.
 
-* [Windows](https://docs.docker.com/windows/started)
-* [OS X](https://docs.docker.com/mac/started/)
-* [Linux](https://docs.docker.com/linux/started/)
+- [Windows](https://docs.docker.com/windows/started)
+- [OS X](https://docs.docker.com/mac/started/)
+- [Linux](https://docs.docker.com/linux/started/)
 
 ### Usage
 
@@ -24,12 +24,12 @@ In order to run this image you'll need docker installed.
 
 The following "docker run" parameters are recommended when running the droneflightlogapisqlite image:
 
-| Parameter | Value | Purpose |
-| --- | --- | --- |
-| -d | - | Run as a background  process
-| -v | /local:/var/opt/droneflightlog.api-1.0.0.4 | Mount the host folder containing the SQLite database |
-| -p | 5001:80 | Expose the container's port 80 as port 5001 on the host |
-| --rm | - | Remove the container automatically when it stops |
+| Parameter | Value                                      | Purpose                                                 |
+| --------- | ------------------------------------------ | ------------------------------------------------------- |
+| -d        | -                                          | Run as a background process                             |
+| -v        | /local:/var/opt/droneflightlog.api-1.0.0.4 | Mount the host folder containing the SQLite database    |
+| -p        | 5001:80                                    | Expose the container's port 80 as port 5001 on the host |
+| --rm      | -                                          | Remove the container automatically when it stops        |
 
 For example:
 
@@ -70,16 +70,16 @@ You should see the Swagger API documentation for the API.
 
 The droneflightlogapisqlite image was been built with the following:
 
-| Aspect | Version |
-| --- | --- |
-| .NET Core CLI | 3.1.101 |
-| Target Runtime | linux-x64 |
+| Aspect         | Version                |
+| -------------- | ---------------------- |
+| .NET Core CLI  | 3.1.101                |
+| Target Runtime | linux-x64              |
 | Docker Desktop | 19.03.5, build 633a0ea |
 
 ## Find Us
 
-* [DroneFlightLogDb on GitHub](https://github.com/davewalker5/DroneFlightLogDb)
-* [DroneFlightLog.Api on GitHub](https://github.com/davewalker5/DroneFlightLog.Api)
+- [DroneFlightLogDb on GitHub](https://github.com/davewalker5/DroneFlightLogDb)
+- [DroneFlightLog.Api on GitHub](https://github.com/davewalker5/DroneFlightLog.Api)
 
 ## Versioning
 
@@ -87,9 +87,9 @@ For the versions available, see the [tags on this repository](https://github.com
 
 ## Authors
 
-* **Dave Walker** - *Initial work* - [LinkedIn](https://github.com/PurpleBooth)
+- **Dave Walker** - _Initial work_ - [LinkedIn](https://github.com/)
 
-See also the list of [contributors](https://github.com/davewalker5/DroneFlightLog.Api/contributors) who 
+See also the list of [contributors](https://github.com/davewalker5/DroneFlightLog.Api/contributors) who
 participated in this project.
 
 ## License
