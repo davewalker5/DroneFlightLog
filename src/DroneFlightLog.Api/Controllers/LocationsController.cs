@@ -27,7 +27,10 @@ namespace DroneFlightLog.Api.Controllers
         [Route("")]
         public async Task<ActionResult<List<Location>>> GetLocationsAsync()
         {
-            List<Location> locations = await _factory.Locations.GetLocationsAsync().ToListAsync();
+            List<Location> locations = await _factory.Locations
+                                                     .GetLocationsAsync()
+                                                     .OrderBy(x => x.Name)
+                                                     .ToListAsync();
 
             if (!locations.Any())
             {
