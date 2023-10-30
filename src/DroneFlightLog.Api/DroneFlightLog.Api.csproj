@@ -2,6 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
+    <ReleaseVersion>1.2.0.0</ReleaseVersion>
+    <FileVersion>1.2.0.0</FileVersion>
+    <ProductVersion>1.2.0.0</ProductVersion>
+    <Configurations>Release;Debug</Configurations>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,13 +16,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DroneFlightLog.Data.Sqlite" Version="1.0.1" />
-    <PackageReference Include="DroneFlightLog.Data" Version="1.0.1" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.30.1" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.9" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.9" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.9" />
+    <PackageReference Include="DroneFlightLog.Data.Sqlite" Version="1.1.0" />
+    <PackageReference Include="DroneFlightLog.Data" Version="1.1.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.13" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
   </ItemGroup>
