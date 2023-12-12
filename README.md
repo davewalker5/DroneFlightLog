@@ -19,6 +19,14 @@ The logbook allows for storage and maintenance of the following data:
 - Drones, models and manufacturers
 - Flights, flight locations and flight properties
 
+## Getting Started
+
+Please see the [Wiki](https://github.com/davewalker5/DroneFlightLog/wiki) for configuration details and the user guide.
+
+## Authors
+
+- **Dave Walker** - _Initial work_ - [LinkedIn](https://www.linkedin.com/in/davewalker5/)
+
 ## Credits
 
 Implementation of authentication using JWT in the REST API is based on the following tutorial:
@@ -29,15 +37,7 @@ Implementation of authentication using JWT in the REST API is based on the follo
 The Drone Flight Log MVC project uses the Gijgo JavaScript controls library:
 
 - https://gijgo.com
-
-## Getting Started
-
-Please see the [Wiki](https://github.com/davewalker5/DroneFlightLog/wiki) for configuration details and the user guide.
-
-## Authors
-
-- **Dave Walker** - _Initial work_ - [LinkedIn](https://www.linkedin.com/in/davewalker5/)
-
+  
 ## Feedback
 
 To file issues or suggestions, please use the [Issues](https://github.com/davewalker5/DroneFlightLog/issues) page for this project on GitHub.
