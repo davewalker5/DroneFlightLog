@@ -40,7 +40,7 @@ Please see the [Wiki](https://github.com/davewalker5/DroneFlightLog/wiki) for co
 
 ## Feedback
 
-# To file issues or suggestions, please use the [Issues](https://github.com/davewalker5/DroneFlightLog/issues) page for this project on GitHub.
+To file issues or suggestions, please use the [Issues](https://github.com/davewalker5/DroneFlightLog/issues) page for this project on GitHub.
 
 ## License
 
