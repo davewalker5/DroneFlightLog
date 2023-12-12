@@ -25,30 +25,6 @@ Please see the [Wiki](https://github.com/davewalker5/DroneFlightLogDb/wiki) for 
 
 - **Dave Walker** - _Initial work_ - [LinkedIn](https://www.linkedin.com/in/davewalker5/)
 
-<<<<<<< HEAD
-
 ## Feedback
 
 # To file issues or suggestions, please use the [Issues](https://github.com/davewalker5/DroneFlightLogDb/issues) page for this project on GitHub.
-
-## Credits
-
-Implementation of authentication using JWT is based on the following tutorial:
-
-- https://github.com/cornflourblue/aspnet-core-3-jwt-authentication-api
-- https://jasonwatmore.com/post/2019/10/11/aspnet-core-3-jwt-authentication-tutorial-with-example-api#users-controller-cs
-
-## Feedback
-
-To file issues or suggestions, please use the [Issues](https://github.com/davewalker5/DroneFlightLog.Api/issues) page for this project on GitHub.
-
-> > > > > > > api/master
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
-<<<<<<< HEAD
-
-=======
-
-> > > > > > > api/master

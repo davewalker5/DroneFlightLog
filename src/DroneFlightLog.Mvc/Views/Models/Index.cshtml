@@ -1,0 +1,44 @@
+﻿@using System.Collections.Generic
+@using DroneFlightLog.Mvc.Entities
+@model List<Model>
+
+@{
+    ViewData["Title"] = "Models";
+}
+
+<p class="text-center font-weight-bold">
+    <span style="font-size: 1.2rem">
+        Drone Models
+    </span>
+    <br />
+    <small class="text-muted">
+        <em>
+            Manage the drone models registered in the log
+        </em>
+    </small>
+</p>
+
+<table class="table">
+    <tr>
+        <th>Model</th>
+        <th>Manufacturer</th>
+        <th />
+    </tr>
+    @foreach (var droneModel in Model)
+    {
+        <tr>
+            <td valign="center">@droneModel.Name</td>
+            <td valign="center">@droneModel.Manufacturer.Name</td>
+            <td valign="center">
+                <a class="btn btn-lg" asp-area="" asp-controller="Models" asp-action="Edit" asp-route-id="@droneModel.Id">
+                    <i class="fas fa-edit"></i>
+                </a>
+            </td>
+        </tr>
+    }
+</table>
+
+<hr />
+<p class="text-right">
+    <a class="btn btn-primary" href="/Models/Add" role="button">Add</a>
+</p>
