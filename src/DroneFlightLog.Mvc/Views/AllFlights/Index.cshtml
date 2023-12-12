@@ -1,0 +1,28 @@
+﻿@model DroneFlightLog.Mvc.Models.AllFlightsViewModel
+
+@{
+    ViewData["Title"] = "Flight Search";
+    string previousDisabled = (Model.PreviousEnabled) ? "" : "disabled";
+    string nextDisabled = (Model.NextEnabled) ? "" : "disabled";
+}
+
+<p class="text-center font-weight-bold">
+    <span style="font-size: 1.2rem">
+        Flight Listings
+    </span>
+    <br />
+    <small class="text-muted">
+        <em>
+            List logged flights
+        </em>
+    </small>
+</p>
+
+<div class="container-fluid">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @await Html.PartialAsync("../Shared/FlightSearchResults", Model)
+    }
+</div>
+

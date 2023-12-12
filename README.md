@@ -1,4 +1,4 @@
-# DroneFlightLogDb
+# DroneFlightLog
 
 [![Build Status](https://github.com/davewalker5/DroneFlightLogDb/workflows/.NET%20Core%20CI%20Build/badge.svg)](https://github.com/davewalker5/DroneFlightLogDb/actions)
 [![GitHub issues](https://img.shields.io/github/issues/davewalker5/DroneFlightLogDb)](https://github.com/davewalker5/DroneFlightLogDb/issues)
@@ -13,9 +13,9 @@
 
 DroneFlightLogDb implements the entities and business logic for a SQL-based drone flight logbook, providing facilities for recording and querying the following data:
 
-* Operator details
-* Drones, models and manufacturers
-* Flights, flight locations and flight properties
+- Operator details
+- Drones, models and manufacturers
+- Flights, flight locations and flight properties
 
 ## Getting Started
 
@@ -23,13 +23,8 @@ Please see the [Wiki](https://github.com/davewalker5/DroneFlightLogDb/wiki) for 
 
 ## Authors
 
-- **Dave Walker** - *Initial work* - [LinkedIn](https://www.linkedin.com/in/davewalker5/)
+- **Dave Walker** - _Initial work_ - [LinkedIn](https://www.linkedin.com/in/davewalker5/)
 
 ## Feedback
 
-To file issues or suggestions, please use the [Issues](https://github.com/davewalker5/DroneFlightLogDb/issues) page for this project on GitHub.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
-
+# To file issues or suggestions, please use the [Issues](https://github.com/davewalker5/DroneFlightLogDb/issues) page for this project on GitHub.

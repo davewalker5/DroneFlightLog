@@ -6,7 +6,13 @@
     <ReleaseVersion>1.1.0.0</ReleaseVersion>
     <FileVersion>1.1.0.0</FileVersion>
     <ProductVersion>1.1.0</ProductVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DroneFlightLog.Data\DroneFlightLog.Data.csproj" />
