@@ -1,1 +1,1 @@
-src/DroneFlightLog.Mvc/wwwroot/* linguist-vendored=true
+*.js linguist-detectable=false
