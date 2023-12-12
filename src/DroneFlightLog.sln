@@ -14,6 +14,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DroneFlightLog.Manager", "D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DroneFlightLog.Importer", "DroneFlightLog.Importer\DroneFlightLog.Importer.csproj", "{F5661D4E-60B1-482B-963B-422353ECC577}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DroneFlightLog.Api", "DroneFlightLog.Api\DroneFlightLog.Api.csproj", "{16051380-D1B6-43F7-A0AD-10B960AFA452}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{F5661D4E-60B1-482B-963B-422353ECC577}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5661D4E-60B1-482B-963B-422353ECC577}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5661D4E-60B1-482B-963B-422353ECC577}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16051380-D1B6-43F7-A0AD-10B960AFA452}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16051380-D1B6-43F7-A0AD-10B960AFA452}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16051380-D1B6-43F7-A0AD-10B960AFA452}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16051380-D1B6-43F7-A0AD-10B960AFA452}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
