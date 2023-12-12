@@ -1,11 +1,10 @@
-﻿using System;
-using System.Diagnostics;
-using System.Reflection;
-using DroneFlightLog.Data.Factory;
+﻿using DroneFlightLog.Data.Factory;
 using DroneFlightLog.Data.Sqlite;
 using DroneFlightLog.Manager.Entities;
 using DroneFlightLog.Manager.Logic;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
+using System.Reflection;
 
 namespace DroneFlightLog.Manager
 {
