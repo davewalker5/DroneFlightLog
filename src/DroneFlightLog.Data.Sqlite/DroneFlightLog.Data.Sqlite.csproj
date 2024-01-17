@@ -1,9 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <PackageId>DroneFlightLog.Data.Sqlite</PackageId>
-    <PackageVersion>1.1.0.0</PackageVersion>
+    <PackageVersion>1.1.1.0</PackageVersion>
     <PackOnBuild>true</PackOnBuild>
     <Authors>Dave Walker</Authors>
     <Copyright>Copyright (c) 2020, 2021, 2022, 2023 Dave Walker</Copyright>
@@ -16,21 +16,21 @@
     <PackageProjectUrl>https://github.com/davewalker5/DroneFlightLogDb</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <ReleaseVersion>1.1.0.0</ReleaseVersion>
+    <ReleaseVersion>1.1.1.0</ReleaseVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DroneFlightLog.Data\DroneFlightLog.Data.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.10" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.10">
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.1">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.10" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Content\DroneFlightLog.Data.InMemory.License.txt" />
