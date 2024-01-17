@@ -2,10 +2,10 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
-    <ReleaseVersion>1.1.0.0</ReleaseVersion>
-    <FileVersion>1.1.0.0</FileVersion>
-    <ProductVersion>1.1.0.0</ProductVersion>
+    <TargetFramework>net8.0</TargetFramework>
+    <ReleaseVersion>1.1.1.0</ReleaseVersion>
+    <FileVersion>1.1.1.0</FileVersion>
+    <ProductVersion>1.1.1.0</ProductVersion>
     <Configurations>Release;Debug</Configurations>
     <ImplicitUsings>enable</ImplicitUsings>
     <IsPackable>false</IsPackable>
@@ -24,9 +24,9 @@
     <Folder Include="Exceptions\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.13" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.13" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.1" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="appsettings.json" />
