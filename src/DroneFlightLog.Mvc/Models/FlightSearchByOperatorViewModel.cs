@@ -29,12 +29,15 @@ namespace DroneFlightLog.Mvc.Models
             };
 
             // Add the operators retrieved from the service
-            Operators.AddRange(operators.Select(o =>
-                                new SelectListItem
-                                {
-                                    Value = o.Id.ToString(),
-                                    Text = $"{o.FirstNames} {o.Surname} - {o.OperatorNumber}"
-                                }));
+            if (operators?.Count > 0)
+            {
+                Operators.AddRange(operators.Select(o =>
+                                    new SelectListItem
+                                    {
+                                        Value = o.Id.ToString(),
+                                        Text = $"{o.FirstNames} {o.Surname} - {o.OperatorNumber}"
+                                    }));
+            }
         }
     }
 }
