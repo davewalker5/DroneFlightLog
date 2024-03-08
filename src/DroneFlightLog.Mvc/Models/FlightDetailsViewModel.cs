@@ -34,11 +34,11 @@ namespace DroneFlightLog.Mvc.Models
             }
             else
             {
-                Properties = availableProperties.Select(m => new FlightPropertyValue { Property = m }).ToList();
+                Properties = availableProperties?.Select(m => new FlightPropertyValue { Property = m }).ToList();
             }
 
             // Sort the properties by name
-            Properties = Properties.OrderBy(p => p.Property.Name).ToList();
+            Properties = Properties?.OrderBy(p => p.Property.Name).ToList();
         }
 
         /// <summary>

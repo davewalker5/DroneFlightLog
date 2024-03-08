@@ -67,23 +67,26 @@
             </p>
             <hr />
 
-            @for (int i = 0; i < (Model.Properties.Count / Model.PropertiesPerRow) + 1; i++)
+            @if (Model.Properties != null)
             {
-                <div class="row">
-                    @for (int j = 0; j < Model.PropertiesPerRow; j++)
-                    {
-                        int index = i * Model.PropertiesPerRow + j;
-                        if (index < Model.Properties.Count)
+                for (int i = 0; i < (Model.Properties.Count / Model.PropertiesPerRow) + 1; i++)
+                {
+                    <div class="row">
+                        @for (int j = 0; j < Model.PropertiesPerRow; j++)
                         {
-                            @await Html.PartialAsync("../Shared/FlightPropertyValue", Model.Properties[index]);
+                            int index = i * Model.PropertiesPerRow + j;
+                            if (index < Model.Properties.Count)
+                            {
+                                @await Html.PartialAsync("../Shared/FlightPropertyValue", Model.Properties[index]);
+                            }
+                            else
+                            {
+                                <div class="col"></div>
+                            }
                         }
-                        else
-                        {
-                            <div class="col"></div>
-                        }
-                    }
-                </div>
-                <br />
+                    </div>
+                    <br />
+                }
             }
 
             <hr />
