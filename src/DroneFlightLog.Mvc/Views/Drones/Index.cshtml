@@ -26,19 +26,22 @@
         <th>Manufacturer</th>
         <th />
     </tr>
-    @foreach (var drone in Model)
+    @if (Model != null)
     {
-        <tr>
-            <td valign="center">@drone.Name</td>
-            <td valign="center">@drone.SerialNumber</td>
-            <td valign="center">@drone.Model.Name</td>
-            <td valign="center">@drone.Model.Manufacturer.Name</td>
-            <td valign="center">
-                <a class="btn btn-lg" asp-area="" asp-controller="Drones" asp-action="Edit" asp-route-id="@drone.Id">
-                    <i class="fas fa-edit"></i>
-                </a>
-            </td>
-        </tr>
+        foreach (var drone in Model)
+        {
+            <tr>
+                <td valign="center">@drone.Name</td>
+                <td valign="center">@drone.SerialNumber</td>
+                <td valign="center">@drone.Model.Name</td>
+                <td valign="center">@drone.Model.Manufacturer.Name</td>
+                <td valign="center">
+                    <a class="btn btn-lg" asp-area="" asp-controller="Drones" asp-action="Edit" asp-route-id="@drone.Id">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </td>
+            </tr>
+        }
     }
 </table>
 

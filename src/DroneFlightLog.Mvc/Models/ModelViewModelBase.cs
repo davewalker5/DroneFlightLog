@@ -22,12 +22,15 @@ namespace DroneFlightLog.Mvc.Models
             };
 
             // Add the manufacturers retrieved from the service
-            Manufacturers.AddRange(manufacturers.Select(m =>
-                                new SelectListItem
-                                {
-                                    Value = m.Id.ToString(),
-                                    Text = $"{m.Name}"
-                                }));
+            if (manufacturers?.Count > 0)
+            {
+                Manufacturers.AddRange(manufacturers.Select(m =>
+                                    new SelectListItem
+                                    {
+                                        Value = m.Id.ToString(),
+                                        Text = $"{m.Name}"
+                                    }));
+            }
         }
     }
 }

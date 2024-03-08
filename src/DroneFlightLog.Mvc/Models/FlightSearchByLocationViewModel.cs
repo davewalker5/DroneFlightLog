@@ -29,12 +29,15 @@ namespace DroneFlightLog.Mvc.Models
             };
 
             // Add the locations retrieved from the service
-            Locations.AddRange(locations.Select(l =>
-                                new SelectListItem
-                                {
-                                    Value = l.Id.ToString(),
-                                    Text = l.Name
-                                }));
+            if (locations?.Count > 0)
+            {
+                Locations.AddRange(locations.Select(l =>
+                                    new SelectListItem
+                                    {
+                                        Value = l.Id.ToString(),
+                                        Text = l.Name
+                                    }));
+            }
         }
     }
 }

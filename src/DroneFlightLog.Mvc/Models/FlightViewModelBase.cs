@@ -38,12 +38,15 @@ namespace DroneFlightLog.Mvc.Models
             };
 
             // Add the models retrieved from the service
-            Drones.AddRange(drones.Select(d =>
-                                new SelectListItem
-                                {
-                                    Value = d.Id.ToString(),
-                                    Text = $"{d.Name} - {d.Model.Name}"
-                                }));
+            if (drones?.Count > 0)
+            {
+                Drones.AddRange(drones.Select(d =>
+                                    new SelectListItem
+                                    {
+                                        Value = d.Id.ToString(),
+                                        Text = $"{d.Name} - {d.Model.Name}"
+                                    }));
+            }
         }
 
         /// <summary>
@@ -59,12 +62,15 @@ namespace DroneFlightLog.Mvc.Models
             };
 
             // Add the models retrieved from the service
-            Locations.AddRange(locations.Select(l =>
-                                new SelectListItem
-                                {
-                                    Value = l.Id.ToString(),
-                                    Text = l.Name
-                                }));
+            if (locations?.Count > 0)
+            {
+                Locations.AddRange(locations.Select(l =>
+                                    new SelectListItem
+                                    {
+                                        Value = l.Id.ToString(),
+                                        Text = l.Name
+                                    }));
+            }
         }
 
         /// <summary>
@@ -80,12 +86,15 @@ namespace DroneFlightLog.Mvc.Models
             };
 
             // Add the models retrieved from the service
-            Operators.AddRange(operators.Select(o =>
-                                new SelectListItem
-                                {
-                                    Value = o.Id.ToString(),
-                                    Text = $"{o.FirstNames} {o.Surname} - {o.OperatorNumber}"
-                                }));
+            if (operators?.Count > 0)
+            {
+                Operators.AddRange(operators.Select(o =>
+                                    new SelectListItem
+                                    {
+                                        Value = o.Id.ToString(),
+                                        Text = $"{o.FirstNames} {o.Surname} - {o.OperatorNumber}"
+                                    }));
+            }
         }
     }
 }

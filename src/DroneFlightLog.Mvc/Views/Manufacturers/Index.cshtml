@@ -23,16 +23,19 @@
         <th>Name</th>
         <th />
     </tr>
-    @foreach (var manufacturer in Model)
+    @if (Model != null)
     {
-        <tr>
-            <td valign="center">@manufacturer.Name</td>
-            <td valign="center">
-                <a class="btn btn-lg" asp-area="" asp-controller="Manufacturers" asp-action="Edit" asp-route-id="@manufacturer.Id">
-                    <i class="fas fa-edit"></i>
-                </a>
-            </td>
-        </tr>
+        foreach (var manufacturer in Model)
+        {
+            <tr>
+                <td valign="center">@manufacturer.Name</td>
+                <td valign="center">
+                    <a class="btn btn-lg" asp-area="" asp-controller="Manufacturers" asp-action="Edit" asp-route-id="@manufacturer.Id">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </td>
+            </tr>
+        }
     }
 </table>
 
