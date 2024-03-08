@@ -28,21 +28,24 @@
         <th>Address</th>
         <th />
     </tr>
-    @foreach (var op in Model)
+    @if (Model != null)
     {
-        <tr>
-            <td valign="center">@op.FirstNames</td>
-            <td valign="center">@op.Surname</td>
-            <td valign="center">@op.OperatorNumber</td>
-            <td valign="center">@op.FlyerNumber</td>
-            <td valign="center">@op.DoBFormatted</td>
-            <td valign="center">@op.GetAddressSummary()</td>
-            <td valign="center">
-                <a class="btn btn-lg" asp-area="" asp-controller="Operators" asp-action="Edit" asp-route-id="@op.Id">
-                    <i class="fas fa-edit"></i>
-                </a>
-            </td>
-        </tr>
+        foreach (var op in Model)
+        {
+            <tr>
+                <td valign="center">@op.FirstNames</td>
+                <td valign="center">@op.Surname</td>
+                <td valign="center">@op.OperatorNumber</td>
+                <td valign="center">@op.FlyerNumber</td>
+                <td valign="center">@op.DoBFormatted</td>
+                <td valign="center">@op.GetAddressSummary()</td>
+                <td valign="center">
+                    <a class="btn btn-lg" asp-area="" asp-controller="Operators" asp-action="Edit" asp-route-id="@op.Id">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </td>
+            </tr>
+        }
     }
 </table>
 
