@@ -64,20 +64,23 @@ namespace DroneFlightLog.Mvc.Controllers
                 model.UpdatePropertiesFromBoundValues();
 
                 // Save newly added property values
-                for (int i = 0; i < model.Properties.Count; i++)
+                if (model.Properties?.Count > 0)
                 {
-                    FlightPropertyValue value = model.Properties[i];
-                    if (value.IsNewPropertyValue)
+                    for (int i = 0; i < model.Properties.Count; i++)
                     {
-                        model.Properties[i] = await AddNewPropertyValueAsync(model.Id, model.Properties[i]);
-                    }
-                    else if (value.Id > 0)
-                    {
-                        model.Properties[i] = await _properties.UpdateFlightPropertyValueAsync(
-                                                                    value.Id,
-                                                                    value.NumberValue,
-                                                                    value.StringValue,
-                                                                    value.DateValue);
+                        FlightPropertyValue value = model.Properties[i];
+                        if (value.IsNewPropertyValue)
+                        {
+                            model.Properties[i] = await AddNewPropertyValueAsync(model.Id, model.Properties[i]);
+                        }
+                        else if (value.Id > 0)
+                        {
+                            model.Properties[i] = await _properties.UpdateFlightPropertyValueAsync(
+                                                                        value.Id,
+                                                                        value.NumberValue,
+                                                                        value.StringValue,
+                                                                        value.DateValue);
+                        }
                     }
                 }
             }
