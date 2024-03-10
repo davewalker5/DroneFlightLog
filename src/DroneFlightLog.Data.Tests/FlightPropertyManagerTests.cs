@@ -224,6 +224,12 @@ namespace DroneFlightLog.Data.Tests
             _factory.Properties.AddPropertyValue(_flightId, _propertyId, PropertyValue);
         }
 
+        [TestMethod, ExpectedException(typeof(ValueExistsException))]
+        public async Task AddDuplicateSingleInstanceValueAsyncTest()
+        {
+            await _factory.Properties.AddPropertyValueAsync(_flightId, _propertyId, PropertyValue);
+        }
+
         [TestMethod]
         public void GetPropertyValuesTest()
         {

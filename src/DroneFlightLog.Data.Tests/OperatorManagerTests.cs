@@ -163,6 +163,14 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
+        public async Task GetAllOperatorsForAddressAsyncTest()
+        {
+            IEnumerable<Operator> operators = await _factory.Operators.GetOperatorsAsync(_firstAddressId).ToListAsync();
+            Assert.AreEqual(1, operators.Count());
+            ValidateOperator(operators.First(), _operatorId, _firstAddressId);
+        }
+
+        [TestMethod]
         public void GetAllOperatorsForMissingAddressTest()
         {
             IEnumerable<Operator> operators = _factory.Operators.GetOperators(-1);
