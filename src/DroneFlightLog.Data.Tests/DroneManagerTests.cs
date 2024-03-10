@@ -11,7 +11,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DroneFlightLog.Data.Tests
 {
     [TestClass]
-    public class DroneManagerTest
+    public class DroneManagerTests
     {
         private const string ManufacturerName = "Some Manufacturer";
         private const string ModelName = "Some Model";

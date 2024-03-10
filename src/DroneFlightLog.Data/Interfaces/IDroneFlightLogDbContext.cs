@@ -18,5 +18,8 @@ namespace DroneFlightLog.Data.Interfaces
         DbSet<Location> Locations { get; set; }
 
         DbSet<FlightLogUser> FlightLogUsers { get; set; }
+
+        DbSet<Maintainer> Maintainers { get; set; }
+        DbSet<MaintenanceRecord> MaintenanceRecords { get; set; }
     }
 }

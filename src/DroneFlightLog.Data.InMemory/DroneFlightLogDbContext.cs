@@ -22,6 +22,9 @@ namespace DroneFlightLog.Data.InMemory
 
         public DbSet<FlightLogUser> FlightLogUsers { get; set; }
 
+        public DbSet<Maintainer> Maintainers { get; set; }
+        public DbSet<MaintenanceRecord> MaintenanceRecords { get; set; }
+
         public DroneFlightLogDbContext(DbContextOptions<DroneFlightLogDbContext> options) : base(options)
         {
         }

@@ -24,10 +24,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Entities\" />
-    <Folder Include="Interfaces\" />
-    <Folder Include="Logic\" />
-    <Folder Include="Exceptions\" />
     <Folder Include="Factory\" />
     <Folder Include="Extensions\" />
   </ItemGroup>

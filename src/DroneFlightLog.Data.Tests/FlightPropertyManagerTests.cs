@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DroneFlightLog.Data.Tests
 {
     [TestClass]
-    public class FlightPropertyManagerTest
+    public class FlightPropertyManagerTests
     {
         private const string Number = "1";
         private const string Street = "Some Street";
