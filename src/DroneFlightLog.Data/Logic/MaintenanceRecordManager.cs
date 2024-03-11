@@ -29,7 +29,7 @@ namespace DroneFlightLog.Data.Logic
         /// <param name="description"></param>
         /// <param name="notes"></param>
         /// <returns></returns>
-        public MaintenanceRecord AddMaintenanceRecord(int maintainerId, int droneId, MaintenanceRecordType type, DateTime completed, string description, string? notes)
+        public MaintenanceRecord AddMaintenanceRecord(int maintainerId, int droneId, MaintenanceRecordType type, DateTime completed, string description, string notes)
         {
             // These will throw exceptions if the corresponding entities do not exist
             _factory.Maintainers.GetMaintainer(maintainerId);
@@ -59,7 +59,7 @@ namespace DroneFlightLog.Data.Logic
         /// <param name="description"></param>
         /// <param name="notes"></param>
         /// <returns></returns>
-        public async Task<MaintenanceRecord> AddMaintenanceRecordAsync(int maintainerId, int droneId, MaintenanceRecordType type, DateTime completed, string description, string? notes)
+        public async Task<MaintenanceRecord> AddMaintenanceRecordAsync(int maintainerId, int droneId, MaintenanceRecordType type, DateTime completed, string description, string notes)
         {
             // These will throw exceptions if the corresponding entities do not exist
             await _factory.Maintainers.GetMaintainerAsync(maintainerId);
@@ -114,7 +114,7 @@ namespace DroneFlightLog.Data.Logic
         /// <param name="description"></param>
         /// <param name="notes"></param>
         /// <returns></returns>
-        public MaintenanceRecord UpdateMaintenanceRecord(int id, int maintainerId, int droneId, MaintenanceRecordType type, DateTime completed, string description, string? notes)
+        public MaintenanceRecord UpdateMaintenanceRecord(int id, int maintainerId, int droneId, MaintenanceRecordType type, DateTime completed, string description, string notes)
         {
             // These will throw exceptions if the corresponding entities do not exist
             _factory.Maintainers.GetMaintainer(maintainerId);
@@ -142,7 +142,7 @@ namespace DroneFlightLog.Data.Logic
         /// <param name="description"></param>
         /// <param name="notes"></param>
         /// <returns></returns>
-        public async Task<MaintenanceRecord> UpdateMaintenanceRecordAsync(int id, int maintainerId, int droneId, MaintenanceRecordType type, DateTime completed, string description, string? notes)
+        public async Task<MaintenanceRecord> UpdateMaintenanceRecordAsync(int id, int maintainerId, int droneId, MaintenanceRecordType type, DateTime completed, string description, string notes)
         {
             // These will throw exceptions if the corresponding entities do not exist
             await _factory.Maintainers.GetMaintainerAsync(maintainerId);

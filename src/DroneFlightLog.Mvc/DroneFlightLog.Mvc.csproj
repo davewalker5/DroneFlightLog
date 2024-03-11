@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <ReleaseVersion>1.1.4.0</ReleaseVersion>
-    <FileVersion>1.1.4.0</FileVersion>
-    <ProductVersion>1.1.4.0</ProductVersion>
+    <ReleaseVersion>1.1.5.0</ReleaseVersion>
+    <FileVersion>1.1.5.0</FileVersion>
+    <ProductVersion>1.1.5.0</ProductVersion>
     <Configurations>Release;Debug</Configurations>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -38,8 +38,8 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.4.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.2" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
   </ItemGroup>
   <ItemGroup>

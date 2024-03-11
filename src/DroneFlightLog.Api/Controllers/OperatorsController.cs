@@ -34,7 +34,7 @@ namespace DroneFlightLog.Api.Controllers
             {
                 op = await _factory.Operators.GetOperatorAsync(id);
             }
-            catch (LocationNotFoundException)
+            catch (OperatorNotFoundException)
             {
                 return NotFound();
             }

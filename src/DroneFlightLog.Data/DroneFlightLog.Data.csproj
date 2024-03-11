@@ -3,10 +3,10 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <PackageId>DroneFlightLog.Data</PackageId>
-    <PackageVersion>1.1.1.0</PackageVersion>
+    <PackageVersion>1.1.2.0</PackageVersion>
     <PackOnBuild>true</PackOnBuild>
     <Authors>Dave Walker</Authors>
-    <Copyright>Copyright (c) 2020, 2021, 2022, 2023 Dave Walker</Copyright>
+    <Copyright>Copyright (c) 2020, 2021, 2022, 2023, 2024 Dave Walker</Copyright>
     <Owners>Dave Walker</Owners>
     <PackageReleaseNotes>NuGet package and framework updates</PackageReleaseNotes>
     <Summary>Drone Flight Logging Database Layer</Summary>
@@ -16,11 +16,11 @@
     <PackageProjectUrl>https://github.com/davewalker5/DroneFlightLogDb</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <ReleaseVersion>1.1.1.0</ReleaseVersion>
+    <ReleaseVersion>1.1.2.0</ReleaseVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
   </ItemGroup>
   <ItemGroup>

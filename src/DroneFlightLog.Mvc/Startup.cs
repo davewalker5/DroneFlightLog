@@ -117,7 +117,7 @@ namespace DroneFlightLog.Mvc
                 string token = context.Session.GetString(LoginController.TokenSessionKey);
                 if (!string.IsNullOrEmpty(token))
                 {
-                    context.Request.Headers.Add("Authorization", "Bearer " + token);
+                    context.Request.Headers.Append("Authorization", "Bearer " + token);
                 }
                 await next();
             });
