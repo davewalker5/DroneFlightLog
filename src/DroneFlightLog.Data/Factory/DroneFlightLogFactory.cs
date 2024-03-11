@@ -17,6 +17,7 @@ namespace DroneFlightLog.Data.Factory
         private Lazy<IFlightManager> _flights;
         private Lazy<IUserManager> _users;
         private Lazy<IMaintainerManager> _maintainers;
+        private Lazy<IMaintenanceRecordManager> _maintenanceRecords;
 
         public DroneFlightLogFactory(T context)
         {
@@ -31,6 +32,7 @@ namespace DroneFlightLog.Data.Factory
             _flights = new Lazy<IFlightManager>(() => new FlightManager<T>(this));
             _users = new Lazy<IUserManager>(() => new UserManager<T>(context));
             _maintainers = new Lazy<IMaintainerManager>(() => new MaintainerManager<T>(context));
+            _maintenanceRecords = new Lazy<IMaintenanceRecordManager>(() => new MaintenanceRecordManager<T>(this));
         }
 
         public T Context { get; private set; }
@@ -44,5 +46,6 @@ namespace DroneFlightLog.Data.Factory
         public IFlightManager Flights { get { return _flights.Value; } }
         public IUserManager Users { get { return _users.Value; } }
         public IMaintainerManager Maintainers { get { return _maintainers.Value; } }
+        public IMaintenanceRecordManager MaintenanceRecords { get { return _maintenanceRecords.Value; } }
     }
 }

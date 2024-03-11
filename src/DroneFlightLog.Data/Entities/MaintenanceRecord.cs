@@ -12,6 +12,7 @@ namespace DroneFlightLog.Data.Entities
         public int MaintainerId { get; set; }
         public int DroneId { get; set; }
         public DateTime DateCompleted { get; set; }
+        public MaintenanceRecordType RecordType { get; set; }
         public string Description { get; set; }
         public string Notes { get; set; }
 
