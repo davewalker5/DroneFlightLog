@@ -7,17 +7,17 @@ namespace DroneFlightLog.Data.Factory
 {
     public class DroneFlightLogFactory<T> : IDroneFlightLogFactory<T> where T : DbContext, IDroneFlightLogDbContext
     {
-        private Lazy<IFlightPropertyManager> _properties;
-        private Lazy<IAddressManager> _addresses;
-        private Lazy<IOperatorManager> _operators;
-        private Lazy<IManufacturerManager> _manufacturers;
-        private Lazy<IModelManager> _models;
-        private Lazy<IDroneManager> _drones;
-        private Lazy<ILocationManager> _locations;
-        private Lazy<IFlightManager> _flights;
-        private Lazy<IUserManager> _users;
-        private Lazy<IMaintainerManager> _maintainers;
-        private Lazy<IMaintenanceRecordManager> _maintenanceRecords;
+        private readonly Lazy<IFlightPropertyManager> _properties;
+        private readonly Lazy<IAddressManager> _addresses;
+        private readonly Lazy<IOperatorManager> _operators;
+        private readonly Lazy<IManufacturerManager> _manufacturers;
+        private readonly Lazy<IModelManager> _models;
+        private readonly Lazy<IDroneManager> _drones;
+        private readonly Lazy<ILocationManager> _locations;
+        private readonly Lazy<IFlightManager> _flights;
+        private readonly Lazy<IUserManager> _users;
+        private readonly Lazy<IMaintainerManager> _maintainers;
+        private readonly Lazy<IMaintenanceRecordManager> _maintenanceRecords;
 
         public DroneFlightLogFactory(T context)
         {

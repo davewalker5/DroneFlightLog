@@ -48,7 +48,7 @@ namespace DroneFlightLog.Api.Controllers
         {
             List<Maintainer> maintainers = await _factory.Maintainers.GetMaintainersAsync().ToListAsync();
 
-            if (!maintainers.Any())
+            if (maintainers.Count == 0)
             {
                 return NoContent();
             }

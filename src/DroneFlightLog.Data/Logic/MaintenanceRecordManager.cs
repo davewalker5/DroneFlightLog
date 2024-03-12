@@ -86,7 +86,10 @@ namespace DroneFlightLog.Data.Logic
         /// <returns></returns>
         public MaintenanceRecord GetMaintenanceRecord(int id)
         {
-            MaintenanceRecord maintenanceRecord = _factory.Context.MaintenanceRecords.FirstOrDefault(m => m.Id == id);
+            MaintenanceRecord maintenanceRecord = _factory.Context
+                                                          .MaintenanceRecords
+                                                          .Include(m => m.Maintainer)
+                                                          .FirstOrDefault(m => m.Id == id);
             ThrowIfMaintenanceRecordNotFound(maintenanceRecord, id);
             return maintenanceRecord;
         }
@@ -98,7 +101,10 @@ namespace DroneFlightLog.Data.Logic
         /// <returns></returns>
         public async Task<MaintenanceRecord> GetMaintenanceRecordAsync(int id)
         {
-            MaintenanceRecord maintenanceRecord = await _factory.Context.MaintenanceRecords.FirstOrDefaultAsync(m => m.Id == id);
+            MaintenanceRecord maintenanceRecord = await _factory.Context
+                                                        .MaintenanceRecords
+                                                        .Include(m => m.Maintainer)
+                                                        .FirstOrDefaultAsync(m => m.Id == id);
             ThrowIfMaintenanceRecordNotFound(maintenanceRecord, id);
             return maintenanceRecord;
         }
@@ -178,6 +184,7 @@ namespace DroneFlightLog.Data.Logic
                                                                                     ((droneId == null) || (droneId == m.DroneId)) &&
                                                                                     ((start == null) || (m.DateCompleted >= start)) &&
                                                                                     ((end == null) || (m.DateCompleted <= end)))
+                                                                        .OrderBy(m => m.DateCompleted)
                                                                         .Skip((pageNumber - 1) * pageSize)
                                                                         .Take(pageSize);
 
@@ -199,6 +206,7 @@ namespace DroneFlightLog.Data.Logic
                                                                                          ((droneId == null) || (droneId == m.DroneId)) &&
                                                                                          ((start == null) || (m.DateCompleted >= start)) &&
                                                                                          ((end == null) || (m.DateCompleted <= end)))
+                                                                             .OrderBy(m => m.DateCompleted)
                                                                              .Skip((pageNumber - 1) * pageSize)
                                                                              .Take(pageSize)
                                                                              .AsAsyncEnumerable();

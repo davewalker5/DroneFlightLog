@@ -33,7 +33,7 @@ namespace DroneFlightLog.Api.Controllers
         {
             List<Flight> flights = await _factory.Flights.FindFlightsAsync(null, null, null, null, null, page, pageSize).ToListAsync();
 
-            if (!flights.Any())
+            if (flights.Count == 0)
             {
                 return NoContent();
             }
@@ -47,7 +47,7 @@ namespace DroneFlightLog.Api.Controllers
         {
             List<Flight> flights = await _factory.Flights.FindFlightsAsync(operatorId, null, null, null, null, page, pageSize).ToListAsync();
 
-            if (!flights.Any())
+            if (flights.Count == 0)
             {
                 return NoContent();
             }
@@ -61,7 +61,7 @@ namespace DroneFlightLog.Api.Controllers
         {
             List<Flight> flights = await _factory.Flights.FindFlightsAsync(null, droneId, null, null, null, page, pageSize).ToListAsync();
 
-            if (!flights.Any())
+            if (flights.Count == 0)
             {
                 return NoContent();
             }
@@ -75,7 +75,7 @@ namespace DroneFlightLog.Api.Controllers
         {
             List<Flight> flights = await _factory.Flights.FindFlightsAsync(null, null, locationId, null, null, page, pageSize).ToListAsync();
 
-            if (!flights.Any())
+            if (flights.Count == 0)
             {
                 return NoContent();
             }
@@ -92,7 +92,7 @@ namespace DroneFlightLog.Api.Controllers
 
             List<Flight> flights = await _factory.Flights.FindFlightsAsync(null, null, null, flightStart, flightEnd, page, pageSize).ToListAsync();
 
-            if (!flights.Any())
+            if (flights.Count == 0)
             {
                 return NoContent();
             }

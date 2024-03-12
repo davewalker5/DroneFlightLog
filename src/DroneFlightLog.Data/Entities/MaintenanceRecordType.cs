@@ -1,8 +1,11 @@
-﻿namespace DroneFlightLog.Data.Entities
+﻿using System.Runtime.Serialization;
+
+namespace DroneFlightLog.Data.Entities
 {
     public enum MaintenanceRecordType
     {
         Maintenance,
-        Modification
+        Modification,
+        Repair
     }
 }
