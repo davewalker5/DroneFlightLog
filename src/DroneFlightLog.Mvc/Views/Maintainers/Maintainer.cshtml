@@ -1,0 +1,38 @@
+﻿@model DroneFlightLog.Mvc.Models.MaintainerViewModelBase
+
+@Html.AntiForgeryToken()
+@Html.HiddenFor(m => m.Maintainer.Id)
+
+
+<div class="row">
+    <div class="col-md">
+        <span class="text-muted" style="font-size: 1.1rem"><strong>Maintainer Details</strong></span>
+    </div>
+</div>
+<br />
+
+<div class="row">
+    <div class="col">
+        <strong>@Html.LabelFor(m => m.Maintainer.FirstNames)</strong>
+        <div class="input-group">
+            @Html.EditorFor(m => m.Maintainer.FirstNames, new { @class = "form-control" })
+        </div>
+        <span>@Html.ValidationMessageFor(m => m.Maintainer.FirstNames, "", new { @class = "text-danger" })</span>
+    </div>
+    <div class="col">
+        <strong>@Html.LabelFor(m => m.Maintainer.Surname)</strong>
+        <div class="input-group">
+            @Html.EditorFor(m => m.Maintainer.Surname, new { @class = "form-control" })
+        </div>
+        <span>@Html.ValidationMessageFor(m => m.Maintainer.Surname, "", new { @class = "text-danger" })</span>
+    </div>
+</div>
+<hr />
+
+<div class="row">
+    <div class="col">
+        <div class="input-group">
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </div>
+</div>

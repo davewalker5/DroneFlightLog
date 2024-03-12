@@ -15,9 +15,7 @@
 
   <ItemGroup>
     <Folder Include="Configuration\" />
-    <Folder Include="Api\" />
     <Folder Include="Views\Login\" />
-    <Folder Include="Entities\" />
     <Folder Include="Views\Manufacturers\" />
     <Folder Include="Views\Models\" />
     <Folder Include="Views\Drones\" />

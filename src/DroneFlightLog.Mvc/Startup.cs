@@ -58,6 +58,7 @@ namespace DroneFlightLog.Mvc
             services.AddHttpClient<FlightPropertyClient>();
             services.AddHttpClient<FlightSearchClient>();
             services.AddHttpClient<FlightClient>();
+            services.AddHttpClient<MaintainersClient>();
 
             // Configure session state for token storage
             services.AddSession(options =>

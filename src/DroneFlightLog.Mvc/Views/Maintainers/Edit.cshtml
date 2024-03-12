@@ -1,0 +1,20 @@
+﻿@model DroneFlightLog.Mvc.Models.EditMaintainerViewModel
+
+@{
+    ViewData["Title"] = "Edit Maintainer";
+}
+
+<div class="container-fluid">
+    @using (Html.BeginForm())
+    {
+        <div class="row">
+            <div class="col-md">
+                <span style="font-size: 1.2rem"><strong>Edit Maintainer</strong></span>
+            </div>
+        </div>
+        <hr />
+
+        @await Html.PartialAsync("Maintainer", Model)
+        ;
+    }
+</div>

@@ -1,0 +1,47 @@
+﻿@using System.Collections.Generic
+@using DroneFlightLog.Mvc.Entities
+@model List<Maintainer>
+
+@{
+    ViewData["Title"] = "Maintainer Details";
+}
+
+<p class="text-center font-weight-bold">
+    <span style="font-size: 1.2rem">
+        Maintainer Details
+    </span>
+    <br />
+    <small class="text-muted">
+        <em>
+            Manage maintainer details
+        </em>
+    </small>
+</p>
+
+<table class="table">
+    <tr>
+        <th>First Names</th>
+        <th>Surname</th>
+        <th />
+    </tr>
+    @if (Model != null)
+    {
+        foreach (var maintainer in Model)
+        {
+            <tr>
+                <td valign="center">@maintainer.FirstNames</td>
+                <td valign="center">@maintainer.Surname</td>
+                <td valign="center">
+                    <a class="btn btn-lg" asp-area="" asp-controller="Maintainers" asp-action="Edit" asp-route-id="@maintainer.Id">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    }
+</table>
+
+<hr />
+<p class="text-right">
+    <a class="btn btn-primary" href="/Maintainers/Add" role="button">Add</a>
+</p>
