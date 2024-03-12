@@ -44,10 +44,10 @@ namespace DroneFlightLog.Mvc.Api
         /// <returns></returns>
         public async Task<Model> GetModelAsync(int id)
         {
-            // TODO : This needs to be replaced with a call to retrieve a single
-            // model by Id. For now, retrieve them all then pick the one required
-            List<Model> models = await GetModelsAsync();
-            Model model = models.First(m => m.Id == id);
+            string baseRoute = _settings.Value.ApiRoutes.First(r => r.Name == RouteKey).Route;
+            string route = $"{baseRoute}/{id}";
+            string json = await SendDirectAsync(route, null, HttpMethod.Get);
+            Model model = JsonConvert.DeserializeObject<Model>(json);
             return model;
         }
 

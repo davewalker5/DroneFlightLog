@@ -28,6 +28,24 @@ namespace DroneFlightLog.Api.Controllers
         }
 
         [HttpGet]
+        [Route("{id}")]
+        public async Task<ActionResult<Flight>> GetFlightByIdAsync(int id)
+        {
+            Flight flight;
+
+            try
+            {
+                flight = await _factory.Flights.GetFlightAsync(id);
+            }
+            catch (FlightNotFoundException)
+            {
+                return NotFound();
+            }
+
+            return flight;
+        }
+
+        [HttpGet]
         [Route("{page}/{pageSize}")]
         public async Task<ActionResult<List<Flight>>> GetFlightsAsync(int page, int pageSize)
         {

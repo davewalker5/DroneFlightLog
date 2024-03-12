@@ -28,14 +28,10 @@ namespace DroneFlightLog.Mvc.Api
         /// <returns></returns>
         public async Task<Flight> GetFlightAsync(int flightId)
         {
-            // TODO : This needs to be replaced with a call to retrieve a single flight
-            // by Id. For now, retrieve an arbitrary large number that will cover them
-            // all then pick the one required
             string baseRoute = _settings.Value.ApiRoutes.First(r => r.Name == RouteKey).Route;
-            string route = $"{baseRoute}/1/1000000";
+            string route = $"{baseRoute}/{flightId}";
             string json = await SendDirectAsync(route, null, HttpMethod.Get);
-            List<Flight> flights = JsonConvert.DeserializeObject<List<Flight>>(json);
-            Flight flight = flights.First(f => f.Id == flightId);
+            Flight flight = JsonConvert.DeserializeObject<Flight>(json);
             return flight;
         }
 

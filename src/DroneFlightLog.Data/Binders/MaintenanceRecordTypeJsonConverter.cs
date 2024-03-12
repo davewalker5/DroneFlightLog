@@ -1,10 +1,12 @@
 ﻿using DroneFlightLog.Data.Entities;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace DroneFlightLog.Data.Binders
 {
+    [ExcludeFromCodeCoverage]
     public class MaintenanceRecordTypeJsonConverter : JsonConverter<MaintenanceRecordType>
     {
         public override MaintenanceRecordType Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)

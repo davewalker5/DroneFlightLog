@@ -184,6 +184,30 @@ namespace DroneFlightLog.Data.Logic
         }
 
         /// <summary>
+        /// Return a flight propert definition given its Id
+        /// </summary>
+        /// <param name="propertyId"></param>
+        /// <returns></returns>
+        public FlightProperty GetProperty(int propertyId)
+        {
+            FlightProperty property = _context.FlightProperties.FirstOrDefault(p => p.Id == propertyId);
+            ThrowIfPropertyNotFound(property, propertyId);
+            return property;
+        }
+
+        /// <summary>
+        /// Return a flight propert definition given its Id
+        /// </summary>
+        /// <param name="propertyId"></param>
+        /// <returns></returns>
+        public async Task<FlightProperty> GetPropertyAsync(int propertyId)
+        {
+            FlightProperty property = await _context.FlightProperties.FirstOrDefaultAsync(p => p.Id == propertyId);
+            ThrowIfPropertyNotFound(property, propertyId);
+            return property;
+        }
+
+        /// <summary>
         /// Get all the current property definitions
         /// </summary>
         public IEnumerable<FlightProperty> GetProperties() =>

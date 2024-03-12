@@ -119,6 +119,38 @@ namespace DroneFlightLog.Data.Tests
         }
 
         [TestMethod]
+        public void GetPropertyTest()
+        {
+            var property = _factory.Properties.GetProperty(_propertyId);
+            Assert.AreEqual(PropertyName, property.Name);
+            Assert.AreEqual(PropertyType, property.DataType);
+            Assert.IsTrue(property.IsSingleInstance);
+        }
+
+        [TestMethod]
+        public async Task GetPropertyAsyncTest()
+        {
+            var property = await _factory.Properties.GetPropertyAsync(_propertyId);
+            Assert.AreEqual(PropertyName, property.Name);
+            Assert.AreEqual(PropertyType, property.DataType);
+            Assert.IsTrue(property.IsSingleInstance);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(PropertyNotFoundException))]
+        public void GetPropertyForMissingPropertyTest()
+        {
+            _factory.Properties.GetProperty(-1);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(PropertyNotFoundException))]
+        public async Task GetPropertyForMissingPropertyAsyncTest()
+        {
+            await _factory.Properties.GetPropertyAsync(-1);
+        }
+
+        [TestMethod]
         public void GetPropertiesTest()
         {
             IEnumerable<FlightProperty> properties = _factory.Properties.GetProperties();

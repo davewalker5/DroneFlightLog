@@ -44,10 +44,10 @@ namespace DroneFlightLog.Mvc.Api
         /// <returns></returns>
         public async Task<Drone> GetDroneAsync(int id)
         {
-            // TODO : This needs to be replaced with a call to retrieve a single
-            // drone by Id. For now, retrieve them all then pick the one required
-            List<Drone> drones = await GetDronesAsync();
-            Drone drone = drones.First(l => l.Id == id);
+            string baseRoute = _settings.Value.ApiRoutes.First(r => r.Name == RouteKey).Route;
+            string route = $"{baseRoute}/{id}";
+            string json = await SendDirectAsync(route, null, HttpMethod.Get);
+            Drone drone = JsonConvert.DeserializeObject<Drone>(json);
             return drone;
         }
 

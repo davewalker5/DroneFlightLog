@@ -18,6 +18,7 @@ The logbook allows for storage and maintenance of the following data:
 - Operator details
 - Drones, models and manufacturers
 - Flights, flight locations and flight properties
+- Repair, maintenance and modification records
 
 ## Getting Started
 
