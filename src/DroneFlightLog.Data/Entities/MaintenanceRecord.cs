@@ -21,5 +21,6 @@ namespace DroneFlightLog.Data.Entities
         public string Notes { get; set; }
 
         public Maintainer Maintainer { get; set; }
+        public Drone Drone { get; set; }
     }
 }

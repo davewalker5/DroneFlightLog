@@ -35,7 +35,7 @@ namespace DroneFlightLog.Data.Logic
             _factory.Drones.GetDrone(droneId);
             _factory.Locations.GetLocation(locationId);
 
-            Flight flight = new Flight
+            Flight flight = new()
             {
                 OperatorId = operatorId,
                 DroneId = droneId,
@@ -64,7 +64,7 @@ namespace DroneFlightLog.Data.Logic
             await _factory.Drones.GetDroneAsync(droneId);
             await _factory.Locations.GetLocationAsync(locationId);
 
-            Flight flight = new Flight
+            Flight flight = new()
             {
                 OperatorId = operatorId,
                 DroneId = droneId,
@@ -242,7 +242,7 @@ namespace DroneFlightLog.Data.Logic
         /// <param name="flight"></param>
         /// <param name="flightId"></param>
         [ExcludeFromCodeCoverage]
-        private void ThrowIfFlightNotFound(Flight flight, int flightId)
+        private static void ThrowIfFlightNotFound(Flight flight, int flightId)
         {
             if (flight == null)
             {

@@ -9,11 +9,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace DroneFlightLog.Mvc.Api
 {
     public class MaintenanceRecordClient : DroneFlightLogClientBase
     {
+        private static readonly DateTime _baseDateTime = new(1900, 1, 1);
         private const string RouteKey = "MaintenanceRecords";
         private const string CacheKey = "MaintenanceRecords";
 
@@ -37,14 +39,20 @@ namespace DroneFlightLog.Mvc.Api
         }
 
         /// <summary>
-        /// Retrieve all maintenance records for a drone
+        /// Retrieve a list of maintenance records for a given drone and optional date filters
         /// </summary>
         /// <param name="droneId"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
         /// <returns></returns>
-        public async Task<List<MaintenanceRecord>> GetMaintenanceRecordsForDoneAsync(int droneId)
+        public async Task<List<MaintenanceRecord>> GetMaintenanceRecordsForDoneAsync(int droneId, DateTime? start, DateTime? end, int page, int pageSize)
         {
             string baseRoute = _settings.Value.ApiRoutes.First(r => r.Name == RouteKey).Route;
-            string route = $"{baseRoute}/drone/{droneId}";
+            string startDateSegment = HttpUtility.UrlEncode((start ?? _baseDateTime).ToString(_settings.Value.ApiDateFormat));
+            string endDateSegment = HttpUtility.UrlEncode((end ?? DateTime.Now).ToString(_settings.Value.ApiDateFormat));
+            string route = $"{baseRoute}/{droneId}/{startDateSegment}/{endDateSegment}/{page}/{pageSize}";
             string json = await SendDirectAsync(route, null, HttpMethod.Get);
             List<MaintenanceRecord> maintenanceRecords = JsonConvert.DeserializeObject<List<MaintenanceRecord>>(json);
             return maintenanceRecords;

@@ -9,6 +9,7 @@ namespace DroneFlightLog.Mvc.Configuration
         public List<ApiRoute> ApiRoutes { get; set; }
         public string ApiDateFormat { get; set; }
         public int FlightSearchPageSize { get; set; }
+        public int MaintenanceRecordSearchPageSize { get; set; }
         public int FlightPropertiesPerRow { get; set; }
         public int CacheLifetimeSeconds { get; set; }
     }

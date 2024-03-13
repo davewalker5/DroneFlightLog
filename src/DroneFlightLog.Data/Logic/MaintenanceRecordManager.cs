@@ -89,6 +89,7 @@ namespace DroneFlightLog.Data.Logic
             MaintenanceRecord maintenanceRecord = _factory.Context
                                                           .MaintenanceRecords
                                                           .Include(m => m.Maintainer)
+                                                          .Include(m => m.Drone)
                                                           .FirstOrDefault(m => m.Id == id);
             ThrowIfMaintenanceRecordNotFound(maintenanceRecord, id);
             return maintenanceRecord;
@@ -104,6 +105,7 @@ namespace DroneFlightLog.Data.Logic
             MaintenanceRecord maintenanceRecord = await _factory.Context
                                                         .MaintenanceRecords
                                                         .Include(m => m.Maintainer)
+                                                        .Include(m => m.Drone)
                                                         .FirstOrDefaultAsync(m => m.Id == id);
             ThrowIfMaintenanceRecordNotFound(maintenanceRecord, id);
             return maintenanceRecord;
@@ -180,6 +182,7 @@ namespace DroneFlightLog.Data.Logic
             IEnumerable<MaintenanceRecord> maintenanceRecords = _factory.Context
                                                                         .MaintenanceRecords
                                                                         .Include(m => m.Maintainer)
+                                                                        .Include(m => m.Drone)
                                                                         .Where(m => ((maintainerId == null) || (maintainerId == m.MaintainerId)) &&
                                                                                     ((droneId == null) || (droneId == m.DroneId)) &&
                                                                                     ((start == null) || (m.DateCompleted >= start)) &&
@@ -202,6 +205,7 @@ namespace DroneFlightLog.Data.Logic
             IAsyncEnumerable<MaintenanceRecord> maintenanceRecords = _factory.Context
                                                                              .MaintenanceRecords
                                                                              .Include(m => m.Maintainer)
+                                                                             .Include(m => m.Drone)
                                                                              .Where(m => ((maintainerId == null) || (maintainerId == m.MaintainerId)) &&
                                                                                          ((droneId == null) || (droneId == m.DroneId)) &&
                                                                                          ((start == null) || (m.DateCompleted >= start)) &&
@@ -219,7 +223,7 @@ namespace DroneFlightLog.Data.Logic
         /// <param name="maintenanceRecord"></param>
         /// <param name="maintenanceRecordId"></param>
         [ExcludeFromCodeCoverage]
-        private void ThrowIfMaintenanceRecordNotFound(MaintenanceRecord maintenanceRecord, int maintenanceRecordId)
+        private static void ThrowIfMaintenanceRecordNotFound(MaintenanceRecord maintenanceRecord, int maintenanceRecordId)
         {
             if (maintenanceRecord == null)
             {

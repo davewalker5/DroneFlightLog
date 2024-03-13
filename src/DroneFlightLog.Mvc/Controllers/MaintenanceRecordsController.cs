@@ -1,39 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using DroneFlightLog.Mvc.Api;
+﻿using DroneFlightLog.Mvc.Api;
 using DroneFlightLog.Mvc.Configuration;
 using DroneFlightLog.Mvc.Entities;
 using DroneFlightLog.Mvc.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using System;
+using System.Threading.Tasks;
 
 namespace DroneFlightLog.Mvc.Controllers
 {
-    [Authorize]
-    public class SearchFlightsByDateController : Controller
+    public class MaintenanceRecordsController : Controller
     {
-        private readonly FlightSearchClient _client;
+        private readonly DroneClient _drones;
+        private readonly MaintainersClient _maintainers;
+        private readonly MaintenanceRecordClient _maintenanceRecords;
         private readonly IOptions<AppSettings> _settings;
 
-        public SearchFlightsByDateController(FlightSearchClient client, IOptions<AppSettings> settings)
+        public MaintenanceRecordsController(DroneClient drones, MaintainersClient maintainers, MaintenanceRecordClient maintenanceRecords, IOptions<AppSettings> settings)
         {
-            _client = client;
+            _drones = drones;
+            _maintainers = maintainers;
+            _maintenanceRecords = maintenanceRecords;
             _settings = settings;
         }
 
         /// <summary>
-        /// Serve the empty search flights by date page
+        /// Serve the empty page to for search maintenance records
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            FlightSearchByDateViewModel model = new()
+            MaintenanceRecordsSearchViewModel model = new()
             {
                 PageNumber = 1
             };
+
+            var drones = await _drones.GetDronesAsync();
+            model.SetDrones(drones);
+
             return View(model);
         }
 
@@ -44,7 +49,7 @@ namespace DroneFlightLog.Mvc.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(FlightSearchByDateViewModel model)
+        public async Task<IActionResult> Index(MaintenanceRecordsSearchViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -69,14 +74,16 @@ namespace DroneFlightLog.Mvc.Controllers
                 // and amend the page number, above, then apply it, below
                 ModelState.Clear();
 
-                DateTime start = DateTime.Parse(model.From);
-                DateTime end = DateTime.Parse(model.To);
-                List<Flight> flights = await _client.GetFlightsByDateAsync(start, end, page, _settings.Value.FlightSearchPageSize);
-                model.SetFlights(flights, page, _settings.Value.FlightSearchPageSize);
+                DateTime? start = !string.IsNullOrEmpty(model.From) ? DateTime.Parse(model.From) : null;
+                DateTime? end = !string.IsNullOrEmpty(model.To) ? DateTime.Parse(model.To) : null;
+                var maintenanceRecords = await _maintenanceRecords.GetMaintenanceRecordsForDoneAsync(model.DroneId, start, end, page, _settings.Value.MaintenanceRecordSearchPageSize);
+                model.SetMaintenanceRecords(maintenanceRecords, page, _settings.Value.MaintenanceRecordSearchPageSize);
             }
+
+            var drones = await _drones.GetDronesAsync();
+            model.SetDrones(drones);
 
             return View(model);
         }
-
     }
 }

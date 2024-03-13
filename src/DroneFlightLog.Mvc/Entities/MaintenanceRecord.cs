@@ -26,5 +26,28 @@ namespace DroneFlightLog.Mvc.Entities
         public string Description { get; set; }
 
         public string Notes { get; set; }
+
+        public Drone Drone { get; set; }
+        public Maintainer Maintainer { get; set; }
+
+        public string DateCompletedFormatted
+        {
+            get
+            {
+                return DateCompleted.ToString("dd-MMM-yyyy");
+            }
+        }
+
+        public string GetMaintainerName()
+        {
+            string name = "";
+
+            if (Maintainer != null)
+            {
+                name = $"{Maintainer.FirstNames} {Maintainer.Surname}";
+            }
+
+            return name;
+        }
     }
 }

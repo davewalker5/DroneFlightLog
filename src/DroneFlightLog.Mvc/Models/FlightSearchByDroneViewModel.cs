@@ -23,10 +23,10 @@ namespace DroneFlightLog.Mvc.Models
         public void SetDrones(List<Drone> drones)
         {
             // Add the default selection, which is empty
-            Drones = new List<SelectListItem>()
-            {
-                new SelectListItem{ Value = "", Text = "" }
-            };
+            Drones =
+            [
+                new() { Value = "", Text = "" }
+            ];
 
             // Add the drones retrieved from the service
             if (drones?.Count > 0)
