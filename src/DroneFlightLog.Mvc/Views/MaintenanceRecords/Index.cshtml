@@ -82,12 +82,12 @@
                         <td valign="center">@record.GetMaintainerName()</td>
                         <td valign="center">@record.Description</td>
                         <td valign="center">
-                            <a class="btn btn-lg" asp-area="" asp-controller="MaintenanceRecords" asp-action="Edit" asp-route-id="@record.Id">
+                            <a asp-area="" asp-controller="MaintenanceRecords" asp-action="Edit" asp-route-id="@record.Id">
                                 <i class="fas fa-edit"></i>
                             </a>
                         </td>
                         <td valign="center">
-                            <a class="btn btn-lg" asp-area="" asp-controller="MaintenanceRecords" asp-action="Index" asp-route-id="@record.Id">
+                            <a asp-area="" asp-controller="MaintenanceRecords" asp-action="Index" asp-route-id="@record.Id">
                                 <i class="fas fa-sign-in-alt"></i>
                             </a>
                         </td>
