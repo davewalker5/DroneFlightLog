@@ -25,6 +25,7 @@
         <th>Model</th>
         <th>Manufacturer</th>
         <th />
+        <th />
     </tr>
     @if (Model != null)
     {
@@ -38,6 +39,11 @@
                 <td valign="center">
                     <a asp-area="" asp-controller="Drones" asp-action="Edit" asp-route-id="@drone.Id">
                         <i class="fas fa-edit"></i>
+                    </a>
+                </td>
+                <td valign="center">
+                    <a asp-area="" asp-controller="MaintenanceRecordsSearch" asp-action="Index" asp-route-droneId="@drone.Id">
+                        <i class="fas fa-hammer"></i>
                     </a>
                 </td>
             </tr>

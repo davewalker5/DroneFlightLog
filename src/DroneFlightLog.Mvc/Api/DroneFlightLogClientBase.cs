@@ -80,12 +80,12 @@ namespace DroneFlightLog.Mvc.Api
             }
             else if (method == HttpMethod.Post)
             {
-                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+                var content = new StringContent(data, Encoding.UTF8, "application/json");
                 response = await _client.PostAsync(route, content);
             }
             else if (method == HttpMethod.Put)
             {
-                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+                var content = new StringContent(data, Encoding.UTF8, "application/json");
                 response = await _client.PutAsync(route, content);
             }
 

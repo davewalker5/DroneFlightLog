@@ -14,5 +14,17 @@ namespace DroneFlightLog.Mvc.Entities
         [DisplayName("Surname")]
         [Required(ErrorMessage = "You must provide a surname")]
         public string Surname { get; set; }
+
+        /// <summary>
+        /// Return the full name of the maintainer
+        /// </summary>
+        /// <returns></returns>
+        public string MaintainerFullName
+        {
+            get
+            {
+                return $"{FirstNames} {Surname}";
+            }
+        }
     }
 }

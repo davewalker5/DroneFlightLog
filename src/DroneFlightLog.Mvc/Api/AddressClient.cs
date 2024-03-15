@@ -32,11 +32,7 @@ namespace DroneFlightLog.Mvc.Api
         public async Task<Address> FindOrAddAddressAsync(string number, string street, string town, string county, string postcode, string country)
         {
             Address address = await FindAddressAsync(number, postcode, country);
-            if (address == null)
-            {
-                address = await AddAddressAsync(number, street, town, county, postcode, country);
-            }
-
+            address ??= await AddAddressAsync(number, street, town, county, postcode, country);
             return address;
         }
 

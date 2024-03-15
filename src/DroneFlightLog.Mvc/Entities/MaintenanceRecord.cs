@@ -16,20 +16,35 @@ namespace DroneFlightLog.Mvc.Entities
         [Required(ErrorMessage = "You must select a drone")]
         public int DroneId { get; set; }
 
-        [Required(ErrorMessage = "You must select a work date")]
+        [DisplayName("Work Date")]
+        [Required(ErrorMessage = "You must provide a work date")]
         public DateTime DateCompleted { get; set; }
 
-        [Required(ErrorMessage = "You must select a maintenance type")]
+        [DisplayName("Work Type")]
+        [Required(ErrorMessage = "You must select a maintenance work type")]
         public MaintenanceRecordType RecordType { get; set; }
 
-        [Required(ErrorMessage = "You must select a description")]
+        [DisplayName("Description")]
+        [Required(ErrorMessage = "You must provide a description")]
         public string Description { get; set; }
 
+        [DisplayName("Notes")]
         public string Notes { get; set; }
 
         public Drone Drone { get; set; }
         public Maintainer Maintainer { get; set; }
 
+        /// <summary>
+        /// Used during editing to capture a string representation of the date that
+        /// is subsequently parsed to a DateTime
+        /// </summary>
+        [DisplayName("Work Date")]
+        [Required(ErrorMessage = "You must provide a work date")]
+        public string DateWorkCompleted { get; set; }
+
+        /// <summary>
+        /// Return the date completed as a string correctly formatted for the UI's date picker
+        /// </summary>
         public string DateCompletedFormatted
         {
             get
@@ -38,16 +53,16 @@ namespace DroneFlightLog.Mvc.Entities
             }
         }
 
-        public string GetMaintainerName()
+        /// <summary>
+        /// Return the full name of the maintainer
+        /// </summary>
+        /// <returns></returns>
+        public string MaintainerFullName
         {
-            string name = "";
-
-            if (Maintainer != null)
+            get
             {
-                name = $"{Maintainer.FirstNames} {Maintainer.Surname}";
+                return Maintainer != null ? Maintainer.MaintainerFullName : "";
             }
-
-            return name;
         }
     }
 }

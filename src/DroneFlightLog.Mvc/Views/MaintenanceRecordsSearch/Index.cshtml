@@ -55,9 +55,17 @@
                 <span>@Html.ValidationMessageFor(m => m.To, "", new { @class = "text-danger" })</span>
             </div>
             <div class="col">
-                <strong><label>&nbsp;</label></strong>
-                <div class="input-group">
-                    <button type="submit" name="Action" value="@ControllerActions.ActionSearch" class="btn btn-primary">Search</button>
+                <div style="float: left; margin-right: 10px;">
+                    <strong><label>&nbsp;</label></strong>
+                    <div class="input-group">
+                        <button type="submit" name="Action" value="@ControllerActions.ActionSearch" class="btn btn-primary">Search</button>
+                    </div>
+                </div>
+                <div style="float: left; margin-right: 10px;">
+                    <strong><label>&nbsp;</label></strong>
+                    <div class="input-group">
+                        <a class="btn btn-primary" href="/MaintenanceRecords/Add" role="button">Add</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -69,9 +77,9 @@
                 <tr>
                     <th>Drone</th>
                     <th>Date</th>
+                    <th>Type</th>
                     <th>Maintainer</th>
                     <th>Description</th>
-                    <th />
                     <th />
                 </tr>
                 @foreach (var record in Model.MaintenanceRecords)
@@ -79,16 +87,12 @@
                     <tr>
                         <td valign="center">@record.Drone?.Name</td>
                         <td valign="center" style="white-space: nowrap">@record.DateCompletedFormatted</td>
-                        <td valign="center">@record.GetMaintainerName()</td>
+                        <td valign="center">@record.RecordType</td>
+                        <td valign="center">@record.MaintainerFullName</td>
                         <td valign="center">@record.Description</td>
                         <td valign="center">
                             <a asp-area="" asp-controller="MaintenanceRecords" asp-action="Edit" asp-route-id="@record.Id">
                                 <i class="fas fa-edit"></i>
-                            </a>
-                        </td>
-                        <td valign="center">
-                            <a asp-area="" asp-controller="MaintenanceRecords" asp-action="Index" asp-route-id="@record.Id">
-                                <i class="fas fa-sign-in-alt"></i>
                             </a>
                         </td>
                     </tr>

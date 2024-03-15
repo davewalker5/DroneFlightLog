@@ -42,7 +42,7 @@ namespace DroneFlightLog.Mvc.Controllers
         public async Task<IActionResult> Add()
         {
             List<Manufacturer> manufacturers = await _manufacturers.GetManufacturersAsync();
-            AddModelViewModel model = new AddModelViewModel();
+            var model = new AddModelViewModel();
             model.SetManufacturers(manufacturers);
             return View(model);
         }

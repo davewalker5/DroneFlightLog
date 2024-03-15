@@ -1,10 +1,12 @@
-﻿using DroneFlightLog.Mvc.Api;
+﻿using AutoMapper;
+using DroneFlightLog.Mvc.Api;
 using DroneFlightLog.Mvc.Configuration;
 using DroneFlightLog.Mvc.Entities;
 using DroneFlightLog.Mvc.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DroneFlightLog.Mvc.Controllers
@@ -14,76 +16,135 @@ namespace DroneFlightLog.Mvc.Controllers
         private readonly DroneClient _drones;
         private readonly MaintainersClient _maintainers;
         private readonly MaintenanceRecordClient _maintenanceRecords;
-        private readonly IOptions<AppSettings> _settings;
+        private readonly IMapper _mapper;
 
-        public MaintenanceRecordsController(DroneClient drones, MaintainersClient maintainers, MaintenanceRecordClient maintenanceRecords, IOptions<AppSettings> settings)
+        public MaintenanceRecordsController(DroneClient drones, MaintainersClient maintainers, MaintenanceRecordClient maintenanceRecords, IMapper mapper)
         {
             _drones = drones;
             _maintainers = maintainers;
             _maintenanceRecords = maintenanceRecords;
-            _settings = settings;
+            _mapper = mapper;
         }
 
         /// <summary>
-        /// Serve the empty page to for search maintenance records
+        /// Serve the page to add a new maintenance record
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Add()
         {
-            MaintenanceRecordsSearchViewModel model = new()
-            {
-                PageNumber = 1
-            };
+            List<Drone> drones = await _drones.GetDronesAsync();
+            List<Maintainer> maintainers = await _maintainers.GetMaintainersAsync();
 
-            var drones = await _drones.GetDronesAsync();
+            AddMaintenanceRecordViewModel model = new();
             model.SetDrones(drones);
+            model.SetMaintainers(maintainers);
 
             return View(model);
         }
 
         /// <summary>
-        /// Respond to a POST event triggering the search
+        /// Handle POST events to add new maintenance records
         /// </summary>
-        /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(MaintenanceRecordsSearchViewModel model)
+        public async Task<IActionResult> Add(AddMaintenanceRecordViewModel model)
         {
+            IActionResult result;
+
             if (ModelState.IsValid)
             {
-                int page = model.PageNumber;
-                switch (model.Action)
-                {
-                    case ControllerActions.ActionPreviousPage:
-                        page -= 1;
-                        break;
-                    case ControllerActions.ActionNextPage:
-                        page += 1;
-                        break;
-                    case ControllerActions.ActionSearch:
-                        page = 1;
-                        break;
-                    default:
-                        break;
-                }
+                DateTime dateCompleted = DateTime.Parse(model.DateWorkCompleted);
 
-                // Need to clear model state here or the page number that was posted
-                // is returned and page navigation doesn't work correctly. So, capture
-                // and amend the page number, above, then apply it, below
-                ModelState.Clear();
+                MaintenanceRecord maintenanceRecord = await _maintenanceRecords.AddMaintenanceRecordAsync(
+                                                                model.MaintainerId,
+                                                                model.DroneId,
+                                                                dateCompleted,
+                                                                model.RecordType,
+                                                                model.Description,
+                                                                model.Notes);
 
-                DateTime? start = !string.IsNullOrEmpty(model.From) ? DateTime.Parse(model.From) : null;
-                DateTime? end = !string.IsNullOrEmpty(model.To) ? DateTime.Parse(model.To) : null;
-                var maintenanceRecords = await _maintenanceRecords.GetMaintenanceRecordsForDoneAsync(model.DroneId, start, end, page, _settings.Value.MaintenanceRecordSearchPageSize);
-                model.SetMaintenanceRecords(maintenanceRecords, page, _settings.Value.MaintenanceRecordSearchPageSize);
+                // Redirect to the mainteance records search page
+                result = RedirectToAction("Index", "MaintenanceRecordsSearch", new { droneId = maintenanceRecord.DroneId });
+            }
+            else
+            {
+                // If the model state isn't valid, load the lists of drones and maintainers and
+                // redisplay the editing page
+                List<Drone> drones = await _drones.GetDronesAsync();
+                List<Maintainer> maintainers = await _maintainers.GetMaintainersAsync();
+
+                model.SetDrones(drones);
+                model.SetMaintainers(maintainers);
+
+                result = View(model);
             }
 
-            var drones = await _drones.GetDronesAsync();
+            return result;
+        }
+
+        /// <summary>
+        /// Serve the page to edit an existing maintenance record
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            List<Drone> drones = await _drones.GetDronesAsync();
+            List<Maintainer> maintainers = await _maintainers.GetMaintainersAsync();
+
+            MaintenanceRecord maintenanceRecord = await _maintenanceRecords.GetMaintenanceRecordAsync(id);
+            EditMaintenanceRecordViewModel model = _mapper.Map<EditMaintenanceRecordViewModel>(maintenanceRecord);
+
             model.SetDrones(drones);
+            model.SetMaintainers(maintainers);
+
+            model.DateWorkCompleted = model.DateCompleted.ToString("MM/dd/yyyy");
 
             return View(model);
+        }
+
+        /// <summary>
+        /// Handle POST events to update existing maintenance records
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(EditMaintenanceRecordViewModel model)
+        {
+            IActionResult result;
+
+            if (ModelState.IsValid)
+            {
+                DateTime dateCompleted = DateTime.Parse(model.DateWorkCompleted);
+
+                MaintenanceRecord maintenanceRecord = await _maintenanceRecords.UpdateMaintenanceRecordAsync(
+                                                                model.Id,
+                                                                model.MaintainerId,
+                                                                model.DroneId,
+                                                                dateCompleted,
+                                                                model.RecordType,
+                                                                model.Description,
+                                                                model.Notes);
+
+                // Redirect to the mainteance records search page
+                result = RedirectToAction("Index", "MaintenanceRecordsSearch", new { droneId = maintenanceRecord.DroneId });
+            }
+            else
+            {
+                // If the model state isn't valid, load the lists of drones and maintainers and
+                // redisplay the editing page
+                List<Drone> drones = await _drones.GetDronesAsync();
+                List<Maintainer> maintainers = await _maintainers.GetMaintainersAsync();
+
+                model.SetDrones(drones);
+                model.SetMaintainers(maintainers);
+
+                result = View(model);
+            }
+
+            return result;
         }
     }
 }

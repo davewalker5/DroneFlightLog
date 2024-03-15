@@ -40,7 +40,7 @@ namespace DroneFlightLog.Mvc.Controllers
             List<Location> locations = await _locations.GetLocationsAsync();
             List<Operator> operators = await _operators.GetOperatorsAsync();
 
-            AddFlightViewModel model = new AddFlightViewModel();
+            AddFlightViewModel model = new();
             model.SetDrones(drones);
             model.SetLocations(locations);
             model.SetOperators(operators);
@@ -167,11 +167,11 @@ namespace DroneFlightLog.Mvc.Controllers
         /// <param name="dateString"></param>
         /// <param name="timeString"></param>
         /// <returns></returns>
-        private DateTime CombineDateAndTime(string dateString, string timeString)
+        private static DateTime CombineDateAndTime(string dateString, string timeString)
         {
-            DateTime date = DateTime.Parse(dateString);
-            DateTime time = DateTime.ParseExact(timeString, "HH:mm", CultureInfo.InvariantCulture);
-            DateTime final = new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, 0);
+            var date = DateTime.Parse(dateString);
+            var time = DateTime.ParseExact(timeString, "HH:mm", CultureInfo.InvariantCulture);
+            var final = new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, 0);
             return final;
         }
     }

@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Web;
-using DroneFlightLog.Mvc.Configuration;
+﻿using DroneFlightLog.Mvc.Configuration;
 using DroneFlightLog.Mvc.Entities;
+using DroneFlightLog.Mvc.Extensions;
 using DroneFlightLog.Mvc.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace DroneFlightLog.Mvc.Api
 {
@@ -96,10 +96,9 @@ namespace DroneFlightLog.Mvc.Api
         public async Task<List<Flight>> GetFlightsByDateAsync(DateTime start, DateTime end, int page, int pageSize)
         {
             string baseRoute = _settings.Value.ApiRoutes.First(r => r.Name == RouteKey).Route;
-            string startDateSegment = HttpUtility.UrlEncode(start.ToString(_settings.Value.ApiDateFormat));
-            string endDateSegment = HttpUtility.UrlEncode(end.ToString(_settings.Value.ApiDateFormat));
+            string startDateSegment = start.ToEncodedDateTimeString(_settings.Value.ApiDateFormat);
+            string endDateSegment = end.ToEncodedDateTimeString(_settings.Value.ApiDateFormat);
             string route = $"{baseRoute}/date/{startDateSegment}/{endDateSegment}/{page}/{pageSize}";
-
             string json = await SendDirectAsync(route, null, HttpMethod.Get);
             List<Flight> flight = JsonConvert.DeserializeObject<List<Flight>>(json);
             return flight;

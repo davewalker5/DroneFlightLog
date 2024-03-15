@@ -1,5 +1,6 @@
 ﻿using DroneFlightLog.Mvc.Configuration;
 using DroneFlightLog.Mvc.Entities;
+using DroneFlightLog.Mvc.Extensions;
 using DroneFlightLog.Mvc.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -9,7 +10,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace DroneFlightLog.Mvc.Api
 {
@@ -50,8 +50,8 @@ namespace DroneFlightLog.Mvc.Api
         public async Task<List<MaintenanceRecord>> GetMaintenanceRecordsForDoneAsync(int droneId, DateTime? start, DateTime? end, int page, int pageSize)
         {
             string baseRoute = _settings.Value.ApiRoutes.First(r => r.Name == RouteKey).Route;
-            string startDateSegment = HttpUtility.UrlEncode((start ?? _baseDateTime).ToString(_settings.Value.ApiDateFormat));
-            string endDateSegment = HttpUtility.UrlEncode((end ?? DateTime.Now).ToString(_settings.Value.ApiDateFormat));
+            string startDateSegment = start.ToEncodedDateTimeString(_settings.Value.ApiDateFormat, _baseDateTime);
+            string endDateSegment = end.ToEncodedDateTimeString(_settings.Value.ApiDateFormat, DateTime.MaxValue);
             string route = $"{baseRoute}/{droneId}/{startDateSegment}/{endDateSegment}/{page}/{pageSize}";
             string json = await SendDirectAsync(route, null, HttpMethod.Get);
             List<MaintenanceRecord> maintenanceRecords = JsonConvert.DeserializeObject<List<MaintenanceRecord>>(json);
@@ -64,16 +64,18 @@ namespace DroneFlightLog.Mvc.Api
         /// <param name="maintainerId"></param>
         /// <param name="droneId"></param>
         /// <param name="date"></param>
+        /// <param name="type"></param>
         /// <param name="description"></param>
         /// <param name="notes"></param>
         /// <returns></returns>
-        public async Task<MaintenanceRecord> AddMaintenanceRecordAsync(int maintainerId, int droneId, DateTime date, string description, string notes)
+        public async Task<MaintenanceRecord> AddMaintenanceRecordAsync(int maintainerId, int droneId, DateTime date, MaintenanceRecordType type, string description, string notes)
         {
             dynamic template = new
             {
                 MaintainerId = maintainerId,
                 DroneId = droneId,
                 DateCompleted = date,
+                RecordType = type.ToString(),
                 Description = description,
                 Notes = notes
             };
@@ -91,10 +93,11 @@ namespace DroneFlightLog.Mvc.Api
         /// <param name="maintainerId"></param>
         /// <param name="droneId"></param>
         /// <param name="date"></param>
+        /// <param name="type"></param>
         /// <param name="description"></param>
         /// <param name="notes"></param>
         /// <returns></returns>
-        public async Task<MaintenanceRecord> UpdateMaintenanceRecordAsync(int id, int maintainerId, int droneId, DateTime date, string description, string notes)
+        public async Task<MaintenanceRecord> UpdateMaintenanceRecordAsync(int id, int maintainerId, int droneId, DateTime date, MaintenanceRecordType type, string description, string notes)
         {
             dynamic template = new
             {
@@ -102,6 +105,7 @@ namespace DroneFlightLog.Mvc.Api
                 MaintainerId = maintainerId,
                 DroneId = droneId,
                 DateCompleted = date,
+                RecordType = type.ToString(),
                 Description = description,
                 Notes = notes
             };
