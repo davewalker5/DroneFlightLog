@@ -45,8 +45,6 @@ namespace DroneFlightLog.Mvc.Api
         /// <returns></returns>
         public async Task<Operator> GetOperatorAsync(int id)
         {
-            // TODO : This needs to be replaced with a call to retrieve a single
-            // operator by Id. For now, retrieve them all then pick the one required
             List<Operator> operators = await GetOperatorsAsync();
             Operator op = operators.First(l => l.Id == id);
             return op;

@@ -58,6 +58,8 @@ namespace DroneFlightLog.Mvc
             services.AddHttpClient<FlightPropertyClient>();
             services.AddHttpClient<FlightSearchClient>();
             services.AddHttpClient<FlightClient>();
+            services.AddHttpClient<MaintainersClient>();
+            services.AddHttpClient<MaintenanceRecordClient>();
 
             // Configure session state for token storage
             services.AddSession(options =>
@@ -117,7 +119,7 @@ namespace DroneFlightLog.Mvc
                 string token = context.Session.GetString(LoginController.TokenSessionKey);
                 if (!string.IsNullOrEmpty(token))
                 {
-                    context.Request.Headers.Add("Authorization", "Bearer " + token);
+                    context.Request.Headers.Append("Authorization", "Bearer " + token);
                 }
                 await next();
             });

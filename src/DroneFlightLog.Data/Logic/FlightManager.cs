@@ -35,7 +35,7 @@ namespace DroneFlightLog.Data.Logic
             _factory.Drones.GetDrone(droneId);
             _factory.Locations.GetLocation(locationId);
 
-            Flight flight = new Flight
+            Flight flight = new()
             {
                 OperatorId = operatorId,
                 DroneId = droneId,
@@ -64,7 +64,7 @@ namespace DroneFlightLog.Data.Logic
             await _factory.Drones.GetDroneAsync(droneId);
             await _factory.Locations.GetLocationAsync(locationId);
 
-            Flight flight = new Flight
+            Flight flight = new()
             {
                 OperatorId = operatorId,
                 DroneId = droneId,
@@ -84,7 +84,15 @@ namespace DroneFlightLog.Data.Logic
         /// <returns></returns>
         public Flight GetFlight(int id)
         {
-            Flight flight = _factory.Context.Flights.FirstOrDefault(f => f.Id == id);
+            Flight flight = _factory.Context
+                                    .Flights
+                                    .Include(f => f.Drone)
+                                    .ThenInclude(d => d.Model)
+                                        .ThenInclude(m => m.Manufacturer)
+                                    .Include(f => f.Location)
+                                    .Include(f => f.Operator)
+                                        .ThenInclude(o => o.Address)
+                                    .FirstOrDefault(f => f.Id == id);
             ThrowIfFlightNotFound(flight, id);
             return flight;
         }
@@ -96,7 +104,15 @@ namespace DroneFlightLog.Data.Logic
         /// <returns></returns>
         public async Task<Flight> GetFlightAsync(int id)
         {
-            Flight flight = await _factory.Context.Flights.FirstOrDefaultAsync(f => f.Id == id);
+            Flight flight = await _factory.Context
+                                          .Flights
+                                          .Include(f => f.Drone)
+                                          .ThenInclude(d => d.Model)
+                                              .ThenInclude(m => m.Manufacturer)
+                                          .Include(f => f.Location)
+                                          .Include(f => f.Operator)
+                                              .ThenInclude(o => o.Address)
+                                          .FirstOrDefaultAsync(f => f.Id == id);
             ThrowIfFlightNotFound(flight, id);
             return flight;
         }
@@ -179,6 +195,7 @@ namespace DroneFlightLog.Data.Logic
                                                                         ((locationId == null) || (locationId == f.LocationId)) &&
                                                                         ((start == null) || (f.Start >= start)) &&
                                                                         ((end == null) || (f.End <= end)))
+                                                          .OrderBy(f => f.Start)
                                                           .Skip((pageNumber - 1) * pageSize)
                                                           .Take(pageSize);
 
@@ -211,6 +228,7 @@ namespace DroneFlightLog.Data.Logic
                                                                            ((locationId == null) || (locationId == f.LocationId)) &&
                                                                            ((start == null) || (f.Start >= start)) &&
                                                                            ((end == null) || (f.End <= end)))
+                                                               .OrderBy(f => f.Start)
                                                                .Skip((pageNumber - 1) * pageSize)
                                                                .Take(pageSize)
                                                                .AsAsyncEnumerable();
@@ -224,7 +242,7 @@ namespace DroneFlightLog.Data.Logic
         /// <param name="flight"></param>
         /// <param name="flightId"></param>
         [ExcludeFromCodeCoverage]
-        private void ThrowIfFlightNotFound(Flight flight, int flightId)
+        private static void ThrowIfFlightNotFound(Flight flight, int flightId)
         {
             if (flight == null)
             {

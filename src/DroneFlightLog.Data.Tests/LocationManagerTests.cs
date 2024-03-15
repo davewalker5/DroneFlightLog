@@ -43,7 +43,7 @@ namespace DroneFlightLog.Data.Tests
         [TestMethod]
         public async Task AddLocationAsyncTest()
         {
-            Location location = _factory.Locations.AddLocation(AsyncName);
+            Location location = await _factory.Locations.AddLocationAsync(AsyncName);
             await _factory.Context.SaveChangesAsync();
             Assert.AreEqual(2, _factory.Context.Locations.Count());
             Assert.AreEqual(AsyncName, location.Name);

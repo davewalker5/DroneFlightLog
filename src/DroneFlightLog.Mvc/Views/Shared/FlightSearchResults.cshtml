@@ -35,12 +35,12 @@
         <td valign="center">@flight.Location.Name</td>
         <td valign="center">@flight.GetOperatorName()</td>
         <td valign="center">
-            <a class="btn btn-lg" asp-area="" asp-controller="Flights" asp-action="Edit" asp-route-id="@flight.Id">
+            <a asp-area="" asp-controller="Flights" asp-action="Edit" asp-route-id="@flight.Id">
                 <i class="fas fa-edit"></i>
             </a>
         </td>
         <td valign="center">
-            <a class="btn btn-lg" asp-area="" asp-controller="FlightDetails" asp-action="Index" asp-route-id="@flight.Id">
+            <a asp-area="" asp-controller="FlightDetails" asp-action="Index" asp-route-id="@flight.Id">
                 <i class="fas fa-sign-in-alt"></i>
             </a>
         </td>

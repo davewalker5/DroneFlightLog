@@ -14,5 +14,7 @@ namespace DroneFlightLog.Data.Interfaces
         IOperatorManager Operators { get; }
         IFlightManager Flights { get; }
         IUserManager Users { get; }
+        IMaintainerManager Maintainers { get; }
+        IMaintenanceRecordManager MaintenanceRecords { get; }
     }
 }

@@ -46,10 +46,10 @@ namespace DroneFlightLog.Mvc.Api
         /// <returns></returns>
         public async Task<FlightProperty> GetFlightPropertyAsync(int id)
         {
-            // TODO : This needs to be replaced with a call to retrieve a single
-            // property by Id. For now, retrieve them all then pick the one required
-            List<FlightProperty> poperties = await GetFlightPropertiesAsync();
-            FlightProperty property = poperties.First(l => l.Id == id);
+            string baseRoute = _settings.Value.ApiRoutes.First(r => r.Name == PropertiesRouteKey).Route;
+            string route = $"{baseRoute}/{id}";
+            string json = await SendDirectAsync(route, null, HttpMethod.Get);
+            FlightProperty property = JsonConvert.DeserializeObject<FlightProperty>(json);
             return property;
         }
 

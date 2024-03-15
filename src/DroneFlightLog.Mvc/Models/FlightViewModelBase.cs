@@ -32,12 +32,11 @@ namespace DroneFlightLog.Mvc.Models
         public void SetDrones(List<Drone> drones)
         {
             // Add the default selection, which is empty
-            Drones = new List<SelectListItem>()
-            {
+            Drones =
+            [
                 new SelectListItem{ Value = "", Text = "" }
-            };
+            ];
 
-            // Add the models retrieved from the service
             if (drones?.Count > 0)
             {
                 Drones.AddRange(drones.Select(d =>
@@ -56,10 +55,10 @@ namespace DroneFlightLog.Mvc.Models
         public void SetLocations(List<Location> locations)
         {
             // Add the default selection, which is empty
-            Locations = new List<SelectListItem>()
-            {
+            Locations =
+            [
                 new SelectListItem{ Value = "", Text = "" }
-            };
+            ];
 
             // Add the models retrieved from the service
             if (locations?.Count > 0)
@@ -80,10 +79,10 @@ namespace DroneFlightLog.Mvc.Models
         public void SetOperators(List<Operator> operators)
         {
             // Add the default selection, which is empty
-            Operators = new List<SelectListItem>()
-            {
+            Operators =
+            [
                 new SelectListItem{ Value = "", Text = "" }
-            };
+            ];
 
             // Add the models retrieved from the service
             if (operators?.Count > 0)

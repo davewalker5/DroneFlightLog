@@ -24,6 +24,24 @@ namespace DroneFlightLog.Api.Controllers
         }
 
         [HttpGet]
+        [Route("{id}")]
+        public async Task<ActionResult<FlightProperty>> GetPropertyAsync(int id)
+        {
+            FlightProperty property;
+
+            try
+            {
+                property = await _factory.Properties.GetPropertyAsync(id);
+            }
+            catch (PropertyNotFoundException)
+            {
+                return NotFound();
+            }
+
+            return property;
+        }
+
+        [HttpGet]
         [Route("")]
         public async Task<ActionResult<List<FlightProperty>>> GetPropertiesAsync()
         {

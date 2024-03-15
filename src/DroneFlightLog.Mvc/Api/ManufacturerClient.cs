@@ -44,11 +44,10 @@ namespace DroneFlightLog.Mvc.Api
         /// <returns></returns>
         public async Task<Manufacturer> GetManufacturerAsync(int id)
         {
-            // TODO : This needs to be replaced with a call to retrieve a single
-            // manufacturer by Id. For now, retrieve them all then pick the one
-            // required
-            List<Manufacturer> manufacturers = await GetManufacturersAsync();
-            Manufacturer manufacturer = manufacturers.First(m => m.Id == id);
+            string baseRoute = _settings.Value.ApiRoutes.First(r => r.Name == RouteKey).Route;
+            string route = $"{baseRoute}/{id}";
+            string json = await SendDirectAsync(route, null, HttpMethod.Get);
+            Manufacturer manufacturer = JsonConvert.DeserializeObject<Manufacturer>(json);
             return manufacturer;
         }
 

@@ -44,11 +44,10 @@ namespace DroneFlightLog.Mvc.Api
         /// <returns></returns>
         public async Task<Location> GetLocationAsync(int id)
         {
-            // TODO : This needs to be replaced with a call to retrieve a single
-            // location by Id. For now, retrieve them all then pick the one
-            // required
-            List<Location> locations = await GetLocationsAsync();
-            Location location = locations.First(l => l.Id == id);
+            string baseRoute = _settings.Value.ApiRoutes.First(r => r.Name == RouteKey).Route;
+            string route = $"{baseRoute}/{id}";
+            string json = await SendDirectAsync(route, null, HttpMethod.Get);
+            Location location = JsonConvert.DeserializeObject<Location>(json);
             return location;
         }
 

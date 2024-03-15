@@ -24,12 +24,30 @@ namespace DroneFlightLog.Api.Controllers
         }
 
         [HttpGet]
+        [Route("id")]
+        public async Task<ActionResult<Drone>> GetDroneByIdAsync(int id)
+        {
+            Drone drone;
+
+            try
+            {
+                drone = await _factory.Drones.GetDroneAsync(id);
+            }
+            catch (DroneNotFoundException)
+            {
+                return NotFound();
+            }
+
+            return drone;
+        }
+
+        [HttpGet]
         [Route("")]
         public async Task<ActionResult<List<Drone>>> GetDronesAsync()
         {
             List<Drone> drones = await _factory.Drones.GetDronesAsync(null).ToListAsync();
 
-            if (!drones.Any())
+            if (drones.Count == 0)
             {
                 return NoContent();
             }
@@ -43,7 +61,7 @@ namespace DroneFlightLog.Api.Controllers
         {
             List<Drone> drones = await _factory.Drones.GetDronesAsync(modelId).ToListAsync();
 
-            if (!drones.Any())
+            if (drones.Count == 0)
             {
                 return NoContent();
             }

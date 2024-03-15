@@ -3,7 +3,7 @@
 @model List<Operator>
 
 @{
-    ViewData["Title"] = "Flight Properties";
+    ViewData["Title"] = "Operator Details";
 }
 
 <p class="text-center font-weight-bold">
@@ -38,9 +38,9 @@
                 <td valign="center">@op.OperatorNumber</td>
                 <td valign="center">@op.FlyerNumber</td>
                 <td valign="center">@op.DoBFormatted</td>
-                <td valign="center">@op.GetAddressSummary()</td>
+                <td valign="center">@op.AddressSummary</td>
                 <td valign="center">
-                    <a class="btn btn-lg" asp-area="" asp-controller="Operators" asp-action="Edit" asp-route-id="@op.Id">
+                    <a asp-area="" asp-controller="Operators" asp-action="Edit" asp-route-id="@op.Id">
                         <i class="fas fa-edit"></i>
                     </a>
                 </td>

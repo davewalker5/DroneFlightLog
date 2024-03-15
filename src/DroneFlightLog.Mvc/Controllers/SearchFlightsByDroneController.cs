@@ -31,7 +31,7 @@ namespace DroneFlightLog.Mvc.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            FlightSearchByDroneViewModel model = new FlightSearchByDroneViewModel
+            FlightSearchByDroneViewModel model = new()
             {
                 PageNumber = 1
             };

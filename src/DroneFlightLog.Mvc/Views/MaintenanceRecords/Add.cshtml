@@ -1,0 +1,20 @@
+﻿@model DroneFlightLog.Mvc.Models.AddMaintenanceRecordViewModel
+
+@{
+    ViewData["Title"] = "Add Maintenance Record";
+}
+
+<div class="container-fluid">
+    @using (Html.BeginForm())
+    {
+        <div class="row">
+            <div class="col-md">
+                <span style="font-size: 1.2rem"><strong>Add New Maintenance Record</strong></span>
+            </div>
+        </div>
+        <hr />
+
+        @await Html.PartialAsync("MaintenanceRecord", Model)
+        ;
+    }
+</div>

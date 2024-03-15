@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <ReleaseVersion>1.2.1.0</ReleaseVersion>
-    <FileVersion>1.2.1.0</FileVersion>
-    <ProductVersion>1.2.1.0</ProductVersion>
+    <ReleaseVersion>1.2.2.0</ReleaseVersion>
+    <FileVersion>1.2.2.0</FileVersion>
+    <ProductVersion>1.2.2.0</ProductVersion>
     <Configurations>Release;Debug</Configurations>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -20,11 +20,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.4.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
   </ItemGroup>

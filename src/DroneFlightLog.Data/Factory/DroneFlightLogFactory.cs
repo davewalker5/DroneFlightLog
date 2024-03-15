@@ -7,15 +7,17 @@ namespace DroneFlightLog.Data.Factory
 {
     public class DroneFlightLogFactory<T> : IDroneFlightLogFactory<T> where T : DbContext, IDroneFlightLogDbContext
     {
-        private Lazy<IFlightPropertyManager> _properties;
-        private Lazy<IAddressManager> _addresses;
-        private Lazy<IOperatorManager> _operators;
-        private Lazy<IManufacturerManager> _manufacturers;
-        private Lazy<IModelManager> _models;
-        private Lazy<IDroneManager> _drones;
-        private Lazy<ILocationManager> _locations;
-        private Lazy<IFlightManager> _flights;
-        private Lazy<IUserManager> _users;
+        private readonly Lazy<IFlightPropertyManager> _properties;
+        private readonly Lazy<IAddressManager> _addresses;
+        private readonly Lazy<IOperatorManager> _operators;
+        private readonly Lazy<IManufacturerManager> _manufacturers;
+        private readonly Lazy<IModelManager> _models;
+        private readonly Lazy<IDroneManager> _drones;
+        private readonly Lazy<ILocationManager> _locations;
+        private readonly Lazy<IFlightManager> _flights;
+        private readonly Lazy<IUserManager> _users;
+        private readonly Lazy<IMaintainerManager> _maintainers;
+        private readonly Lazy<IMaintenanceRecordManager> _maintenanceRecords;
 
         public DroneFlightLogFactory(T context)
         {
@@ -29,6 +31,8 @@ namespace DroneFlightLog.Data.Factory
             _locations = new Lazy<ILocationManager>(() => new LocationManager<T>(context));
             _flights = new Lazy<IFlightManager>(() => new FlightManager<T>(this));
             _users = new Lazy<IUserManager>(() => new UserManager<T>(context));
+            _maintainers = new Lazy<IMaintainerManager>(() => new MaintainerManager<T>(context));
+            _maintenanceRecords = new Lazy<IMaintenanceRecordManager>(() => new MaintenanceRecordManager<T>(this));
         }
 
         public T Context { get; private set; }
@@ -41,5 +45,7 @@ namespace DroneFlightLog.Data.Factory
         public ILocationManager Locations { get { return _locations.Value; } }
         public IFlightManager Flights { get { return _flights.Value; } }
         public IUserManager Users { get { return _users.Value; } }
+        public IMaintainerManager Maintainers { get { return _maintainers.Value; } }
+        public IMaintenanceRecordManager MaintenanceRecords { get { return _maintenanceRecords.Value; } }
     }
 }

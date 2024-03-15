@@ -1,0 +1,109 @@
+﻿@using DroneFlightLog.Mvc.Entities
+@model DroneFlightLog.Mvc.Models.MaintenanceRecordsSearchViewModel
+
+@{
+    ViewData["Title"] = "Maintenance Record Search";
+    string previousDisabled = (Model.PreviousEnabled) ? "" : "disabled";
+    string nextDisabled = (Model.NextEnabled) ? "" : "disabled";
+}
+
+<p class="text-center font-weight-bold">
+    <span style="font-size: 1.2rem">
+        Maintenance Record Search
+    </span>
+    <br />
+    <small class="text-muted">
+        <em>
+            Search maintenance records by drone and date
+        </em>
+    </small>
+</p>
+
+<div class="container-fluid">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(m => m.PageNumber)
+
+        <div class="row">
+            <div class="col">
+                <strong>@Html.LabelFor(m => m.DroneId)</strong>
+                <div class="input-group">
+                    @Html.DropDownListFor(m => m.DroneId, new List<SelectListItem>(Model.Drones), new { @class = "form-control" })
+                </div>
+                <span>@Html.ValidationMessageFor(m => m.DroneId, "", new { @class = "text-danger" })</span>
+            </div>
+            <div class="col">
+                <strong>@Html.LabelFor(m => m.From)</strong>
+                <div class="input-group">
+                    @Html.EditorFor(m => m.From, new { @class = "form-control" })
+                    <script type="text/javascript">
+                        new GijgoDatePicker(document.getElementById("From"), { calendarWeeks: false, uiLibrary: "bootstrap4" });
+                    </script>
+                </div>
+                <span>@Html.ValidationMessageFor(m => m.From, "", new { @class = "text-danger" })</span>
+            </div>
+            <div class="col">
+                <strong>@Html.LabelFor(m => m.To)</strong>
+                <div class="input-group">
+                    @Html.EditorFor(m => m.To, new { @class = "form-control" })
+                    <script type="text/javascript">
+                        new GijgoDatePicker(document.getElementById("To"), { calendarWeeks: false, uiLibrary: "bootstrap4" });
+                    </script>
+                </div>
+                <span>@Html.ValidationMessageFor(m => m.To, "", new { @class = "text-danger" })</span>
+            </div>
+            <div class="col">
+                <div style="float: left; margin-right: 10px;">
+                    <strong><label>&nbsp;</label></strong>
+                    <div class="input-group">
+                        <button type="submit" name="Action" value="@ControllerActions.ActionSearch" class="btn btn-primary">Search</button>
+                    </div>
+                </div>
+                <div style="float: left; margin-right: 10px;">
+                    <strong><label>&nbsp;</label></strong>
+                    <div class="input-group">
+                        <a class="btn btn-primary" href="/MaintenanceRecords/Add" role="button">Add</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+
+        @if (Model.MaintenanceRecords != null)
+        {
+            <table class="table">
+                <tr>
+                    <th>Drone</th>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Maintainer</th>
+                    <th>Description</th>
+                    <th />
+                </tr>
+                @foreach (var record in Model.MaintenanceRecords)
+                {
+                    <tr>
+                        <td valign="center">@record.Drone?.Name</td>
+                        <td valign="center" style="white-space: nowrap">@record.DateCompletedFormatted</td>
+                        <td valign="center">@record.RecordType</td>
+                        <td valign="center">@record.MaintainerFullName</td>
+                        <td valign="center">@record.Description</td>
+                        <td valign="center">
+                            <a asp-area="" asp-controller="MaintenanceRecords" asp-action="Edit" asp-route-id="@record.Id">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+
+        <hr />
+        <p class="text-right">
+            <button type="submit" name="Action" value="@ControllerActions.ActionPreviousPage" class="btn btn-secondary" @previousDisabled>Previous</button>
+            <button type="submit" name="Action" value="@ControllerActions.ActionNextPage" class="btn btn-secondary" @nextDisabled>Next</button>
+        </p>
+    }
+</div>

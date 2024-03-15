@@ -30,7 +30,7 @@ namespace DroneFlightLog.Mvc.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            FlightSearchByDateViewModel model = new FlightSearchByDateViewModel
+            FlightSearchByDateViewModel model = new()
             {
                 PageNumber = 1
             };

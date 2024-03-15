@@ -28,12 +28,30 @@ namespace DroneFlightLog.Api.Controllers
         }
 
         [HttpGet]
+        [Route("{id}")]
+        public async Task<ActionResult<Flight>> GetFlightByIdAsync(int id)
+        {
+            Flight flight;
+
+            try
+            {
+                flight = await _factory.Flights.GetFlightAsync(id);
+            }
+            catch (FlightNotFoundException)
+            {
+                return NotFound();
+            }
+
+            return flight;
+        }
+
+        [HttpGet]
         [Route("{page}/{pageSize}")]
         public async Task<ActionResult<List<Flight>>> GetFlightsAsync(int page, int pageSize)
         {
             List<Flight> flights = await _factory.Flights.FindFlightsAsync(null, null, null, null, null, page, pageSize).ToListAsync();
 
-            if (!flights.Any())
+            if (flights.Count == 0)
             {
                 return NoContent();
             }
@@ -47,7 +65,7 @@ namespace DroneFlightLog.Api.Controllers
         {
             List<Flight> flights = await _factory.Flights.FindFlightsAsync(operatorId, null, null, null, null, page, pageSize).ToListAsync();
 
-            if (!flights.Any())
+            if (flights.Count == 0)
             {
                 return NoContent();
             }
@@ -61,7 +79,7 @@ namespace DroneFlightLog.Api.Controllers
         {
             List<Flight> flights = await _factory.Flights.FindFlightsAsync(null, droneId, null, null, null, page, pageSize).ToListAsync();
 
-            if (!flights.Any())
+            if (flights.Count == 0)
             {
                 return NoContent();
             }
@@ -75,7 +93,7 @@ namespace DroneFlightLog.Api.Controllers
         {
             List<Flight> flights = await _factory.Flights.FindFlightsAsync(null, null, locationId, null, null, page, pageSize).ToListAsync();
 
-            if (!flights.Any())
+            if (flights.Count == 0)
             {
                 return NoContent();
             }
@@ -92,7 +110,7 @@ namespace DroneFlightLog.Api.Controllers
 
             List<Flight> flights = await _factory.Flights.FindFlightsAsync(null, null, null, flightStart, flightEnd, page, pageSize).ToListAsync();
 
-            if (!flights.Any())
+            if (flights.Count == 0)
             {
                 return NoContent();
             }

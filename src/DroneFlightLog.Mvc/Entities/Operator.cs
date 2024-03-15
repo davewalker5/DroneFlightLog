@@ -35,16 +35,12 @@ namespace DroneFlightLog.Mvc.Entities
         /// Return a one-line summary of  the address
         /// </summary>
         /// <returns></returns>
-        public string GetAddressSummary()
+        public string AddressSummary
         {
-            string summary = "";
-
-            if (Address != null)
+            get
             {
-                summary = $"{Address.Number} {Address.Street}, {Address.Postcode}, {Address.Country}";
+                return Address != null ? $"{Address.Number} {Address.Street}, {Address.Postcode}, {Address.Country}" : "";
             }
-
-            return summary;
         }
     }
 }

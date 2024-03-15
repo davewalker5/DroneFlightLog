@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
+#nullable disable
+
 namespace DroneFlightLog.Data.Sqlite.Migrations
 {
     [DbContext(typeof(DroneFlightLogDbContext))]
@@ -13,8 +15,7 @@ namespace DroneFlightLog.Data.Sqlite.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.1");
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.2");
 
             modelBuilder.Entity("DroneFlightLog.Data.Entities.Address", b =>
                 {
@@ -108,9 +109,6 @@ namespace DroneFlightLog.Data.Sqlite.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Token")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("UserName")
                         .HasColumnType("TEXT");
 
@@ -181,6 +179,54 @@ namespace DroneFlightLog.Data.Sqlite.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Locations");
+                });
+
+            modelBuilder.Entity("DroneFlightLog.Data.Entities.Maintainer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("FirstNames")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Surname")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Maintainers");
+                });
+
+            modelBuilder.Entity("DroneFlightLog.Data.Entities.MaintenanceRecord", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DateCompleted")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("DroneId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("MaintainerId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("RecordType")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MaintainerId");
+
+                    b.ToTable("MaintenanceRecords");
                 });
 
             modelBuilder.Entity("DroneFlightLog.Data.Entities.Manufacturer", b =>
@@ -254,6 +300,8 @@ namespace DroneFlightLog.Data.Sqlite.Migrations
                         .HasForeignKey("ModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Model");
                 });
 
             modelBuilder.Entity("DroneFlightLog.Data.Entities.Flight", b =>
@@ -275,6 +323,12 @@ namespace DroneFlightLog.Data.Sqlite.Migrations
                         .HasForeignKey("OperatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Drone");
+
+                    b.Navigation("Location");
+
+                    b.Navigation("Operator");
                 });
 
             modelBuilder.Entity("DroneFlightLog.Data.Entities.FlightPropertyValue", b =>
@@ -290,6 +344,21 @@ namespace DroneFlightLog.Data.Sqlite.Migrations
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Flight");
+
+                    b.Navigation("Property");
+                });
+
+            modelBuilder.Entity("DroneFlightLog.Data.Entities.MaintenanceRecord", b =>
+                {
+                    b.HasOne("DroneFlightLog.Data.Entities.Maintainer", "Maintainer")
+                        .WithMany()
+                        .HasForeignKey("MaintainerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Maintainer");
                 });
 
             modelBuilder.Entity("DroneFlightLog.Data.Entities.Model", b =>
@@ -299,6 +368,8 @@ namespace DroneFlightLog.Data.Sqlite.Migrations
                         .HasForeignKey("ManufacturerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Manufacturer");
                 });
 
             modelBuilder.Entity("DroneFlightLog.Data.Entities.Operator", b =>
@@ -308,6 +379,13 @@ namespace DroneFlightLog.Data.Sqlite.Migrations
                         .HasForeignKey("AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Address");
+                });
+
+            modelBuilder.Entity("DroneFlightLog.Data.Entities.Flight", b =>
+                {
+                    b.Navigation("Properties");
                 });
 #pragma warning restore 612, 618
         }

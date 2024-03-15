@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
-    <ReleaseVersion>1.1.1.0</ReleaseVersion>
-    <FileVersion>1.1.1.0</FileVersion>
-    <ProductVersion>1.1.1</ProductVersion>
+    <ReleaseVersion>1.1.2.0</ReleaseVersion>
+    <FileVersion>1.1.2.0</FileVersion>
+    <ProductVersion>1.1.2</ProductVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -19,7 +19,11 @@
     <ProjectReference Include="..\DroneFlightLog.Data.Sqlite\DroneFlightLog.Data.Sqlite.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <None Remove="appsettings.json" />
