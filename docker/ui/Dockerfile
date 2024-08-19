@@ -1,4 +1,4 @@
 FROM mcr.microsoft.com/dotnet/core/aspnet:latest
-COPY droneflightlog.mvc-1.2.0.0 /opt/droneflightlog.mvc-1.2.0.0
-WORKDIR /opt/droneflightlog.mvc-1.2.0.0/bin
+COPY droneflightlog.mvc-1.4.0.0 /opt/droneflightlog.mvc
+WORKDIR /opt/droneflightlog.mvc/bin
 ENTRYPOINT [ "./DroneFlightLog.Mvc" ]
