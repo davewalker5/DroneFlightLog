@@ -4,7 +4,6 @@
 [![GitHub issues](https://img.shields.io/github/issues/davewalker5/DroneFlightLog)](https://github.com/davewalker5/DroneFlightLog/issues)
 [![Coverage Status](https://coveralls.io/repos/github/davewalker5/DroneFlightLog/badge.svg?branch=master)](https://coveralls.io/github/davewalker5/DroneFlightLog?branch=master)
 [![Releases](https://img.shields.io/github/v/release/davewalker5/DroneFlightLog.svg?include_prereleases)](https://github.com/davewalker5/DroneFlightLog/releases)
-[![NuGet](https://img.shields.io/nuget/v/DroneFlightLog.Data)](https://www.nuget.org/packages?q=droneflightlog.data)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/davewalker5/DroneFlightLog/blob/master/LICENSE)
 [![Language](https://img.shields.io/badge/language-c%23-blue.svg)](https://github.com/davewalker5/DroneFlightLog/)
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/davewalker5/DroneFlightLog)](https://github.com/davewalker5/DroneFlightLog/)
@@ -46,3 +45,4 @@ To file issues or suggestions, please use the [Issues](https://github.com/davewa
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+
