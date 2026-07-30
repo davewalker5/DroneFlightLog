@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <PackageId>DroneFlightLog.Data</PackageId>
-    <PackageVersion>1.1.2.0</PackageVersion>
+    <PackageVersion>1.6.0.0</PackageVersion>
     <PackOnBuild>true</PackOnBuild>
     <Authors>Dave Walker</Authors>
-    <Copyright>Copyright (c) 2020, 2021, 2022, 2023, 2024 Dave Walker</Copyright>
+    <Copyright>Copyright (c) 2020, 2021, 2022, 2023, 2024, 2025 Dave Walker</Copyright>
     <Owners>Dave Walker</Owners>
     <PackageReleaseNotes>NuGet package and framework updates</PackageReleaseNotes>
     <Summary>Drone Flight Logging Database Layer</Summary>
@@ -16,7 +16,7 @@
     <PackageProjectUrl>https://github.com/davewalker5/DroneFlightLogDb</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <ReleaseVersion>1.1.2.0</ReleaseVersion>
+    <ReleaseVersion>1.6.0.0</ReleaseVersion>
   </PropertyGroup>
 
   <ItemGroup>
