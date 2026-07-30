@@ -1,10 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ReleaseVersion>1.4.0.0</ReleaseVersion>
-    <FileVersion>1.4.0.0</FileVersion>
-    <ProductVersion>1.4.0.0</ProductVersion>
+    <TargetFramework>net9.0</TargetFramework>
+    <ReleaseVersion>1.6.0.0</ReleaseVersion>
+    <FileVersion>1.6.0.0</FileVersion>
+    <ProductVersion>1.6.0.0</ProductVersion>
     <Configurations>Release;Debug</Configurations>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
